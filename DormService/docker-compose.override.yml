@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  laundrydb:
+    container_name: laundry
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+  
+  laundry.api:
+    container_name: laundry.api
+    environment:
+      -  ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:ConnectionSettings=mongodb://catalogdb:27017"
+    depends_on:
+      - laundrydb
+    ports:
+      - "8000:8080"

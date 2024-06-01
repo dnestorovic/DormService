@@ -1,0 +1,14 @@
+services:
+  
+  laundrydb:
+    image: mongo
+  
+  laundry.api:
+    image: laundry.api
+    build:
+      context: .
+      dockerfile: Services/Laundry/Dockerfile
+
+volumes:
+  mongo_data:
+  
