@@ -18,3 +18,42 @@ services:
       - laundrydb
     ports:
       - "8000:8080"
+      
+      
+  paymentdb:
+    container_name: payment
+    restart: always
+    ports:
+      - "27018:27018"
+    volumes:
+      - mongo_data:/data/db
+  
+  payment.api:
+    container_name: payment.api
+    environment:
+      -  ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:ConnectionSettings=mongodb://paymentdb:27018"
+    depends_on:
+      - paymentdb
+    ports:
+      - "8001:8080"
+
+  
+  
+  canteendb:
+    container_name: canteen
+    restart: always
+    ports:
+      - "27019:27019"
+    volumes:
+      - mongo_data:/data/db
+  
+  canteen.api:
+    container_name: canteen.api
+    environment:
+      -  ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:ConnectionSettings=mongodb://canteendb:27019"
+    depends_on:
+      - canteendb
+    ports:
+      - "8002:8080"

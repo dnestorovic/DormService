@@ -8,6 +8,26 @@ services:
     build:
       context: .
       dockerfile: Services/Laundry/Laundry.API/Dockerfile
+  
+  
+  paymentdb:
+    image: mongo
+  
+  payment.api:
+    image: payment.api
+    build:
+      context: .
+      dockerfile: Services/Payment/Payment.API/Dockerfile
+
+      
+  canteendb:
+    image: mongo
+  
+  canteen.api:
+    image: canteen.api
+    build:
+      context: .
+      dockerfile: Services/Canteen/Canteen.API/Dockerfile
 
 volumes:
   mongo_data:
