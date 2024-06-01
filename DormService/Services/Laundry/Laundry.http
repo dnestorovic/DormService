@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 @Laundry_HostAddress = http://localhost:5186
+=======
+@Laundry_HostAddress = http://localhost:5027
+>>>>>>> 11598b3 (Initialize dotnet project)
 
 GET {{Laundry_HostAddress}}/weatherforecast/
 Accept: application/json
