@@ -11,10 +11,8 @@
         public string MealType { get; set; }
         public decimal MealPrice
         {
-            get
-            {
-                return MealTypeToPrice[MealType] = MealPrice;
-            }
+            get { return MealTypeToPrice[MealType]; }
         }
+
     }
 }
