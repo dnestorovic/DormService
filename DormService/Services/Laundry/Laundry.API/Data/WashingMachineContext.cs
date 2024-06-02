@@ -5,7 +5,7 @@ namespace Laundry.API.Data;
 
 public class WashingMachineContext: IWashingMachineContext
 {
-    public IMongoCollection<WashingMachine> WashingMachines { get; }
+    public IMongoCollection<WashingMachine> WashingMachines { get; set; }
 
     public WashingMachineContext(IConfiguration configuration)
     {
