@@ -33,4 +33,6 @@ services:
       dockerfile: Services/Canteen/Canteen.API/Dockerfile
 
 volumes:
-  mongo_data:
+  mongo_canteen:
+  mongo_payment:
+  mongo_laundry:
