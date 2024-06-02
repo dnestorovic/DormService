@@ -1,20 +1,25 @@
-﻿namespace Payment.API.Entities
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+
+namespace Payment.API.Entities
 {
-    public class Debts
+    public class StudentDebts
     {
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string _id { get; set; }
         public string studentID { get; set; }
 
         Dictionary<string, float> allDebts = new Dictionary<string, float>();
 
 
 
-        public Debts(string studentID, Dictionary<string, float> allDebts)
+        public StudentDebts(string studentID, Dictionary<string, float> allDebts)
         {
             this.studentID = studentID ?? throw new ArgumentNullException(nameof(studentID));
             this.allDebts = allDebts ?? throw new ArgumentNullException(nameof(allDebts));
         }
 
-        public Debts(string studentID)
+        public StudentDebts(string studentID)
         {
             this.studentID = studentID;
             foreach (string type in DebtType.types)
