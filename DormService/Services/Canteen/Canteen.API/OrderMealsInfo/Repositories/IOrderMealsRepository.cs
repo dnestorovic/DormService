@@ -1,6 +1,6 @@
-﻿using Canteen.API.Entities;
+﻿using Canteen.API.OrderMealsInfo.Entities;
 
-namespace Canteen.API.Repositories
+namespace Canteen.API.OrderMealsInfo.Repositories
 {
     public interface IOrderMealsRepository
     {
