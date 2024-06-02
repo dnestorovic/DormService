@@ -11,5 +11,7 @@ public class WashingMachineContext: IWashingMachineContext
     {
         var client = new MongoClient(configuration.GetValue<string>("DatabaseSettings:ConnectionSettings"));
         var database = client.GetDatabase("LaundryDB");
+
+        WashingMachines = database.GetCollection<WashingMachine>("WashingMachines");
     }
 }

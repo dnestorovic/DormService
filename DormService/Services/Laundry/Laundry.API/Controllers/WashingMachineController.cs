@@ -15,11 +15,12 @@ public class WashingMachineController: ControllerBase
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    [HttpGet("{id}", Name = "GetWashingMachine")]
+    [HttpGet("{id}")]
     [ProducesResponseType(typeof(WashingMachine), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(WashingMachine), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<WashingMachine>> GetWashingMachine(string id)
     {
+        
         var washingMachine = await _repository.GetWashingMachine(id);
         if (washingMachine is null)
         {
