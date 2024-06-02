@@ -9,52 +9,37 @@ namespace Payment.API.Entities
         public string _id { get; set; }
         public string studentID { get; set; }
 
-        Dictionary<string, float> allDebts = new Dictionary<string, float>();
+        // All debt types
+        public decimal credit {  get; set; }
+        public decimal rent {  get; set; }
+        public decimal internet {  get; set; }
+        public decimal airConditioning {  get; set; }
+        public decimal phone {  get; set; }
+        public decimal cleaning { get; set; }
 
-
-
-        public StudentDebts(string studentID, Dictionary<string, float> allDebts)
+        public StudentDebts(string studentID, decimal credit, decimal rent, decimal internet, decimal airConditioning, decimal phone, decimal cleaning)
         {
+            _id = ObjectId.GenerateNewId().ToString();
             this.studentID = studentID ?? throw new ArgumentNullException(nameof(studentID));
-            this.allDebts = allDebts ?? throw new ArgumentNullException(nameof(allDebts));
+            this.credit = credit;
+            this.rent = rent;
+            this.internet = internet;
+            this.airConditioning = airConditioning;
+            this.phone = phone;
+            this.cleaning = cleaning;
         }
 
         public StudentDebts(string studentID)
         {
-            this.studentID = studentID;
-            foreach (string type in DebtType.types)
-            {
-                allDebts[type] = 0;
-            }
+            _id = ObjectId.GenerateNewId().ToString();
+            this.studentID = studentID ?? throw new ArgumentNullException(nameof(studentID));
+            this.credit = 0;
+            this.rent = 0;
+            this.internet = 0;
+            this.airConditioning = 0;
+            this.phone = 0;
+            this.cleaning = 0;
         }
 
-
-        public Dictionary<string, float> getAllDebts(string studentID)
-        {
-            return allDebts;
-        }
-
-        public Dictionary<string, float> getBasicDebts(string studentID)
-        {
-            Dictionary<string, float> basicDebts = allDebts;
-            basicDebts.Remove(DebtType.CREDIT);
-
-            return basicDebts;
-        }
-
-        public float getCreditStatus(string studentID)
-        {
-            return allDebts[DebtType.CREDIT];
-        }
-
-        public bool reduceCredit(float amount)
-        {
-            if (allDebts[DebtType.CREDIT] >= amount)
-            {
-                allDebts[DebtType.CREDIT] = allDebts[DebtType.CREDIT] - amount;
-                return true;
-            }
-            return false;
-        }
     }
 }

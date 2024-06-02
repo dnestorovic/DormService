@@ -5,21 +5,19 @@ namespace Payment.API.Data
 {
     public class UserDebtsContextSeed
     {
+        private static decimal credit = 1000;
+        private static decimal internet = 1000;
+        private static decimal cleaning = 1500;
+        private static decimal airConditioning = 500;
+        private static decimal phone = 2000;
+        private static decimal rent = 5000;
 
-        private static readonly Dictionary<string, float> momciloDebts = new Dictionary<string, float>()
-        {
-            {DebtType.CREDIT, 0 },
-            {DebtType.INTERNET, 100 },
-            {DebtType.CLEANING, 1000 },
-            {DebtType.AIR_CONDITIONING, 50 },
-            {DebtType.PHONE, 450 },
-            {DebtType.RENT, 5000 }
-        };
 
-        private static readonly StudentDebts natalija = new StudentDebts("Natalija");
-        private static readonly StudentDebts teodora = new StudentDebts("Teodora");
-        private static readonly StudentDebts david = new StudentDebts("David");
-        private static readonly StudentDebts momcilo = new StudentDebts("Momcilo", momciloDebts);
+        private static readonly StudentDebts natalija = new StudentDebts("Natalija", credit, rent, internet, airConditioning, phone, cleaning);
+        private static readonly StudentDebts teodora = new StudentDebts("Teodora", credit, rent, internet, airConditioning, phone, cleaning);
+        private static readonly StudentDebts david = new StudentDebts("David", credit, rent, internet, airConditioning, phone, cleaning);
+        private static readonly StudentDebts momcilo = new StudentDebts("Momcilo", credit, rent, internet, airConditioning, phone, cleaning);
+        private static readonly StudentDebts tmp = new StudentDebts("tmp", credit, rent, internet, airConditioning, phone, cleaning);
 
 
 
@@ -36,9 +34,7 @@ namespace Payment.API.Data
 
         private static IEnumerable<StudentDebts> GetPreconfigureDebts()
         {
-            List<StudentDebts> students = new List<StudentDebts>();
-            students = [natalija, teodora, david, momcilo];
-            return students;
+            return [natalija, teodora, david, momcilo];
         }
     }
 }
