@@ -6,7 +6,7 @@ namespace Payment.API.Data
     public class UserDebtsContextSeed
     {
 
-        public static readonly Dictionary<string, float> momciloDebts = new Dictionary<string, float>()
+        private static readonly Dictionary<string, float> momciloDebts = new Dictionary<string, float>()
         {
             {DebtType.CREDIT, 0 },
             {DebtType.INTERNET, 100 },
@@ -16,10 +16,10 @@ namespace Payment.API.Data
             {DebtType.RENT, 5000 }
         };
 
-        public static readonly StudentDebts natalija = new StudentDebts("Natalija");
-        public static readonly StudentDebts teodora = new StudentDebts("Teodora");
-        public static readonly StudentDebts david = new StudentDebts("David");
-        public static readonly StudentDebts momcilo = new StudentDebts("Momcilo", momciloDebts);
+        private static readonly StudentDebts natalija = new StudentDebts("Natalija");
+        private static readonly StudentDebts teodora = new StudentDebts("Teodora");
+        private static readonly StudentDebts david = new StudentDebts("David");
+        private static readonly StudentDebts momcilo = new StudentDebts("Momcilo", momciloDebts);
 
 
 

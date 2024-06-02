@@ -21,8 +21,6 @@ namespace Payment.API.Controllers
         public async Task<ActionResult<StudentDebts>> GetMealsForUser(string studentID)
         {
             var studentDebts = await _repository.GetStudentDebts(studentID);
-            // Console.WriteLine(studentDebts.getBasicDebts(studentID));
-            Debug.WriteLine(studentDebts.getBasicDebts(studentID));
             if (studentDebts == null)
             {
                 return NotFound();
