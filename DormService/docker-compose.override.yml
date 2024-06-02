@@ -47,13 +47,21 @@ services:
       - "27019:27019"
     volumes:
       - mongo_data:/data/db
+
+  canteencache:
+    container_name: canteencache
+    restart: always
+    ports:
+      - "6379:6379"
   
   canteen.api:
     container_name: canteen.api
     environment:
       -  ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings:ConnectionSettings=mongodb://canteendb:27019"
+      - "CacheSettings:ConnectionString=canteencache:6379"
     depends_on:
       - canteendb
+      - canteencache
     ports:
       - "8002:8080"
