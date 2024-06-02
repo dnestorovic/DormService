@@ -1,4 +1,4 @@
-﻿namespace Canteen.API.Entities
+﻿namespace Canteen.API.OrderMealsInfo.Entities
 {
     public class OrderMeals
     {

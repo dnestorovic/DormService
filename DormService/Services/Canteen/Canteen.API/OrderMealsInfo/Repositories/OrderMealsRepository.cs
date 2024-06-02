@@ -1,8 +1,8 @@
-﻿using Canteen.API.Entities;
+﻿using Canteen.API.OrderMealsInfo.Entities;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 
-namespace Canteen.API.Repositories
+namespace Canteen.API.OrderMealsInfo.Repositories
 {
     public class OrderMealsRepository : IOrderMealsRepository
     {

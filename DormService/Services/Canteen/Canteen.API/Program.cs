@@ -1,4 +1,6 @@
-using Canteen.API.Repositories;
+using Canteen.API.OrderMealsInfo.Repositories;
+using Canteen.API.UserMealsInfo.Data;
+using Canteen.API.UserMealsInfo.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,8 @@ builder.Services.AddScoped<IOrderMealsRepository, OrderMealsRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddScoped<IUserMealsContext, UserMealsContext>();
+builder.Services.AddScoped<IUserMealsRepository, UserMealsRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

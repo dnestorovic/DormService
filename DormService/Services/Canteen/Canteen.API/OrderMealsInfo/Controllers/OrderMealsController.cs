@@ -1,8 +1,8 @@
-﻿using Canteen.API.Entities;
-using Canteen.API.Repositories;
+﻿using Canteen.API.OrderMealsInfo.Entities;
+using Canteen.API.OrderMealsInfo.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Canteen.API.Controllers
+namespace Canteen.API.OrderMealsInfo.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
