@@ -6,9 +6,16 @@ namespace Laundry.API.Entities;
 public class WashingMachine
 {
 
-    [BsonRepresentation(BsonType.ObjectId)]
     public string _id { get; set; }
-    public string date { get; set; }
-    public TimeSlot time { get; set; }
-    public bool reserved { get; set; } 
+    public string? Time { get; set; }
+    public string? Date { get; set; }
+    public bool Reserved { get; set; } 
+
+    public WashingMachine(string date, string time) 
+    {
+        _id = ObjectId.GenerateNewId().ToString();
+        Date = date;
+        Time = time;
+        Reserved = false;
+    }
 }

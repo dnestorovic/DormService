@@ -30,4 +30,14 @@ public class WashingMachineController: ControllerBase
         return Ok(washingMachine);
     }
 
+    [HttpGet("all/{date}")]
+    [ProducesResponseType(typeof(WashingMachine), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<WashingMachine>>> GetWashingMachinesByDate(string date)
+    {   
+        IEnumerable<WashingMachine> washingMachines = await _repository.GetWashingMachinesByDate(date);
+        return Ok(washingMachines);
+    }
+
+    
+
 }
