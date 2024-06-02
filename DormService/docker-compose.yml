@@ -22,6 +22,9 @@ services:
       
   canteendb:
     image: mongo
+
+  canteencache:
+    image: redis:alpine
   
   canteen.api:
     image: canteen.api
