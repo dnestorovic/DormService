@@ -13,7 +13,7 @@ namespace Payment.API.Data
             var database = client.GetDatabase("DebtsDB");
 
             allDebts = database.GetCollection<StudentDebts>("Debts");
-            UserDebtsContextSeed.SeedData(allDebts);
+            StudentDebtsContextSeed.SeedData(allDebts);
         }
 
     }
