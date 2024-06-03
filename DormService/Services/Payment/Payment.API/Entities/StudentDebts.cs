@@ -41,5 +41,7 @@ namespace Payment.API.Entities
             this.cleaning = 0;
         }
 
+        public StudentDebts() { }
+
     }
 }
