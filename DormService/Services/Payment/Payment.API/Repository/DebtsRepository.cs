@@ -24,6 +24,7 @@ namespace Payment.API.Repository
 
         // Update one type of debt when the payment is made
         // Only one attribute is not equal to zero
+        // NOTE: Student can overpay his debts
         public async Task<bool> UpdateStudentDebt(StudentDebts studentDebts)
         {
             var newStudentDebts = await GetStudentDebts(studentDebts.studentID);
