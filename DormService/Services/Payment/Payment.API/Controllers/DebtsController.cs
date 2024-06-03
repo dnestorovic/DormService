@@ -27,5 +27,12 @@ namespace Payment.API.Controllers
             }
             return Ok(studentDebts);
         }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(StudentDebts), StatusCodes.Status200OK)]
+        public async Task<ActionResult> UpdateStudentDebt([FromBody] StudentDebts studentDebts)
+        {
+            return Ok(await _repository.UpdateStudentDebt(studentDebts));
+        }
     }
 }
