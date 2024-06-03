@@ -3,7 +3,7 @@ using Payment.API.Entities;
 
 namespace Payment.API.Data
 {
-    public class UserDebtsContextSeed
+    public class StudentDebtsContextSeed
     {
         private static decimal credit = 1000;
         private static decimal internet = 1000;
@@ -17,9 +17,6 @@ namespace Payment.API.Data
         private static readonly StudentDebts teodora = new StudentDebts("Teodora", credit, rent, internet, airConditioning, phone, cleaning);
         private static readonly StudentDebts david = new StudentDebts("David", credit, rent, internet, airConditioning, phone, cleaning);
         private static readonly StudentDebts momcilo = new StudentDebts("Momcilo", credit, rent, internet, airConditioning, phone, cleaning);
-        private static readonly StudentDebts tmp = new StudentDebts("tmp", credit, rent, internet, airConditioning, phone, cleaning);
-
-
 
         public static void SeedData(IMongoCollection<StudentDebts> debtsCollection)
         {
