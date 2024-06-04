@@ -29,4 +29,17 @@ public class WashingMachineRepository: IWashingMachineRepository
 
         return machines;
     }
+
+
+    public async Task<bool> ReserveWashingMachine(string id) {
+        WashingMachine machine = await GetWashingMachine(id);
+        if (machine.Reserved)
+        {
+            return false;
+        }
+        machine.Reserved = true;
+        var updateResult = await _context.WashingMachines.ReplaceOneAsync(wm => wm._id == id, machine);
+
+        return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+    }
 }
