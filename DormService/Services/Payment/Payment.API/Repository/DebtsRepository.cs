@@ -16,6 +16,7 @@ namespace Payment.API.Repository
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+
         // Get debts for one student by his studentID
         public async Task<StudentDebts> GetStudentDebts(string studentID)
         {
@@ -38,6 +39,12 @@ namespace Payment.API.Repository
             var updateResult = await _context.allDebts.ReplaceOneAsync(s => s.studentID == studentDebts.studentID, newStudentDebts);
 
             return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+        }
+
+
+        public async Task CreateNewStudent(StudentDebts studentDebts)
+        {
+            await _context.allDebts.InsertOneAsync(studentDebts);
         }
     }
 }

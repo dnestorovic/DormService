@@ -6,5 +6,6 @@ namespace Payment.API.Repository
     {
         Task<StudentDebts> GetStudentDebts(string studentID);
         Task<bool> UpdateStudentDebt(StudentDebts studentDebts);
+        Task CreateNewStudent(StudentDebts studentDebts);
     }
 }
