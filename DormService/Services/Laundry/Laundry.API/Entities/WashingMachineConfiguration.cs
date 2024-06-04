@@ -29,7 +29,7 @@ public class WashingMachineConfiguration
     }
 
     private int CalculateUtilizationFactor() {
-        // TODO: should be implemented once spinRate and washingTemperature was added
+        // TODO: should be implemented once spinRate and washingTemperature were added
         return 0;
     }
 }
