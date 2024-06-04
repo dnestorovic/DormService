@@ -38,6 +38,17 @@ public class WashingMachineController: ControllerBase
         return Ok(washingMachines);
     }
 
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status400BadRequest)]
+    
+    public async Task<ActionResult<bool>> ReserveWashingMachine(string id)
+    {   
+        // TODO: add payment transaction
+        bool updated = await _repository.ReserveWashingMachine(id);
+        return updated ? Ok(updated) : BadRequest(updated);
+    }
     
 
 }
