@@ -41,7 +41,8 @@ namespace Payment.API.Repository
             return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
         }
 
-
+        // Creating a student with default or customized debts
+        // Default value for debts is zero
         public async Task CreateNewStudent(StudentDebts studentDebts)
         {
             await _context.allDebts.InsertOneAsync(studentDebts);
