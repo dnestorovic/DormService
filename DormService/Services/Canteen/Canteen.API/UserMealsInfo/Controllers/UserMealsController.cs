@@ -29,7 +29,7 @@ namespace Canteen.API.UserMealsInfo.Contorllers
 
         [HttpPut]
         [ProducesResponseType(typeof(UserMeals), StatusCodes.Status200OK)]
-        public async Task<ActionResult> UpdateUsesMeals([FromBody] UserMeals userMeals)
+        public async Task<ActionResult> UpdateUserMeals([FromBody] UserMeals userMeals)
         {
             return Ok(await _repository.UpdateUserMeals(userMeals));
         }

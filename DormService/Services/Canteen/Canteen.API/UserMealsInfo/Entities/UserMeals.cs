@@ -11,5 +11,11 @@ namespace Canteen.API.UserMealsInfo.Entities
         public int Breakfast { get; set; }
         public int Lunch { get; set; }
         public int Dinner { get; set; }
+
+        public UserMeals() { }  
+        public UserMeals(string username)
+        {
+            Username = username;
+        }
     }
 }
