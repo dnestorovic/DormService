@@ -20,7 +20,15 @@ namespace Payment.API.Repository
         // Get debts for one student by his studentID
         public async Task<StudentDebts> GetStudentDebts(string studentID)
         {
-            return await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
+            var studentDebts = await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
+
+            // During the first access, debts are initialized by default values
+            if (studentDebts == null)
+            {
+                return await CreateNewStudent(studentID);
+            }
+
+            return studentDebts;
         }
 
         // Update one type of debt when the payment is made
@@ -46,6 +54,15 @@ namespace Payment.API.Repository
         public async Task CreateNewStudent(StudentDebts studentDebts)
         {
             await _context.allDebts.InsertOneAsync(studentDebts);
+        }
+
+        // Creating a student with default debts
+        public async Task<StudentDebts> CreateNewStudent(string studentID)
+        {
+            var newStudent = new StudentDebts(studentID);
+            await _context.allDebts.InsertOneAsync(newStudent);
+
+            return await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
         }
 
         // Deleting a student by his studentID
