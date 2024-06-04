@@ -12,10 +12,22 @@ namespace Canteen.API.UserMealsInfo.Repositories
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+        public async Task<UserMeals> CreateNewUserMeals(string username)
+        {
+            var newUserMeals = new UserMeals(username);
+            await _context.Meals.InsertOneAsync(newUserMeals);
+
+            return await _context.Meals.Find(p => p.Username == username).FirstOrDefaultAsync();
+        }
 
         public async Task<UserMeals> GetUserMeals(string username)
         {
-            return await _context.Meals.Find(p => p.Username == username).FirstOrDefaultAsync();
+            var userMeals = await _context.Meals.Find(p => p.Username == username).FirstOrDefaultAsync();
+            if (userMeals == null)
+            {
+                return await CreateNewUserMeals(username);
+            }
+            return userMeals;
         }
 
         public async Task<bool> UpdateUserMeals(UserMeals userMeals)
