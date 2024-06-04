@@ -15,7 +15,7 @@ namespace Canteen.API.UserMealsInfo.Contorllers
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        [HttpGet("username")]
+        [HttpGet("{username}")]
         [ProducesResponseType(typeof(UserMeals), StatusCodes.Status200OK)]
         public async Task<ActionResult<UserMeals>> GetMealsForUser(string username)
         {
