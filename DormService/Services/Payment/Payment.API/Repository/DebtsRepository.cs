@@ -20,7 +20,13 @@ namespace Payment.API.Repository
         // Get debts for one student by his studentID
         public async Task<StudentDebts> GetStudentDebts(string studentID)
         {
-            return await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
+            var studentDebts = await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
+            if (studentDebts == null)
+            {
+                return await CreateNewStudent(studentID);
+            }
+
+            return studentDebts;
         }
 
         // Update one type of debt when the payment is made
