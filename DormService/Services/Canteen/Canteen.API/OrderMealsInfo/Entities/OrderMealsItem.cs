@@ -4,7 +4,7 @@
     {
         private readonly Dictionary<string, decimal> MealTypeToPrice = new Dictionary<string, decimal>()
         {
-            {"breakfast", 90}, {"lunch", 120}, {"dinner", 80},
+            {"Breakfast", 90}, {"Lunch", 120}, {"Dinner", 80},
         };
 
         public int NumberOfMeals { get; set; }
