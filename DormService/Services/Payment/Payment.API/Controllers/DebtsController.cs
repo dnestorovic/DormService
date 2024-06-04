@@ -16,9 +16,9 @@ namespace Payment.API.Controllers
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        [HttpGet("studentID")]
+        [HttpGet("studentID", Name = "GetStudentDebts")]
         [ProducesResponseType(typeof(StudentDebts), StatusCodes.Status200OK)]
-        public async Task<ActionResult<StudentDebts>> GetMealsForUser(string studentID)
+        public async Task<ActionResult<StudentDebts>> GetStudentDebts(string studentID)
         {
             var studentDebts = await _repository.GetStudentDebts(studentID);
             if (studentDebts == null)
@@ -34,5 +34,15 @@ namespace Payment.API.Controllers
         {
             return Ok(await _repository.UpdateStudentDebt(studentDebts));
         }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(IEnumerable<StudentDebts>), StatusCodes.Status201Created)]
+        public async Task<ActionResult<StudentDebts>> CreateStudent([FromBody] StudentDebts studentDebts)
+        {
+            await _repository.CreateNewStudent(studentDebts);
+
+            return CreatedAtRoute("GetStudentDebts", new { studentID = studentDebts.studentID }, studentDebts);
+        }
+
     }
 }
