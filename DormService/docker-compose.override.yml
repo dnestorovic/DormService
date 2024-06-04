@@ -38,7 +38,16 @@ services:
     ports:
       - "8001:8080"
 
-  
+  identitydb:
+    container_name: identity
+    environment:
+      - SA_PASSWORD=DormServiceRS2
+      - ACCEPT_EULA=Y
+    restart: always
+    ports:
+      - "1433:1433"
+    volumes:
+      - identity_data:/var/opt/mssql/data
   
   canteendb:
     container_name: canteen
