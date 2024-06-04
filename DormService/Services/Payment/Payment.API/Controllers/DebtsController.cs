@@ -16,7 +16,7 @@ namespace Payment.API.Controllers
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        [HttpGet("studentID", Name = "GetStudentDebts")]
+        [HttpGet("{studentID}", Name = "GetStudentDebts")]
         [ProducesResponseType(typeof(StudentDebts), StatusCodes.Status200OK)]
         public async Task<ActionResult<StudentDebts>> GetStudentDebts(string studentID)
         {
@@ -42,6 +42,13 @@ namespace Payment.API.Controllers
             await _repository.CreateNewStudent(studentDebts);
 
             return CreatedAtRoute("GetStudentDebts", new { studentID = studentDebts.studentID }, studentDebts);
+        }
+
+        [HttpDelete("{studentID}")]
+        [ProducesResponseType(typeof(StudentDebts), StatusCodes.Status200OK)]
+        public async Task<IActionResult> DeleteStudent(string studentID)
+        {
+            return Ok(await _repository.DeleteStudent(studentID));
         }
 
     }
