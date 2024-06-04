@@ -47,5 +47,13 @@ namespace Payment.API.Repository
         {
             await _context.allDebts.InsertOneAsync(studentDebts);
         }
+
+        // Deleting a student by his studentID
+        public async Task<bool> DeleteStudent(string studentID)
+        {
+            var deleteResult = await _context.allDebts.DeleteOneAsync(s => s.studentID == studentID);
+
+            return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
+        }
     }
 }
