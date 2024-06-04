@@ -21,6 +21,8 @@ namespace Payment.API.Repository
         public async Task<StudentDebts> GetStudentDebts(string studentID)
         {
             var studentDebts = await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
+
+            // During the first access, debts are initialized by default values
             if (studentDebts == null)
             {
                 return await CreateNewStudent(studentID);
@@ -54,6 +56,7 @@ namespace Payment.API.Repository
             await _context.allDebts.InsertOneAsync(studentDebts);
         }
 
+        // Creating a student with default debts
         public async Task<StudentDebts> CreateNewStudent(string studentID)
         {
             var newStudent = new StudentDebts(studentID);
