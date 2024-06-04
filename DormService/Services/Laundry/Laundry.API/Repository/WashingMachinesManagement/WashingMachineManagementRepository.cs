@@ -1,5 +1,6 @@
 using Laundry.API.Entities;
 using Laundry.API.Data;
+using MongoDB.Driver;
 
 namespace Laundry.API.Repositories;
 
@@ -16,7 +17,11 @@ public class WashingMachineManagementRepository : IWashingMachineManagementRepos
 
     public async Task AddNewWashingMachineConfiguration(WashingMachineConfigurationDTO config)
     {
-
         await _context.ManageableMachines.InsertOneAsync(new WashingMachineConfiguration(config));
+    }
+
+    public async Task<IEnumerable<WashingMachineConfiguration>> GetWashingMachinesConfigurations()
+    {
+        return await _context.ManageableMachines.Find(wm => true).ToListAsync();
     }
 }
