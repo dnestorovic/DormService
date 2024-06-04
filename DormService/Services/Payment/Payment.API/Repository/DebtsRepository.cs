@@ -48,6 +48,14 @@ namespace Payment.API.Repository
             await _context.allDebts.InsertOneAsync(studentDebts);
         }
 
+        public async Task<StudentDebts> CreateNewStudent(string studentID)
+        {
+            var newStudent = new StudentDebts(studentID);
+            await _context.allDebts.InsertOneAsync(newStudent);
+
+            return await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
+        }
+
         // Deleting a student by his studentID
         public async Task<bool> DeleteStudent(string studentID)
         {
