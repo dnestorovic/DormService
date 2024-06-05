@@ -2,8 +2,10 @@
 {
     public class Document
     {
-        public int DocumentId { get; set; }
-        public string Title { get; set; }
-        public byte[] Content { get; set; }
+      
+        public required int DocumentId { get; set; }
+        public required string Title { get; set; }
+        public required byte[] Content { get; set; }
+
     }
 }

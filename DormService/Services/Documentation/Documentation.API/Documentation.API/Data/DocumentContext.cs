@@ -11,9 +11,11 @@ namespace Documentation.API.Data
             var database = client.GetDatabase("DocumentationDB");
 
             Documents = database.GetCollection<Document>("Documents");
+            DocumentationList = database.GetCollection<DocumentationList>("DocumentationList");
 
         }
         public IMongoCollection<Document> Documents { get; }
+        public IMongoCollection<DocumentationList> DocumentationList { get; }
 
     }
 }
