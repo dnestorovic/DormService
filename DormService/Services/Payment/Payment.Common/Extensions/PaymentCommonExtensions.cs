@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Payment.Common.Data;
+using Payment.Common.DTOs;
+using Payment.Common.Entities;
 using Payment.Common.Repository;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,12 @@ namespace Payment.Common.Extensions
             // Dependency injections
             services.AddScoped<IDebtsContext, DebtsContext>();
             services.AddScoped<IDebtsRepository, DebtsRepository>();
+
+            // DTO Mapping
+            services.AddAutoMapper(configuration =>
+            {
+                configuration.CreateMap<ReduceCreditDTO, StudentDebts>().ReverseMap();
+            });
         }
     }
 }
