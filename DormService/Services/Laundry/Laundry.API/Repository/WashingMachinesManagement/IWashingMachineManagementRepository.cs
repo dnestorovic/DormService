@@ -11,4 +11,6 @@ public interface IWashingMachineManagementRepository
     
     Task<bool> DeleteWashingMachineConfiguration(string id);
 
+    Task<bool> UpdateMetrics(WashingMachineReservationDTO reservation);
+
 }
