@@ -8,18 +8,18 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Services/Payment/Payment.API/Payment.API.csproj", "Services/Payment/Payment.API/"]
+COPY ["Services/Payment/Payment.GRPC/Payment.GRPC.csproj", "Services/Payment/Payment.GRPC/"]
 COPY ["Services/Payment/Payment.Common/Payment.Common.csproj", "Services/Payment/Payment.Common/"]
-RUN dotnet restore "./Services/Payment/Payment.API/Payment.API.csproj"
+RUN dotnet restore "./Services/Payment/Payment.GRPC/Payment.GRPC.csproj"
 COPY . .
-WORKDIR "/src/Services/Payment/Payment.API"
-RUN dotnet build "./Payment.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/Services/Payment/Payment.GRPC"
+RUN dotnet build "./Payment.GRPC.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Payment.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Payment.GRPC.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Payment.API.dll"]
+ENTRYPOINT ["dotnet", "Payment.GRPC.dll"]

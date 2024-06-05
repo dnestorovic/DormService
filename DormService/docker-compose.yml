@@ -18,6 +18,12 @@ services:
     build:
       context: .
       dockerfile: Services/Payment/Payment.API/Dockerfile
+      
+  payment.grpc:
+    image: payment.grpc
+    build:
+      context: .
+      dockerfile: Services/Payment/Payment.API/Dockerfile
 
       
   canteendb:
@@ -31,6 +37,8 @@ services:
     build:
       context: .
       dockerfile: Services/Canteen/Canteen.API/Dockerfile
+      
+  
 
 volumes:
   mongo_canteen:
