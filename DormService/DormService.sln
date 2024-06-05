@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.API", "Services\Pay
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentiryServer", "Security\IdentiryServer\IdentiryServer.csproj", "{6FE26823-D8C2-420B-A0A6-B0E2C5957D4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.GRPC", "Services\Payment\Payment.GRPC\Payment.GRPC.csproj", "{F72E0976-9C5E-4C00-B028-477F480C6B16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.GRPC", "Services\Payment\Payment.GRPC\Payment.GRPC.csproj", "{F72E0976-9C5E-4C00-B028-477F480C6B16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.Common", "Services\Payment\Payment.Common\Payment.Common.csproj", "{B8C50F89-1205-4ACF-B487-A7619AEC49AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.Common", "Services\Payment\Payment.Common\Payment.Common.csproj", "{B8C50F89-1205-4ACF-B487-A7619AEC49AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
