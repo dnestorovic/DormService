@@ -6,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IWashingMachineContext, WashingMachineContext>();
 builder.Services.AddScoped<IWashingMachineRepository, WashingMachineRepository>();
+builder.Services.AddScoped<IWashingMachineManagementContext, WashingMachineManagementContext>();
+builder.Services.AddScoped<IWashingMachineManagementRepository, WashingMachineManagementRepository>();
+
 
 
 builder.Services.AddControllers();
