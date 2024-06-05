@@ -1,7 +1,8 @@
-﻿using MongoDB.Driver;
-using Payment.API.Entities;
+﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Driver;
+using Payment.Common.Entities;
 
-namespace Payment.API.Data
+namespace Payment.Common.Data
 {
     public class DebtsContext : IDebtsContext
     {

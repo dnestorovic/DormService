@@ -1,6 +1,6 @@
-﻿using Payment.API.Entities;
+﻿using Payment.Common.Entities;
 
-namespace Payment.API.Repository
+namespace Payment.Common.Repository
 {
     public interface IDebtsRepository
     {

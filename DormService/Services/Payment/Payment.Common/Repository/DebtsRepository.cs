@@ -1,11 +1,11 @@
 ﻿using MongoDB.Driver;
-using Payment.API.Data;
-using Payment.API.Entities;
+using Payment.Common.Data;
+using Payment.Common.Entities;
 
 using System;
 using System.Reflection;
 
-namespace Payment.API.Repository
+namespace Payment.Common.Repository
 {
     public class DebtsRepository : IDebtsRepository
     {
