@@ -19,6 +19,8 @@ services:
       context: .
       dockerfile: Services/Payment/Payment.API/Dockerfile
 
+  identitydb:
+    image: mcr.microsoft.com/mssql/server:2017-latest
       
   canteendb:
     image: mongo
@@ -36,3 +38,4 @@ volumes:
   mongo_canteen:
   mongo_payment:
   mongo_laundry:
+  identity_data:

@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Canteen.API", "Services\Can
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.API", "Services\Payment\Payment.API\Payment.API.csproj", "{21CA7C93-AC04-4803-A692-AE11DE8EED24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentiryServer", "Security\IdentiryServer\IdentiryServer.csproj", "{6FE26823-D8C2-420B-A0A6-B0E2C5957D4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentiryServer", "Security\IdentiryServer\IdentiryServer.csproj", "{6FE26823-D8C2-420B-A0A6-B0E2C5957D4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Documentation.API", "Services\Documentation\Documentation.API\Documentation.API\Documentation.API.csproj", "{39970C69-5AE7-4960-9B0E-61F77C188D5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{6FE26823-D8C2-420B-A0A6-B0E2C5957D4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FE26823-D8C2-420B-A0A6-B0E2C5957D4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FE26823-D8C2-420B-A0A6-B0E2C5957D4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39970C69-5AE7-4960-9B0E-61F77C188D5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39970C69-5AE7-4960-9B0E-61F77C188D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39970C69-5AE7-4960-9B0E-61F77C188D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39970C69-5AE7-4960-9B0E-61F77C188D5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

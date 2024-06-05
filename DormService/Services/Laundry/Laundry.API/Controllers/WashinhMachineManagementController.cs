@@ -31,4 +31,12 @@ public class WashingMachineManagementController: ControllerBase
         return Ok(washingMachines);
     }
     
+    [HttpDelete("/room/{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<bool>> DeleteWashingMachineConfiguration(string id)
+    {   
+        bool result = await _repository.DeleteWashingMachineConfiguration(id);
+        return result ? Ok(true) : BadRequest(false);
+    }
 }

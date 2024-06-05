@@ -7,10 +7,12 @@ namespace Laundry.API.Repositories;
 public class WashingMachineRepository: IWashingMachineRepository
 {
     private readonly IWashingMachineContext _context;
+    private readonly IWashingMachineManagementContext _managementContext;
     
-    public WashingMachineRepository(IWashingMachineContext context)
+    public WashingMachineRepository(IWashingMachineContext context, IWashingMachineManagementContext managementContext)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
+        _managementContext = managementContext ?? throw new ArgumentNullException(nameof(managementContext));
     }
 
     public async Task<WashingMachine> GetWashingMachine(string id)
@@ -23,7 +25,8 @@ public class WashingMachineRepository: IWashingMachineRepository
         IEnumerable<WashingMachine> machines = await _context.WashingMachines.Find(wm => wm.Date == date).ToListAsync();
         if (machines == null || !machines.Any())
         {
-            machines = LaundryDayGenerator.CreateNewDefaultDay(date);
+            IEnumerable<WashingMachineConfiguration> availableMachines = await _managementContext.ManageableMachines.Find(wm => true).ToListAsync();
+            machines = LaundryDayGenerator.CreateNewDefaultDay(date, availableMachines);
             _context.WashingMachines.InsertMany(machines);
         }
 

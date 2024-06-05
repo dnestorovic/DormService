@@ -8,5 +8,6 @@ namespace Documentation.API.Data
         public IMongoCollection<Document> Documents { get; }
 
         public IMongoCollection<DocumentationList> DocumentationList { get; }
+
     }
 }

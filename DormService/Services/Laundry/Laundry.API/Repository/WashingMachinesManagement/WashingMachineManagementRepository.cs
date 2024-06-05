@@ -24,4 +24,9 @@ public class WashingMachineManagementRepository : IWashingMachineManagementRepos
     {
         return await _context.ManageableMachines.Find(wm => true).ToListAsync();
     }
+    public async Task<bool> DeleteWashingMachineConfiguration(string id)
+    {
+        var result = await _context.ManageableMachines.DeleteOneAsync(wm => wm._id == id);
+        return result.DeletedCount == 1;
+    }
 }
