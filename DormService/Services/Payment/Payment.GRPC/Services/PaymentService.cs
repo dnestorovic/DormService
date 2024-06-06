@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Grpc.Core;
+using Microsoft.Extensions.Logging;
 using Payment.Common.Repository;
 using Payment.GRPC.Protos;
 
@@ -21,7 +22,11 @@ namespace Payment.GRPC.Services
         public override async Task<ReduceCreditResponse> ReduceCredit(ReduceCreditRequest request, ServerCallContext context)
         {
             _logger.LogInformation("Server: Reduction of credit in progress...");
-            return _mapper.Map<ReduceCreditResponse>(_repository.ReduceCredit(request.Id, request.Amount));
+ 
+            var response = new ReduceCreditResponse();
+            response.SuccessfulTransaction = await _repository.ReduceCredit(request.Id, request.Amount);
+
+            return response;
         }
     }
 }

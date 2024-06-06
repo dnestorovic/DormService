@@ -11,6 +11,6 @@ namespace Payment.Common.Repository
         Task<StudentDebts> CreateNewStudent(string studentID);
         Task<bool> DeleteStudent(string studentID);
         Task<ReduceCreditDTO> GetStudentCredit(string studentID);
-        Task<bool> ReduceCredit(string studentID, decimal amount);
+        Task<bool> ReduceCredit(string studentID, int amount);
     }
 }
