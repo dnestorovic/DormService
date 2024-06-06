@@ -23,7 +23,7 @@ services:
     image: payment.grpc
     build:
       context: .
-      dockerfile: Services/Payment/Payment.API/Dockerfile
+      dockerfile: Services/Payment/Payment.GRPC/Dockerfile
 
   identitydb:
     image: mcr.microsoft.com/mssql/server:2017-latest
