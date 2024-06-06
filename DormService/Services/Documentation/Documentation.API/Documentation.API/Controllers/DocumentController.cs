@@ -13,9 +13,10 @@ namespace Documentation.API.Controllers
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task<Document> GetDocument(int id)
+        public async Task<ActionResult<Document>> GetDocument(int id)
         {
-            return await _repository.GetDocument(id);
+            var doc = await _repository.GetDocument(id);
+            return Ok(doc);
         }
         public async Task AddDocument(Document document)
         {
