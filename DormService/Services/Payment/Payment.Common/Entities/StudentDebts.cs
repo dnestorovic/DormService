@@ -41,6 +41,13 @@ namespace Payment.Common.Entities
             this.cleaning = 0;
         }
 
+        public StudentDebts(string studentID, decimal credit)
+        {
+            this.studentID = studentID ?? throw new ArgumentNullException(nameof(studentID));
+            this.credit = credit;
+        }
+
+
         public StudentDebts() { }
 
     }

@@ -84,10 +84,21 @@ namespace Payment.Common.Repository
         }
 
 
-        public async Task<bool> ReduceCredit(string studentID, decimal amount)
+        public async Task<bool> ReduceCredit(string studentID, int amount)
         {
-            var studentDebts = await GetStudentCredit(studentID);
-            return studentDebts.reduceCredit(amount);
+            // Checking if there is enough credit
+            var studentDebts = await GetStudentDebts(studentID);
+            if (amount < 0 || amount > studentDebts.credit)
+            {
+                return false;
+            }
+
+            // Update the credit
+            studentDebts.credit -= amount;
+
+            // Update student debts with new credit balance
+            var updateResult = await _context.allDebts.ReplaceOneAsync(s => s.studentID == studentDebts.studentID, studentDebts);
+            return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
         }
     }
 }
