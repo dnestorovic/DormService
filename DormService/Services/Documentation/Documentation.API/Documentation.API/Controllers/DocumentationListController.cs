@@ -1,43 +1,59 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿using Documentation.API.Entities;
+using Documentation.API.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Documentation.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class DocumentationListController : ControllerBase
     {
-        // GET: api/<DocumentationListController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        IDocumentationListRepository _repository;
+
+        public DocumentationListController(IDocumentationListRepository repository)
         {
-            return new string[] { "value1", "value2" };
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        // GET api/<DocumentationListController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<DocumentationList> GetDocumentListForStudent(string studentId)
         {
-            return "value";
+            return await _repository.GetDocumentList(studentId);
         }
 
-        // POST api/<DocumentationListController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<List<string>> GetMissingDocumentsForStudent(string studentId, int grade)
         {
+ 
+            var documents =  await _repository.GetDocumentList(studentId);
+            var missingDocuments = new List<string>();
+
+            if (documents.ApplicationForm is null)
+                missingDocuments.Add("Application Form");
+            if (documents.IncomeCertificate is null)
+                missingDocuments.Add("Income Certificate");
+            if (documents.UnemploymenyCertificate is null)
+                missingDocuments.Add("Unemployment Certificate");
+            if (grade == 1)
+            {
+                if (documents.FirstTimeStudentCertificate is null)
+                    missingDocuments.Add("First Time Student Certificate");
+                if (documents.HighSchoolFirstYearCertificate is null)
+                    missingDocuments.Add("High School First Grade Certificate");
+                if (documents.HighSchoolSecondYearCertificate is null)
+                    missingDocuments.Add("High School Second Grade Certificate");
+                if (documents.HighSchoolThirdYearCertificate is null)
+                    missingDocuments.Add("High School Third Grade Certificate");
+                if (documents.HighSchoolFourthYearCertificate is null)
+                    missingDocuments.Add("High School Fourth Grade Certificate");
+            }
+            else
+            {
+                if (documents.FacultyDataForm is null)
+                    missingDocuments.Add("Faculty Data Form");
+                if (documents.AvgGradeCertificate is null)
+                    missingDocuments.Add("Average Grade Certificate");
+            }
+
+            return missingDocuments;
+
         }
 
-        // PUT api/<DocumentationListController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<DocumentationListController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

@@ -14,7 +14,7 @@ namespace Documentation.API.Repositories.Interfaces
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<DocumentationList> GetListAsync(string studentId)
+        public async Task<DocumentationList> GetDocumentList(string studentId)
         {
             return await _context.DocumentationList.Find(el=>el.checkStudentId(studentId)).FirstAsync();
         }
