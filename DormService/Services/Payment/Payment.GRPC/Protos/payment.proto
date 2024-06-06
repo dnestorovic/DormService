@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "Payment.GRPC.Protos";
+
+service PaymentProtoService {
+	rpc ReduceCredit (ReduceCreditRequest) returns (ReduceCreditResponse);
+}
+
+message ReduceCreditRequest{
+	string id = 1;
+	int32 amount = 2;
+}
+
+message ReduceCreditResponse{
+	bool successfulTransaction = 1;
+}
+

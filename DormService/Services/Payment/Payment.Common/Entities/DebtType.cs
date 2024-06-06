@@ -1,4 +1,4 @@
-﻿namespace Payment.API.Entities
+﻿namespace Payment.Common.Entities
 {
     public class DebtType
     {

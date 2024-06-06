@@ -37,6 +37,16 @@ services:
       - paymentdb
     ports:
       - "8001:8080"
+      
+  payment.grpc:
+    container_name: payment.grpc
+    environment:
+      -  ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:ConnectionSettings=mongodb://paymentdb:27017"
+    depends_on:
+      - paymentdb
+    ports:
+      - "8004:8080"
 
   identitydb:
     container_name: identity

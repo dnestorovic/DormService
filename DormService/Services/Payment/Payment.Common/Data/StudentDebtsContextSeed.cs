@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
-using Payment.API.Entities;
+using Payment.Common.Entities;
 
-namespace Payment.API.Data
+namespace Payment.Common.Data
 {
     public class StudentDebtsContextSeed
     {

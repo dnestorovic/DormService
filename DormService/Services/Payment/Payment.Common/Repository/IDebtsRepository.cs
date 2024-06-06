@@ -1,6 +1,7 @@
-﻿using Payment.API.Entities;
+﻿using Payment.Common.DTOs;
+using Payment.Common.Entities;
 
-namespace Payment.API.Repository
+namespace Payment.Common.Repository
 {
     public interface IDebtsRepository
     {
@@ -9,5 +10,7 @@ namespace Payment.API.Repository
         Task CreateNewStudent(StudentDebts studentDebts);
         Task<StudentDebts> CreateNewStudent(string studentID);
         Task<bool> DeleteStudent(string studentID);
+        Task<ReduceCreditDTO> GetStudentCredit(string studentID);
+        Task<bool> ReduceCredit(string studentID, decimal amount);
     }
 }

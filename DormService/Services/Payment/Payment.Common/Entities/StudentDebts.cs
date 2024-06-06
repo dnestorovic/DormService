@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
-namespace Payment.API.Entities
+namespace Payment.Common.Entities
 {
     public class StudentDebts
     {

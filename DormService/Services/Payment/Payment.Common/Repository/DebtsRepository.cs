@@ -1,15 +1,18 @@
-﻿using MongoDB.Driver;
-using Payment.API.Data;
-using Payment.API.Entities;
+﻿using AutoMapper;
+using MongoDB.Driver;
+using Payment.Common.Data;
+using Payment.Common.DTOs;
+using Payment.Common.Entities;
 
 using System;
 using System.Reflection;
 
-namespace Payment.API.Repository
+namespace Payment.Common.Repository
 {
     public class DebtsRepository : IDebtsRepository
     {
         private readonly IDebtsContext _context;
+        private readonly IMapper _mapper;
 
         public DebtsRepository(IDebtsContext context)
         {
@@ -71,6 +74,20 @@ namespace Payment.API.Repository
             var deleteResult = await _context.allDebts.DeleteOneAsync(s => s.studentID == studentID);
 
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
+        }
+
+        public async Task<ReduceCreditDTO> GetStudentCredit(string studentID)
+        {
+            var studentDebts = await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
+
+            return  _mapper.Map<ReduceCreditDTO>(studentDebts);
+        }
+
+
+        public async Task<bool> ReduceCredit(string studentID, decimal amount)
+        {
+            var studentDebts = await GetStudentCredit(studentID);
+            return studentDebts.reduceCredit(amount);
         }
     }
 }

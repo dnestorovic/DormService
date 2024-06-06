@@ -18,6 +18,12 @@ services:
     build:
       context: .
       dockerfile: Services/Payment/Payment.API/Dockerfile
+      
+  payment.grpc:
+    image: payment.grpc
+    build:
+      context: .
+      dockerfile: Services/Payment/Payment.GRPC/Dockerfile
 
   identitydb:
     image: mcr.microsoft.com/mssql/server:2017-latest
@@ -33,6 +39,8 @@ services:
     build:
       context: .
       dockerfile: Services/Canteen/Canteen.API/Dockerfile
+      
+  
 
 volumes:
   mongo_canteen:
