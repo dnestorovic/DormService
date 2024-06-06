@@ -1,0 +1,76 @@
+.banner {
+    background-image: url("../../../../public/assets/reception-banner.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: hidden;
+    overflow-x: hidden;
+  
+    animation: slide-transition 2.2s 12s;
+  
+    .image-shadow {
+      background: black;
+      opacity: 0.8;
+      width: 100vw;
+      height: 100vh;
+  
+      > h1 {
+        margin: 0;
+        padding-top: 300px;
+  
+        font-size: 45px;
+        font-weight: 500;
+        text-align: center;
+        color: white;
+  
+      }
+  
+      > p {
+        opacity: 0;
+        font-size: 25px;
+        font-weight: 400;
+        text-align: center;
+        color: white;
+      }
+  
+      #banner-paragraph-1 {
+        animation-name: paragraph1-transition;
+        animation-duration: 4s;
+      }
+  
+      #banner-paragraph-2 {
+        animation: paragraph2-transition 4s 3.9s;
+      }
+  
+      #banner-paragraph-3 {
+        animation: paragraph3-transition 4s 7.8s;
+      }
+  
+      @keyframes paragraph1-transition {
+        from {opacity: 0; transform: translate(0, 40px)}
+        to {opacity: 1; transform: translate(0, 0)}
+      }
+  
+      @keyframes paragraph2-transition {
+        from {opacity: 0; transform: translate(0, 0px)}
+        to {opacity: 1; transform: translate(0, -50px)}
+      }
+  
+      @keyframes paragraph3-transition {
+        from {opacity: 0; transform: translate(0, 0px)}
+        to {opacity: 1; transform: translate(0, -100px)}
+      }
+  
+    }
+  
+  
+    @keyframes slide-transition {
+      from {opacity: 1}
+      to {opacity: 0}
+    }
+  
+  }

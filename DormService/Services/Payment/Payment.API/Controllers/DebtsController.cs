@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Payment.API.Entities;
-using Payment.API.Repository;
-using System.Diagnostics;
+using Payment.Common.Entities;
+using Payment.Common.Repository;
 
 namespace Payment.API.Controllers
 {

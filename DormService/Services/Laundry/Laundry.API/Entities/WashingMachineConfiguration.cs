@@ -10,8 +10,7 @@ public class WashingMachineConfiguration
     public string Manufacturer { get; set; }
     public string StartDate { get; set; }
     public string ExpirationDate { get; set; }
-    public int NumberOfCycles { get; set; }
-    public int UtilizationFactor { get; }
+    public int UtilizationFactor { get; set; }
     public string ResponsiblePersonEmail { get; set; }
 
     public WashingMachineConfiguration(WashingMachineConfigurationDTO dto) 
@@ -22,14 +21,11 @@ public class WashingMachineConfiguration
         Manufacturer = dto.Manufacturer;
         StartDate = dto.StartDate;
         ExpirationDate = dto.ExpirationDate;
-        ExpirationDate = dto.ExpirationDate;
-        NumberOfCycles = 0;
         UtilizationFactor = 0;
         ResponsiblePersonEmail = dto.ResponsiblePersonEmail;
     }
 
-    private int CalculateUtilizationFactor() {
-        // TODO: should be implemented once spinRate and washingTemperature were added
-        return 0;
+    public void UpdateUtilizationFactor(int spinRate, int temperature) {
+        UtilizationFactor += spinRate * temperature / 1000;
     }
 }

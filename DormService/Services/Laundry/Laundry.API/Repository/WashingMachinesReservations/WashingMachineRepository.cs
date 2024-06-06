@@ -34,14 +34,16 @@ public class WashingMachineRepository: IWashingMachineRepository
     }
 
 
-    public async Task<bool> ReserveWashingMachine(string id) {
-        WashingMachine machine = await GetWashingMachine(id);
+    public async Task<bool> ReserveWashingMachine(WashingMachineReservationDTO dto) {
+        WashingMachine machine = await GetWashingMachine(dto.Id);
         if (machine.Reserved)
         {
             return false;
         }
         machine.Reserved = true;
-        var updateResult = await _context.WashingMachines.ReplaceOneAsync(wm => wm._id == id, machine);
+        machine.SpinRate = dto.SpinRate;
+        machine.WashingTemperature = dto.WashingTemperature;
+        var updateResult = await _context.WashingMachines.ReplaceOneAsync(wm => wm._id == dto.Id, machine);
 
         return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
     }

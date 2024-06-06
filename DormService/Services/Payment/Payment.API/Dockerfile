@@ -9,6 +9,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Services/Payment/Payment.API/Payment.API.csproj", "Services/Payment/Payment.API/"]
+COPY ["Services/Payment/Payment.Common/Payment.Common.csproj", "Services/Payment/Payment.Common/"]
 RUN dotnet restore "./Services/Payment/Payment.API/Payment.API.csproj"
 COPY . .
 WORKDIR "/src/Services/Payment/Payment.API"

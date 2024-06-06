@@ -3,21 +3,26 @@ services:
   laundrydb:
     image: mongo
   
-  laundry.api:
-    image: laundry.api
+  laundry-api:
+    image: laundry-api
     build:
       context: .
-      dockerfile: Services/Laundry/Laundry.API/Dockerfile
-  
+      dockerfile: Services/Laundry/Laundry.API/Dockerfile  
   
   paymentdb:
     image: mongo
   
-  payment.api:
-    image: payment.api
+  payment-api:
+    image: payment-api
     build:
       context: .
       dockerfile: Services/Payment/Payment.API/Dockerfile
+
+  payment-grpc:
+    image: payment-grpc
+    build:
+      context: .
+      dockerfile: Services/Payment/Payment.GRPC/Dockerfile
 
   identitydb:
     image: mcr.microsoft.com/mssql/server:2017-latest
@@ -28,14 +33,21 @@ services:
   canteencache:
     image: redis:alpine
   
-  canteen.api:
-    image: canteen.api
+  canteen-api:
+    image: canteen-api
     build:
       context: .
       dockerfile: Services/Canteen/Canteen.API/Dockerfile
+
+  identityserver:
+    image: identityserver
+    build:
+      context: .
+      dockerfile: Security/IdentityServer/Dockerfile
 
 volumes:
   mongo_canteen:
   mongo_payment:
   mongo_laundry:
   identity_data:
+

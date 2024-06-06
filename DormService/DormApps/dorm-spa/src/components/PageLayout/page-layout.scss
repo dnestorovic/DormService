@@ -1,0 +1,10 @@
+.page-layout {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    .page-content {
+        margin-left: 72px;
+        position: fixed;
+    }
+}

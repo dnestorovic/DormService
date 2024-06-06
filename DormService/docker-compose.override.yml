@@ -9,13 +9,15 @@ services:
     volumes:
       - mongo_laundry:/data/db
   
-  laundry.api:
-    container_name: laundry.api
+  laundry-api:
+    container_name: laundry-api
     environment:
       -  ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings:ConnectionSettings=mongodb://laundrydb:27017"
+      - "GrpcSettings:PaymentUrl=http://payment-grpc:8080"
     depends_on:
       - laundrydb
+      - payment-grpc
     ports:
       - "8000:8080"
       
@@ -28,8 +30,8 @@ services:
     volumes:
       - mongo_payment:/data/db
   
-  payment.api:
-    container_name: payment.api
+  payment-api:
+    container_name: payment-api
     environment:
       -  ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings:ConnectionSettings=mongodb://paymentdb:27017"
@@ -37,6 +39,16 @@ services:
       - paymentdb
     ports:
       - "8001:8080"
+      
+  payment-grpc:
+    container_name: payment-grpc
+    environment:
+      -  ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:ConnectionSettings=mongodb://paymentdb:27017"
+    depends_on:
+      - paymentdb
+    ports:
+      - "8004:8080"
 
   identitydb:
     container_name: identity
@@ -63,14 +75,26 @@ services:
     ports:
       - "6379:6379"
   
-  canteen.api:
-    container_name: canteen.api
+  canteen-api:
+    container_name: canteen-api
     environment:
       -  ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings:ConnectionSettings=mongodb://canteendb:27017"
       - "CacheSettings:ConnectionString=canteencache:6379"
+      - "GrpcSettings:PaymentUrl=http://payment.grpc:8080"
     depends_on:
       - canteendb
       - canteencache
+      - payment-grpc
     ports:
       - "8002:8080"
+
+  identityserver:
+    container_name: identityserver
+    environment:
+      -  ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:IdentityConnectionString=Server=identitydb;Database=IdentityDb;User Id=sa;Password=DormServiceRS2;TrustServerCertificate=True"
+    depends_on:
+      - identitydb
+    ports:
+        - "4000:8080"
