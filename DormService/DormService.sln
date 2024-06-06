@@ -12,6 +12,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.GRPC", "Services\Payment\Payment.GRPC\Payment.GRPC.csproj", "{F72E0976-9C5E-4C00-B028-477F480C6B16}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Payment.Common", "Services\Payment\Payment.Common\Payment.Common.csproj", "{B8C50F89-1205-4ACF-B487-A7619AEC49AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Documentation.API", "Services\Documentation\Documentation.API\Documentation.API\Documentation.API.csproj", "{39970C69-5AE7-4960-9B0E-61F77C188D5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +40,10 @@ Global
 		{B8C50F89-1205-4ACF-B487-A7619AEC49AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8C50F89-1205-4ACF-B487-A7619AEC49AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8C50F89-1205-4ACF-B487-A7619AEC49AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39970C69-5AE7-4960-9B0E-61F77C188D5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39970C69-5AE7-4960-9B0E-61F77C188D5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39970C69-5AE7-4960-9B0E-61F77C188D5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39970C69-5AE7-4960-9B0E-61F77C188D5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
