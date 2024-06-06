@@ -13,12 +13,13 @@ namespace Documentation.API.Controllers
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task<DocumentationList> GetDocumentListForStudent(string studentId)
+        public async Task<ActionResult<DocumentationList>> GetDocumentListForStudent(string studentId)
         {
-            return await _repository.GetDocumentList(studentId);
+            var docList = await _repository.GetDocumentList(studentId);
+            return Ok(docList);
         }
 
-        public async Task<List<string>> GetMissingDocumentsForStudent(string studentId, int grade)
+        public async Task<ActionResult<List<string>>> GetMissingDocumentsForStudent(string studentId, int grade)
         {
  
             var documents =  await _repository.GetDocumentList(studentId);
@@ -51,7 +52,7 @@ namespace Documentation.API.Controllers
                     missingDocuments.Add("Average Grade Certificate");
             }
 
-            return missingDocuments;
+            return Ok(missingDocuments);
 
         }
 
