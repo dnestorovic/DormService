@@ -8,11 +8,13 @@ namespace Laundry.API.Controllers;
 [Route("api/[controller]")]
 public class WashingMachineController: ControllerBase
 {
-    private IWashingMachineRepository _repository;
+    private IWashingMachineRepository _reservationRepository;
+    private IWashingMachineManagementRepository _managementRepository;
 
-    public WashingMachineController(IWashingMachineRepository repository)
+    public WashingMachineController(IWashingMachineRepository reservationRepository, IWashingMachineManagementRepository managementRepository)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _reservationRepository = reservationRepository ?? throw new ArgumentNullException(nameof(reservationRepository));
+        _managementRepository = managementRepository ?? throw new ArgumentNullException(nameof(managementRepository)); 
     }
 
     [HttpGet("{id}")]
@@ -21,7 +23,7 @@ public class WashingMachineController: ControllerBase
     public async Task<ActionResult<WashingMachine>> GetWashingMachine(string id)
     {
         
-        var washingMachine = await _repository.GetWashingMachine(id);
+        var washingMachine = await _reservationRepository.GetWashingMachine(id);
         if (washingMachine is null)
         {
             return NotFound(null);
@@ -34,21 +36,24 @@ public class WashingMachineController: ControllerBase
     [ProducesResponseType(typeof(WashingMachine), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<WashingMachine>>> GetWashingMachinesByDate(string date)
     {   
-        IEnumerable<WashingMachine> washingMachines = await _repository.GetWashingMachinesByDate(date);
+        IEnumerable<WashingMachine> washingMachines = await _reservationRepository.GetWashingMachinesByDate(date);
         return Ok(washingMachines);
     }
 
 
-    [HttpPut("{id}")]
+    [HttpPut()]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(bool), StatusCodes.Status400BadRequest)]
-    
-    public async Task<ActionResult<bool>> ReserveWashingMachine(string id)
+    public async Task<ActionResult<bool>> ReserveWashingMachine([FromBody] WashingMachineReservationDTO dto)
     {   
         // TODO: add payment transaction
-        bool updated = await _repository.ReserveWashingMachine(id);
-        return updated ? Ok(updated) : BadRequest(updated);
-    }
-    
+        bool reservationSuccessful = await _reservationRepository.ReserveWashingMachine(dto);
+        if (!reservationSuccessful)
+        {
+            return BadRequest(false);
+        }
 
+        bool updateMetricsSuccessful = await _managementRepository.UpdateMetrics(dto);
+        return updateMetricsSuccessful ? Ok(true) : BadRequest(false);
+    }
 }

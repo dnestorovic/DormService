@@ -24,7 +24,7 @@ public class WashingMachineManagementController: ControllerBase
     }
 
     [HttpGet("/room")]
-    [ProducesResponseType(typeof(WashingMachine), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(WashingMachineConfiguration), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<WashingMachineConfiguration>>> GetWashingMachinesConfigurations()
     {   
         IEnumerable<WashingMachineConfiguration> washingMachines = await _repository.GetWashingMachinesConfigurations();
