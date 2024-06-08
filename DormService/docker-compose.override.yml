@@ -79,7 +79,7 @@ services:
       -  ASPNETCORE_ENVIRONMENT=Development
       - "DatabaseSettings:ConnectionSettings=mongodb://canteendb:27017"
       - "CacheSettings:ConnectionString=canteencache:6379"
-      - "GrpcSettings:PaymentUrl=http://payment.grpc"
+      - "GrpcSettings:PaymentUrl=http://payment.grpc:8080"
     depends_on:
       - canteendb
       - canteencache
