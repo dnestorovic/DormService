@@ -38,4 +38,20 @@ public class WashingMachineManagementRepository : IWashingMachineManagementRepos
 
         return result.IsAcknowledged && result.ModifiedCount == 1;
     }
+
+    public async Task<string?> GetPromotedWashingMachineId()
+    {
+        IEnumerable<WashingMachineConfiguration> available = await GetWashingMachinesConfigurations();
+        string? maxId = null;
+        decimal max = 0;
+        foreach (var machine in available) {
+            if (machine.UtilizationFactor > max)
+            {
+                max = machine.UtilizationFactor;
+                maxId = machine._id;
+            }
+        }
+
+        return maxId;
+    }
 }

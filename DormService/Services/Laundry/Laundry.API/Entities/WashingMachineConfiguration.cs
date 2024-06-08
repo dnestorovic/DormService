@@ -26,6 +26,6 @@ public class WashingMachineConfiguration
     }
 
     public void UpdateUtilizationFactor(int spinRate, int temperature) {
-        UtilizationFactor += spinRate * temperature;
+        UtilizationFactor += spinRate * temperature / 1000;
     }
 }
