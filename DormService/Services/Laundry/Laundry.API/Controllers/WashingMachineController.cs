@@ -49,20 +49,24 @@ public class WashingMachineController: ControllerBase
 
     [HttpPut()]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(bool), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<bool>> ReserveWashingMachine([FromBody] WashingMachineReservationDTO dto)
     {   
-        // TODO: replace hardcoded ID and value with variables and process exceptions 
-        await _grpcService.ReduceCredit("ID", 200);
+        // TODO: replace hardcoded ID and value with variables
+        try {
+            await _grpcService.ReduceCredit("ID", 200);
+        } catch (RpcException e) {
+            return BadRequest(e.Message);
+        }
 
         bool reservationSuccessful = await _reservationRepository.ReserveWashingMachine(dto);
         if (!reservationSuccessful)
         {
-            return BadRequest(false);
+            return BadRequest("Cannot reserve this washing machine.");
         }
         
         bool updated = await _managementRepository.UpdateMetrics(dto);
         bool updateMetricsSuccessful = await _managementRepository.UpdateMetrics(dto);
-        return updateMetricsSuccessful ? Ok(true) : BadRequest(false);
+        return updateMetricsSuccessful ? Ok(true) : BadRequest("Cannot update machine metrics.");
     }
 }
