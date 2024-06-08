@@ -16,7 +16,7 @@ namespace Laundry.API.GrpcServices
         {
             var request = new ReduceCreditRequest();
             request.Id = studentID;
-			request.Amount =  Convert.ToInt32(amount);
+			request.Amount = Convert.ToInt32(amount);
 
             return await _paymentProtoServiceClient.ReduceCreditAsync(request);
         }
