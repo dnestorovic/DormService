@@ -85,6 +85,6 @@ services:
     depends_on:
       - canteendb
       - canteencache
-      - payment.grpc
+      - payment-grpc
     ports:
       - "8002:8080"

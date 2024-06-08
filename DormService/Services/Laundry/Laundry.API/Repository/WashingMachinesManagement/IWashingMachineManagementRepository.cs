@@ -13,4 +13,6 @@ public interface IWashingMachineManagementRepository
 
     Task<bool> UpdateMetrics(WashingMachineReservationDTO reservation);
 
+    Task<string?> GetPromotedWashingMachineId();
+
 }

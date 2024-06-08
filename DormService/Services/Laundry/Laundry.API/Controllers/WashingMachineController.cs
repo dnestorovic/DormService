@@ -28,7 +28,6 @@ public class WashingMachineController: ControllerBase
     [ProducesResponseType(typeof(WashingMachine), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<WashingMachine>> GetWashingMachine(string id)
     {
-        
         var washingMachine = await _reservationRepository.GetWashingMachine(id);
         if (washingMachine is null)
         {
@@ -36,6 +35,15 @@ public class WashingMachineController: ControllerBase
         }
 
         return Ok(washingMachine);
+    }
+
+    [HttpGet("/economic")]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(WashingMachine), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<WashingMachine>> GetPromotedWashingMachineId()
+    {   
+        string? washingMachineId = await _managementRepository.GetPromotedWashingMachineId();
+        return washingMachineId is null ? NotFound() : Ok(washingMachineId);
     }
 
     [HttpGet("all/{date}")]
