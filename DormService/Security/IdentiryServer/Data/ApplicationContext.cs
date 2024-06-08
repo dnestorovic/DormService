@@ -1,4 +1,5 @@
-﻿using IdentiryServer.Entities;
+﻿using IdentiryServer.Data.EntityTypeConfigurations;
+using IdentiryServer.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,11 @@ namespace IdentiryServer.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
 
+            builder.ApplyConfiguration(new RoleConfiguration());
+        }
     }
 }
