@@ -17,7 +17,7 @@ namespace IdentiryServer.Data.EntityTypeConfigutarions
                 new IdentityRole
                 {
                     Name = "Administator",
-                    NormalizedName = "ADMIONISTRATOR"
+                    NormalizedName = "ADMINISTRATOR"
                 }
             );
         }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentiryServer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240608132410_AddedRolesToDb")]
-    partial class AddedRolesToDb
+    [Migration("20240608153145_AddRolesToDb")]
+    partial class AddRolesToDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -127,15 +127,15 @@ namespace IdentiryServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d5026050-6910-45b3-bc34-e2e9907c8ef3",
+                            Id = "7cc463f0-3b63-4957-8e17-b14cdc48cf8e",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         },
                         new
                         {
-                            Id = "8083ab2c-0e2e-4492-8c7a-4db1e87a3244",
+                            Id = "e4533490-df2e-4315-be6f-4eb789877a4d",
                             Name = "Administator",
-                            NormalizedName = "ADMIONISTRATOR"
+                            NormalizedName = "ADMINISTRATOR"
                         });
                 });
 
