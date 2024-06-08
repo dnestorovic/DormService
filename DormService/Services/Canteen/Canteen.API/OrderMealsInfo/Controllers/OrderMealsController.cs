@@ -1,8 +1,10 @@
-﻿using Canteen.API.OrderMealsInfo.Entities;
+﻿using Canteen.API.GrpcServices;
+using Canteen.API.OrderMealsInfo.Entities;
 using Canteen.API.OrderMealsInfo.Repositories;
 using Canteen.API.UserMealsInfo.Entities;
 using Canteen.API.UserMealsInfo.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Grpc.Core;
 
 namespace Canteen.API.OrderMealsInfo.Controllers
 {
@@ -12,11 +14,15 @@ namespace Canteen.API.OrderMealsInfo.Controllers
     {
         private readonly IOrderMealsRepository _repository;
         private readonly IUserMealsRepository _userMealsRepository;
+        private readonly ILogger<OrderMealsController> _logger;
+        private readonly PaymentGrpcService _paymentGrpcService;
 
-        public OrderMealsController(IOrderMealsRepository repository, IUserMealsRepository userMealsRepository)
+        public OrderMealsController(IOrderMealsRepository repository, IUserMealsRepository userMealsRepository, ILogger<OrderMealsController> logger, PaymentGrpcService paymentGrpcService)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _userMealsRepository = userMealsRepository ?? throw new ArgumentNullException(nameof(userMealsRepository));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _paymentGrpcService = paymentGrpcService ?? throw new ArgumentNullException(nameof(paymentGrpcService));
         }
 
         [HttpGet("{username}")]
@@ -86,13 +92,23 @@ namespace Canteen.API.OrderMealsInfo.Controllers
                 Breakfast = breakfastNum,
                 Lunch = lunchNum,
                 Dinner = dinnerNum
-
             };
+            try
+            {
+                var response = await _paymentGrpcService.ReduceCredit(username, Decimal.ToInt32(order.TotalPrice));
+                if (response.SuccessfulTransaction)
+                {
+                    await _userMealsRepository.UpdateUserMeals(mealsToAdd);
 
-            await _userMealsRepository.UpdateUserMeals(mealsToAdd);
+                    return Accepted();
+                }
+            }
+            catch (RpcException e)
+            {
+                _logger.LogInformation("Error while calling Payment service: {message}",  e.Message);
+            }           
 
-
-            return Accepted();
+            return BadRequest();
 
         }
     }
