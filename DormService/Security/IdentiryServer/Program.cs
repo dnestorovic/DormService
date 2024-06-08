@@ -14,6 +14,7 @@ builder.Services.AddAuthentication();
 builder.Services.ConfigurePresistence(builder.Configuration);
 builder.Services.ConfigureIdentity();
 
+builder.Services.ConfigureMiscellaneousServices();
 
 var app = builder.Build();
 

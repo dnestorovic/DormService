@@ -2,6 +2,7 @@
 using IdentiryServer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace IdentiryServer.Extensions
 {
@@ -30,6 +31,13 @@ namespace IdentiryServer.Extensions
             }).AddEntityFrameworkStores<ApplicationContext>()
               .AddDefaultTokenProviders();
 
+            return services;
+        }
+
+        public static IServiceCollection ConfigureMiscellaneousServices(this IServiceCollection services)
+        { 
+            // AutoMapper
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             return services;
         }
     }
