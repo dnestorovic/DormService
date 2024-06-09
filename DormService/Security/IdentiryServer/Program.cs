@@ -10,10 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthentication();
+//builder.Services.AddAuthentication();
 builder.Services.ConfigurePresistence(builder.Configuration);
 builder.Services.ConfigureIdentity();
 
+builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.ConfigureMiscellaneousServices();
 
 var app = builder.Build();
