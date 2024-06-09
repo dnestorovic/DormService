@@ -1,4 +1,3 @@
-import "./../design/banner.scss"
 
 export default function Banner() {
     return (

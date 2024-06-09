@@ -1,3 +1,4 @@
+@import "src/design/colors";
 .login {
     background-image: url("../../../../public/assets/reception-banner.png");
     background-repeat: no-repeat;
@@ -50,18 +51,18 @@
           font-size: 18px;
   
           font-weight: 500;
-          color: seagreen;
+          color: $primary-seagreen;
         }
   
         > input {
           min-width: 180px;
   
           font-size: 18px;
-          color: seagreen;
+          color: $primary-seagreen;
   
           background: none;
           border: none;
-          border-bottom: solid 1px seagreen;
+          border-bottom: solid 1px $primary-seagreen;
         }
 
       }

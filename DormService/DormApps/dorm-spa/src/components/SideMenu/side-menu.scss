@@ -1,0 +1,117 @@
+@import "src/design/colors.scss";
+.actions-menu {
+
+    height: 100vh;
+    width: 70px;
+    border-top-right-radius: 15px;
+    background-image: url("../../../public/assets/green-triangle-pattern2.jpg");
+    background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    z-index: 1;
+
+    .pattern {
+        margin: 0;
+        padding: 0;
+        background-color: rgba($color: $secondary-seagreen, $alpha: 0.92);
+        width: 100%;
+        height: 100%;
+        border-top-right-radius: 15px;
+    }
+
+    .title {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        
+        width: 80%;
+        height: 40px;
+        border-bottom: 2px solid $powder-orange;
+        margin-left: 15px;
+
+        font-weight: 600;
+    }
+
+    .hide-title {
+        opacity: 0;
+    }
+
+    .show-title {
+        opacity: 1;
+        transition-delay: 0.7s;
+        transition: all 1s ease;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 10px;
+        margin: 0;
+
+        .navigation-item {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 15px;
+            font-weight: 600;
+
+            .icon {
+                width: 30px;
+                height: 30px;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+                margin-right: 5px;
+            }
+
+            .hide-label {
+                opacity: 0;
+                width: 0;
+            }
+
+            .show-label {
+                opacity: 1;
+                width: 100px;
+                transition-delay: 0.6s;
+                transition: all 1s ease;
+            }
+
+            &:hover {
+                border-right: 3px solid $powder-orange;
+                cursor: pointer;
+            }
+
+        }
+        
+
+        .navigation-login .icon {            
+            background-image: url("../../../public/assets/user.png");
+        }
+
+        .navigation-canteen .icon {
+            background-image: url("../../../public/assets/food-icon.png");
+        }
+
+        .navigation-payments .icon {
+            background-image: url("../../../public/assets/payment-icon.png");
+        }
+
+        .navigation-laundry .icon {
+            background-image: url("../../../public/assets/cloth.png");
+        }
+
+        .navigation-documentation .icon {
+            background-image: url("../../../public/assets/documentation-icon.png");
+        }
+    }
+
+    &:hover {
+        width: 250px;
+        transition: all .5s ease;
+    }
+
+    
+    transition: all .5s ease;
+}
