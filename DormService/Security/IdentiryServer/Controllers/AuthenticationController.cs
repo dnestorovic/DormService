@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using IdentiryServer.Controllers.Base;
-using IdentiryServer.DTOs;
-using IdentiryServer.Entities;
-using IdentiryServer.Services;
+using IdentityServer.Controllers.Base;
+using IdentityServer.DTOs;
+using IdentityServer.Entities;
+using IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdentiryServer.Controllers
+namespace IdentityServer.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]

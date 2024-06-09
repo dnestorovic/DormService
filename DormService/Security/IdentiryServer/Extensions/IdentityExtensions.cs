@@ -1,6 +1,6 @@
-﻿using IdentiryServer.Data;
-using IdentiryServer.Entities;
-using Microsoft.AspNetCore.Authentication;
+﻿using IdentityServer.Data;
+using IdentityServer.Entities;
+using IdentityServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
 
-namespace IdentiryServer.Extensions
+namespace IdentityServer.Extensions
 {
     public static class IdentityExtensions
     {
@@ -67,7 +67,7 @@ namespace IdentiryServer.Extensions
         }
 
         public static IServiceCollection ConfigureMiscellaneousServices(this IServiceCollection services)
-        { 
+        {
             // AutoMapper
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

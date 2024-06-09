@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IdentiryServer.DTOs
+namespace IdentityServer.DTOs
 {
     public class UserCredentialsDTO
     {

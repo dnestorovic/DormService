@@ -1,9 +1,9 @@
 ﻿using IdentiryServer.Data.EntityTypeConfigurations;
-using IdentiryServer.Entities;
+using IdentityServer.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace IdentiryServer.Data
+namespace IdentityServer.Data
 {
     public class ApplicationContext : IdentityDbContext<User>
     {

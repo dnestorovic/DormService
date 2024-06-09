@@ -1,4 +1,4 @@
-﻿namespace IdentiryServer.DTOs
+﻿namespace IdentityServer.DTOs
 {
     public class AuthenticationModel
     {

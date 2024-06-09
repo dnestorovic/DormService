@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
-using IdentiryServer.DTOs;
-using IdentiryServer.Entities;
+using IdentityServer.Controllers;
+using IdentityServer.DTOs;
+using IdentityServer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdentiryServer.Controllers.Base
+namespace IdentityServer.Controllers.Base
 {
 
     public class RegistrationControllerBase : ControllerBase
@@ -27,9 +28,9 @@ namespace IdentiryServer.Controllers.Base
             var user = _mapper.Map<User>(newUser);
 
             var result = await _userManager.CreateAsync(user, newUser.Password);
-            if (!result.Succeeded) 
+            if (!result.Succeeded)
             {
-                foreach (var error in result.Errors) 
+                foreach (var error in result.Errors)
                 {
                     ModelState.TryAddModelError(error.Code, error.Description);
                 }
@@ -39,14 +40,14 @@ namespace IdentiryServer.Controllers.Base
             _logger.LogInformation($"Successfully registered user: {user.UserName}.");
 
             foreach (var role in roles)
-            { 
+            {
                 var roleExists = await _roleManager.RoleExistsAsync(role);
                 if (roleExists)
                 {
                     await _userManager.AddToRoleAsync(user, role);
                     _logger.LogInformation($"Successfully added a role {role} to user: {user.UserName}.");
                 }
-                else 
+                else
                 {
                     _logger.LogInformation($"Role {role} does not exist.");
                 }

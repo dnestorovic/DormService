@@ -1,7 +1,7 @@
-﻿using IdentiryServer.DTOs;
-using IdentiryServer.Entities;
+﻿using IdentityServer.DTOs;
+using IdentityServer.Entities;
 
-namespace IdentiryServer.Services
+namespace IdentityServer.Services
 {
     public interface IAuthenticationService
     {

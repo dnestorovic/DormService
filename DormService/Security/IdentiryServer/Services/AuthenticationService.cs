@@ -1,6 +1,6 @@
-﻿using IdentiryServer.Data;
-using IdentiryServer.DTOs;
-using IdentiryServer.Entities;
+﻿using IdentityServer.Data;
+using IdentityServer.DTOs;
+using IdentityServer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace IdentiryServer.Services
+namespace IdentityServer.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
@@ -41,7 +41,7 @@ namespace IdentiryServer.Services
 
             await _userManager.UpdateAsync(user);
 
-            return new AuthenticationModel { AccessToken = accessToken};
+            return new AuthenticationModel { AccessToken = accessToken };
         }
 
         private async Task<string> CreateAccessToken(User user)

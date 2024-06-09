@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IdentiryServer.DTOs
+namespace IdentityServer.DTOs
 {
     public class NewUserDTO
     {
-        [Required(ErrorMessage ="FirstName is required")]
+        [Required(ErrorMessage = "FirstName is required")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "LastName is required")]
