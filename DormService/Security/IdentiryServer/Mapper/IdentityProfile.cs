@@ -6,7 +6,7 @@ namespace IdentiryServer.Mapper
 {
     public class IdentityProfile : Profile
     {
-        protected IdentityProfile()
+        public IdentityProfile()
         {
             CreateMap<User, NewUserDTO>().ReverseMap();
         }
