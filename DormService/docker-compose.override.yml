@@ -88,3 +88,13 @@ services:
       - payment-grpc
     ports:
       - "8002:8080"
+
+  identityserver:
+    container_name: identityserver
+    environment:
+      -  ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:IdentityConnectionString=Server=identitydb;Database=IdentityDb;User Id=sa;Password=DormServiceRS2;TrustServerCertificate=True"
+    depends_on:
+      - identitydb
+    ports:
+        - "4000:8080"
