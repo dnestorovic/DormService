@@ -2,6 +2,7 @@
 using Canteen.API.UserMealsInfo.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Canteen.API.UserMealsInfo.Contorllers
 {
@@ -21,6 +22,11 @@ namespace Canteen.API.UserMealsInfo.Contorllers
         [ProducesResponseType(typeof(UserMeals), StatusCodes.Status200OK)]
         public async Task<ActionResult<UserMeals>> GetMealsForUser(string username)
         {
+            if (User.FindFirst(ClaimTypes.Name).Value != username)
+            {
+                return Forbid();
+            }
+
             var userMeals = await _repository.GetUserMeals(username);
             if (userMeals == null)
             {
@@ -33,6 +39,11 @@ namespace Canteen.API.UserMealsInfo.Contorllers
         [ProducesResponseType(typeof(UserMeals), StatusCodes.Status200OK)]
         public async Task<ActionResult> UpdateUserMeals([FromBody] UserMeals userMeals)
         {
+            if (User.FindFirst(ClaimTypes.Name).Value != userMeals.Username)
+            {
+                return Forbid();
+            }
+
             return Ok(await _repository.UpdateUserMeals(userMeals));
         }
     }
