@@ -5,9 +5,11 @@ using Canteen.API.UserMealsInfo.Entities;
 using Canteen.API.UserMealsInfo.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Canteen.API.OrderMealsInfo.Controllers
 {
+    [Authorize(Roles = "Student")]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class OrderMealsController : ControllerBase

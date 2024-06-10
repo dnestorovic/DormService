@@ -1,9 +1,11 @@
 ﻿using Canteen.API.UserMealsInfo.Entities;
 using Canteen.API.UserMealsInfo.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Canteen.API.UserMealsInfo.Contorllers
 {
+    [Authorize(Roles = "Student")]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class UserMealsController : ControllerBase
