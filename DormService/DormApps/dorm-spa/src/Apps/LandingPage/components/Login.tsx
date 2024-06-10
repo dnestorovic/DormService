@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./../design/login.scss"
 
 type CredentialsType = { username?: string; password?: string };
 
