@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using IdentiryServer.DTOs;
-using IdentiryServer.Entities;
+using IdentityServer.DTOs;
+using IdentityServer.Entities;
 
-namespace IdentiryServer.Mapper
+namespace IdentityServer.Mapper
 {
     public class IdentityProfile : Profile
     {
-        protected IdentityProfile()
+        public IdentityProfile()
         {
             CreateMap<User, NewUserDTO>().ReverseMap();
         }
