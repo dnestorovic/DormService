@@ -4,7 +4,81 @@
     justify-content: flex-start;
 
     .page-content {
-        margin-left: 72px;
+        width: 100%;
+        height: 100%;
         position: fixed;
+
+        background-image: url("../../../public/assets/white-pattern3.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+
+        .shadow {
+            width: 100%;
+            height: 100%;
+            background-color: rgb(white, 0.9);
+        }
+
+        .child-content {
+            margin-left: 72px;
+        }
     }
+
+    .page-intro {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+
+        .shadow {
+            width: 100%;
+            height: 100%;
+            background-color: rgb(0, 0, 0, 0.9);
+    
+            display: flex;
+            justify-content: center;
+            align-items: center;
+    
+            h1 {
+                margin: 0;
+                padding: 0;
+                color: white;
+                font-size: 48px;
+    
+                animation-duration: 4s;
+                animation-name: title-transition;
+            }
+        }
+
+        animation: slide-transition 3s 3s;
+    }
+    
+    .canteen {
+        background-image: url("../../../public/assets/Canteen-intro.jpg");
+    }
+
+    .payment {
+        background-image: url("../../../public/assets/bank.jpg");
+    }
+
+    .laundry {
+        background-image: url("../../../public/assets/laundry.jpg");
+    }
+
+    .documentation {
+        background-image: url("../../../public/assets/documentation-desk.png");
+    }
+
+    @keyframes title-transition {
+        from {opacity: 0; transform: translate(0, 40px)}
+        to {opacity: 1; transform: translate(0, 0)}
+    }
+
+    @keyframes slide-transition {
+        from {opacity: 1}
+        to {opacity: 0}
+      }
 }
