@@ -4,7 +4,7 @@ namespace Documentation.API.Repositories.Interfaces
 {
     public interface IDocumentationListRepository
     {
-        Task<DocumentationList> GetListAsync(string studentId);
+        Task<DocumentationList> GetDocumentList(string studentId);
 
     }
 }
