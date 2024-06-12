@@ -45,9 +45,20 @@ services:
       context: .
       dockerfile: Security/IdentityServer/Dockerfile
 
+  documentationdb:
+    image: mongo
+  
+  documentation-api:
+    image: documentation-api
+    build:
+      context: .
+      dockerfile: Services/Documentation/Documentation.API/Documentation.API/Dockerfile  
+  
+
 volumes:
   mongo_canteen:
   mongo_payment:
   mongo_laundry:
   identity_data:
+  mongo_documentation:
 

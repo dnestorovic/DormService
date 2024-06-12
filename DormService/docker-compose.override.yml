@@ -98,3 +98,21 @@ services:
       - identitydb
     ports:
         - "4000:8080"
+
+  documentationdb:
+    container_name: documentation
+    restart: always
+    ports:
+      - "27020:27017"
+    volumes:
+      - mongo_documentation:/data/db
+  
+  documentation-api:
+    container_name: documentation-api
+    environment:
+      -  ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings:ConnectionSettings=mongodb://documentationdb:27017"
+    depends_on:
+      - documentationdb
+    ports:
+      - "8005:8080"
