@@ -1,0 +1,85 @@
+@import "./../../design/colors.scss";
+.payment-page {
+    display: flex;
+    flex-direction: row;
+    gap: 150px;
+    
+    .left-pannel {
+        border: 2px solid red;
+        width: 50%;
+        height: 100vh;
+        padding: 10px;
+    }
+
+    .right-pannel {
+        width: 400px;
+        height: 600px;
+
+        background-image: url("./../../../public/assets/white-triangle-pattern.jpg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    
+        margin-top: 30px;
+
+        border-radius: 12px;
+
+        .block-shadow {    
+            display: flex;
+            flex-direction: column;   
+            
+            background-color: rgba($color: $secondary-seagreen, $alpha: .92);
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+
+            border-radius: 12px;
+        }
+
+        .title {
+            padding: 0;
+            margin: 0;
+            margin-left: auto;
+            margin-right: auto;
+
+            color: white;
+
+            font-size: 32px;
+
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid $powder-orange;
+            
+        }
+
+        .debts-report {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-left: 50px;
+            margin-right: 130px;
+            margin-top: 30px;
+            
+            .debt {
+                display: flex;
+                flex-direction: row;
+                gap:  15px;    
+                justify-content: space-between;
+            
+                font-size: 22px;
+
+                span {
+                    color: white;
+                }
+
+                label {
+                    color: $powder-orange;
+                }
+            }
+
+            
+
+        }
+    }
+}
