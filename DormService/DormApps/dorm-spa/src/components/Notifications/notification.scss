@@ -1,0 +1,60 @@
+@import "src/design/colors.scss";
+
+.notification {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    width: 300px;
+    min-width: 200px;
+    min-height: 50px;
+
+    position: fixed;
+    bottom: 70px;
+    right: 100px;
+
+    border-radius: 8px;
+
+    background-image: url("../../../public/assets/white-triangle-pattern.jpg");
+    background-repeat: repeat;
+    background-size: contain;
+    background-position: center;
+    color: white;
+
+    .shadow {
+        display: flex;
+        flex-grow: 1;
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+    }
+
+    p {
+        margin: 0;
+        padding: 5px;
+    }
+
+    animation-name: notification-transition;
+    animation-duration: 2s;
+
+    @keyframes notification-transition {
+        from {opacity: 0; transform: translate(0, 80px)}
+        to {opacity: 1; transform: translate(0, 0)}
+    }
+}
+
+
+.notification.success {
+    .shadow {
+        background-color: rgba($color: $primary-seagreen, $alpha: 0.8);
+        border: 2px solid $secondary-seagreen;
+    }
+}
+
+.notification.error {
+    .shadow {
+        background-color: rgba($color: $error-red, $alpha: 0.8);
+        border: 2px solid $secondary-error-red;
+    }
+}
