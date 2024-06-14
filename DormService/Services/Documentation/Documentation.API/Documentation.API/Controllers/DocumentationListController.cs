@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Documentation.API.Controllers
 {
+    [ApiController]
+    [Route("api/v1/[controller]")]
     public class DocumentationListController : ControllerBase
     {
         IDocumentationListRepository _repository;
@@ -13,12 +15,16 @@ namespace Documentation.API.Controllers
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
+        [HttpGet("{studentId}")]
+        [ProducesResponseType(typeof(DocumentationList), StatusCodes.Status200OK)]
         public async Task<ActionResult<DocumentationList>> GetDocumentListForStudent(string studentId)
         {
             var docList = await _repository.GetDocumentList(studentId);
             return Ok(docList);
         }
 
+        [HttpGet("{studentId}/{grade}")]
+        [ProducesResponseType(typeof(List<string>), StatusCodes.Status200OK)]
         public async Task<ActionResult<List<string>>> GetMissingDocumentsForStudent(string studentId, int grade)
         {
  

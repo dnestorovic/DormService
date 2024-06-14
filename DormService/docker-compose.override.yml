@@ -1,5 +1,3 @@
-version: '3.4'
-
 services:
   laundrydb:
     container_name: laundry
