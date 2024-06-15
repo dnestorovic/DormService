@@ -28,7 +28,7 @@ namespace Documentation.API.Controllers
         }
 
 
-        [HttpGet("{studentId}/{documentName}")]
+        [HttpGet("get-document/{studentId}/{documentName}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<ActionResult> GetDocument(string studentId, string documentName)
         {
@@ -52,7 +52,7 @@ namespace Documentation.API.Controllers
             }
         }
 
-        [HttpPut("{studentId}")]
+        [HttpPut("add/{studentId}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<ActionResult> AddDocument(string studentId, Document document)
         {
@@ -64,7 +64,7 @@ namespace Documentation.API.Controllers
             return Ok();
         }
 
-        [HttpDelete("{studentId}/{documentName}")]
+        [HttpDelete("delete/{studentId}/{documentName}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<ActionResult> DeleteDocument(string studentId, string documentName)
         {
@@ -77,7 +77,7 @@ namespace Documentation.API.Controllers
         }
 
 
-        [HttpGet("{studentId}/{grade}")]
+        [HttpGet("get-missiong/{studentId}/{grade}")]
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status200OK)]
         public async Task<ActionResult<List<string>>> GetMissingDocumentsForStudent(string studentId, int grade)
         {
