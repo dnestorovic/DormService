@@ -1,9 +1,10 @@
-﻿namespace Documentation.API.Entities
+﻿
+namespace Documentation.API.Entities
 {
     public class DocumentationList
     {
       
-        private readonly string StudentID;
+        public string StudentID;
 
         public DocumentationList(string studentID)
         {
@@ -15,7 +16,7 @@
 
         public Document? IncomeCertificate { get; set; }
 
-        public Document? UnemploymenyCertificate { get;set; }
+        public Document? UnemploymentCertificate { get;set; }
 
         public Document? FacultyDataForm { get; set; }
 
@@ -34,5 +35,9 @@
             return studentID == StudentID;
         }
 
+        internal object checkStudentID(string studentID)
+        {
+            return studentID == StudentID;
+        }
     }
 }

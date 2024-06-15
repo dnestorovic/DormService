@@ -20,8 +20,62 @@ namespace Documentation.API.Controllers
         public async Task<ActionResult<DocumentationList>> GetDocumentListForStudent(string studentId)
         {
             var docList = await _repository.GetDocumentList(studentId);
+            if (docList is null)
+            {
+                return NotFound();
+            }
             return Ok(docList);
         }
+
+
+        [HttpGet("{studentId}/{documentName}")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        public async Task<ActionResult> GetDocument(string studentId, string documentName)
+        {
+            var doc = await _repository.GetDocument(studentId, documentName);
+            if (doc is null)
+            {
+                return NotFound();
+            }
+            byte[] pdfBytes = doc.Content;
+
+            // Check if pdfBytes is not null and contains data
+            if (pdfBytes != null && pdfBytes.Length > 0)
+            {
+                // Return the PDF file as a FileStreamResult
+                return File(pdfBytes, "application/pdf", doc.Title);
+            }
+            else
+            {
+                // Handle case where pdfBytes is null or empty
+                return NotFound();
+            }
+        }
+
+        [HttpPut("{studentId}")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        public async Task<ActionResult> AddDocument(string studentId, Document document)
+        {
+            var res = await _repository.AddDocument(studentId, document);
+            if (!res)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+
+        [HttpDelete("{studentId}/{documentName}")]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        public async Task<ActionResult> DeleteDocument(string studentId, string documentName)
+        {
+            var res = await _repository.DeleteDocument(studentId, documentName);
+            if (!res)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+
 
         [HttpGet("{studentId}/{grade}")]
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status200OK)]
@@ -35,7 +89,7 @@ namespace Documentation.API.Controllers
                 missingDocuments.Add("Application Form");
             if (documents.IncomeCertificate is null)
                 missingDocuments.Add("Income Certificate");
-            if (documents.UnemploymenyCertificate is null)
+            if (documents.UnemploymentCertificate is null)
                 missingDocuments.Add("Unemployment Certificate");
             if (grade == 1)
             {
