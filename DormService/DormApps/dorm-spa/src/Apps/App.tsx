@@ -17,10 +17,10 @@ function App() {
         <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/canteen" element={<PageLayout><CanteenPage /></PageLayout>} />
-            <Route path="/payments" element={<PageLayout><PaymentPage /></PageLayout>} />
-            <Route path="/laundry" element={<PageLayout><LaudnryPage /></PageLayout>} />
-            <Route path="/documentation" element={<PageLayout><DocumentationPage /></PageLayout>} />
+            <Route path="/canteen" element={<PageLayout coverPhoto="canteen"><CanteenPage /></PageLayout>} />
+            <Route path="/payments" element={<PageLayout coverPhoto="payment"><PaymentPage /></PageLayout>} />
+            <Route path="/laundry" element={<PageLayout coverPhoto="laundry"><LaudnryPage /></PageLayout>} />
+            <Route path="/documentation" element={<PageLayout coverPhoto="documentation"><DocumentationPage /></PageLayout>} />
         </Routes>
     </BrowserRouter>
   );
