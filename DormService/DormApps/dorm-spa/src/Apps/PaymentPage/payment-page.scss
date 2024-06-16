@@ -2,17 +2,75 @@
 .payment-page {
     display: flex;
     flex-direction: row;
-    gap: 150px;
+    gap: 110px;
     
     .left-pannel {
-        border: 2px solid red;
-        width: 50%;
-        height: 100vh;
+        border: 2px solid $primary-seagreen;
+        width: 55%;
+        height: 90;
         padding: 10px;
+        
+
+        margin-top: 30px;
+        margin-left: 40px;
+
+        border-radius: 12px;
+
+        .title {
+            padding: 0;
+            margin: 0;
+            margin-left: auto;
+            margin-right: auto;
+
+            font-size: 32px;
+
+            color: $secondary-seagreen;
+
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid $powder-orange;
+            
+        }
+
+        .payment-slip {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-left: 50px;
+            margin-right: 50px;
+            margin-top: 30px;
+            gap: 30px;
+
+            .field {
+                display: flex;
+                flex-direction: row;
+                gap:  10px;    
+            
+                font-size: 20px;
+
+                label {
+                    color: $powder-orange;
+                }  
+            }
+
+            .pay-button {
+                height: 55px;
+                width: 140px;
+                
+                margin-left: 75%;
+                border-radius: 12px;
+
+                font-size: 20px;
+
+                color: $powder-orange;
+                background-color: rgba($color: $secondary-seagreen, $alpha: .92);
+            }
+
+        }
     }
 
     .right-pannel {
-        width: 400px;
+        width: 430px;
         height: 600px;
 
         background-image: url("./../../../public/assets/white-triangle-pattern.jpg");
@@ -77,9 +135,6 @@
                     color: $powder-orange;
                 }
             }
-
-            
-
         }
     }
 }
