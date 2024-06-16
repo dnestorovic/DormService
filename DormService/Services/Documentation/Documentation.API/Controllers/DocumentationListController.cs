@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Documentation.API.Controllers
 {
-    [ApiController]
-    [Route("api/v1/[controller]")]
     public class DocumentationListController : ControllerBase
     {
         IDocumentationListRepository _repository;
@@ -15,70 +13,12 @@ namespace Documentation.API.Controllers
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        [HttpGet("{studentId}")]
-        [ProducesResponseType(typeof(DocumentationList), StatusCodes.Status200OK)]
         public async Task<ActionResult<DocumentationList>> GetDocumentListForStudent(string studentId)
         {
             var docList = await _repository.GetDocumentList(studentId);
-            if (docList is null)
-            {
-                return NotFound();
-            }
             return Ok(docList);
         }
 
-
-        [HttpGet("get-document/{studentId}/{documentName}")]
-        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetDocument(string studentId, string documentName)
-        {
-            var doc = await _repository.GetDocument(studentId, documentName);
-            if (doc is null)
-            {
-                return NotFound();
-            }
-            byte[] pdfBytes = doc.Content;
-
-            // Check if pdfBytes is not null and contains data
-            if (pdfBytes != null && pdfBytes.Length > 0)
-            {
-                // Return the PDF file as a FileStreamResult
-                return File(pdfBytes, "application/pdf", doc.Title);
-            }
-            else
-            {
-                // Handle case where pdfBytes is null or empty
-                return NotFound();
-            }
-        }
-
-        [HttpPut("add/{studentId}")]
-        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        public async Task<ActionResult> AddDocument(string studentId, Document document)
-        {
-            var res = await _repository.AddDocument(studentId, document);
-            if (!res)
-            {
-                return NotFound();
-            }
-            return Ok();
-        }
-
-        [HttpDelete("delete/{studentId}/{documentName}")]
-        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        public async Task<ActionResult> DeleteDocument(string studentId, string documentName)
-        {
-            var res = await _repository.DeleteDocument(studentId, documentName);
-            if (!res)
-            {
-                return NotFound();
-            }
-            return Ok();
-        }
-
-
-        [HttpGet("get-missiong/{studentId}/{grade}")]
-        [ProducesResponseType(typeof(List<string>), StatusCodes.Status200OK)]
         public async Task<ActionResult<List<string>>> GetMissingDocumentsForStudent(string studentId, int grade)
         {
  
@@ -89,7 +29,7 @@ namespace Documentation.API.Controllers
                 missingDocuments.Add("Application Form");
             if (documents.IncomeCertificate is null)
                 missingDocuments.Add("Income Certificate");
-            if (documents.UnemploymentCertificate is null)
+            if (documents.UnemploymenyCertificate is null)
                 missingDocuments.Add("Unemployment Certificate");
             if (grade == 1)
             {
