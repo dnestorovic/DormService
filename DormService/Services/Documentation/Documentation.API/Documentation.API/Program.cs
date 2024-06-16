@@ -1,3 +1,5 @@
+using Documentation.API.Data;
+using Documentation.API.Repositories.Interfaces;
 using Mailing;
 
 var builder = WebApplication.CreateBuilder(args);
