@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Laundry.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public class WashingMachineController: ControllerBase
 {
     private IWashingMachineRepository _reservationRepository;
@@ -37,7 +37,7 @@ public class WashingMachineController: ControllerBase
         return Ok(washingMachine);
     }
 
-    [HttpGet("/economic")]
+    [HttpGet("economic")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(WashingMachine), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<WashingMachine>> GetPromotedWashingMachineId()
