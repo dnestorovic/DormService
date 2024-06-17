@@ -9,5 +9,7 @@ public interface IWashingMachineRepository
 
     Task<IEnumerable<WashingMachine>> GetWashingMachinesByDate(string date);
 
+    Task<IEnumerable<WashingMachine>> GetWashingMachinesByStudentId(string studentId);
+
     Task<bool> ReserveWashingMachine(WashingMachineReservationDTO dto);
 }

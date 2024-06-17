@@ -54,15 +54,22 @@ public class WashingMachineController: ControllerBase
         return Ok(washingMachines);
     }
 
+    [HttpGet("student/{studentId}")]
+    [ProducesResponseType(typeof(WashingMachine), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<WashingMachine>>> GetWashingMachinesByStudentId(string studentId)
+    {   
+        IEnumerable<WashingMachine> washingMachines = await _reservationRepository.GetWashingMachinesByStudentId(studentId);
+        return Ok(washingMachines);
+    }
+
 
     [HttpPut()]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<bool>> ReserveWashingMachine([FromBody] WashingMachineReservationDTO dto)
     {   
-        // TODO: replace hardcoded ID and value with variables
         try {
-            await _grpcService.ReduceCredit("ID", 200);
+            await _grpcService.ReduceCredit(dto.StudentId, 200);
         } catch (RpcException e) {
             return BadRequest(e.Message);
         }
