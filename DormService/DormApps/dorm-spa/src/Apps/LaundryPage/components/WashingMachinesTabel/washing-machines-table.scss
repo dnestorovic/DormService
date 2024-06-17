@@ -1,0 +1,49 @@
+@import "./../../../../design/colors.scss";
+.washing-machines-table {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    row-gap: 50px;
+    
+    width: 100%;
+    margin-right: 50px;
+    margin-top: 50px;
+
+    .washing-machine {
+        width: 150px;
+        height: 150px;
+        
+        background-image: url("./../../../../../public/assets/washing-machine.png");
+        background-position: center;
+        background-size: cover;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        button {
+            width: 80px;
+            height: 80px;
+            background-color: $primary-seagreen;
+            border-radius: 50%;
+            margin-top: 30px;
+        }
+
+        button::before {
+            font-size: 50px;
+            color: white;
+            content: "+";
+        }
+
+        button:hover {
+            transform: scale(0.9, 0.9);
+        }
+
+        &.not-available {
+            pointer-events: none;
+            opacity: 0.4;
+        }
+    }
+
+}

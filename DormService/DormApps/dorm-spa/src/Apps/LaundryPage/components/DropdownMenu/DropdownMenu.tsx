@@ -6,7 +6,7 @@ type DropdownMenuProps = {
   onSelect: (option: string) => void; 
 }
 
-const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, options, onSelect }) =>{
+const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, options, onSelect }) => {
   return (
     <div className='dropdown-menu'>
         <div className="dropdown">

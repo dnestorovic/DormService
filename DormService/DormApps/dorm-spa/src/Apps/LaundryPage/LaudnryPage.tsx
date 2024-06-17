@@ -4,11 +4,14 @@ import DropdownMenu from './components/DropdownMenu/DropdownMenu';
 import { useMount } from 'react-use';
 import { Timeframes, WashingMachine } from './models/WashingMachine';
 import UserReservationsService from './services/UserReservationsService';
+import WashingMachinesTabel from './components/WashingMachinesTabel/WashingMachinesTabel';
+import WashingMachineReservationModal from './components/WashingMachineReservationModal/WashingMachineReservationModal';
+import { Notification, NotificationType } from '../../components/Notifications/Notification';
 
 export default function LaudnryPage() {
 
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [showNotification, setShowNotification] = useState<{type?: string, message?: string}>({});
+  const [reservedMachine, setReservedMachine] = useState<WashingMachine>();
+  const [showNotification, setShowNotification] = useState<{type: NotificationType, message: string}>();
 
 
   const [selectedDate, setSelectedDate] = useState<string>();
@@ -18,15 +21,34 @@ export default function LaudnryPage() {
   const [availabelMachines, setAvailabelMachines] = useState<WashingMachine[]>([]);
   
 
+  const getWashingMachines = (date: string) => {
+    console.log("Called");
+    UserReservationsService.getWashingMachinesByDate(date.replaceAll("/", "."))
+      .then(machines => setAvailabelMachines([...machines]))
+      .catch(() => setShowNotification({type: NotificationType.Error, message: "Machines for the given date not availabel"}))
+  }
+
   const selectDate = (date: string) => {
     setSelectedDate(prev => date);
-    UserReservationsService.getWashingMachinesByDate(date)
-      .then(machines => setAvailabelMachines([...machines]))
-      .catch(() => setShowNotification({type: "error", message: "Machines for the given date not availabel"}))
+    getWashingMachines(date);
   }
 
   const selectPeriod = (time: string) => {
       setSelectedTime(prev => time);
+  }
+
+  const reserveMachine = (machine: WashingMachine) => {
+      setReservedMachine(prev => machine);
+  }
+
+  const handleReservation = (reservation: WashingMachine) => {
+      setReservedMachine(undefined);
+      UserReservationsService.reserveWashingMachine(reservation)
+      .then(() => {
+        setShowNotification({type: NotificationType.Success, message: "Washing machine successfully reserved"})
+        selectedDate && getWashingMachines(selectedDate);
+      })
+      .catch(() => setShowNotification({type:  NotificationType.Error, message: "Washing machine cannot be reserved"}));
   }
 
   useMount(() => {
@@ -49,11 +71,16 @@ export default function LaudnryPage() {
               <DropdownMenu title={selectedTime || "Select time"} options={Object.values(Timeframes)} onSelect={selectPeriod}/>
             </div>
             <div className='machines'>
-                {selectedDate && selectedTime ? availabelMachines.map(m => <span>{m._id}</span>) : null}
+                {selectedDate && selectedTime ? <WashingMachinesTabel machines={availabelMachines.filter(m => m.time === selectedTime)} onReservation={reserveMachine} /> : null}
             </div>
         </div>
       </div>
       <div className='right-panel panel'>B</div>
+      {!reservedMachine ? null : <WashingMachineReservationModal machine={reservedMachine} 
+        onSubmit={handleReservation}
+        onCancel={() => setReservedMachine(undefined)}
+      />}
+      {!showNotification ? null : <Notification type={showNotification.type} text={showNotification.message || ''} onRemove={() => setShowNotification(undefined)} />}
     </div>
   )
 }
