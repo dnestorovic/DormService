@@ -7,6 +7,7 @@ public class WashingMachine
 
     public string _id { get; set; }
     public string ConfigurationId { get; set; }
+    public string StudentId {get; set;}
     public string? Time { get; set; }
     public string? Date { get; set; }
     public bool Reserved { get; set; } 
@@ -18,6 +19,7 @@ public class WashingMachine
     {
         _id = ObjectId.GenerateNewId().ToString();
         ConfigurationId = id;
+        StudentId = "";
         Date = date;
         Time = time;
         Reserved = false;
