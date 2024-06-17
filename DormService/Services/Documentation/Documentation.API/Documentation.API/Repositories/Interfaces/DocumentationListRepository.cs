@@ -14,164 +14,93 @@ namespace Documentation.API.Repositories.Interfaces
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<DocumentationList?> GetDocumentList(string StudentID)
+        public object GetPropertyValue(object obj, string propertyName)
         {
-            return await _context.DocumentationList.Find(el=>el.StudentID == StudentID).FirstAsync();
+            propertyName = char.ToUpper(propertyName[0]) + propertyName.Substring(1);
+            var propertyInfo = obj.GetType().GetProperty(propertyName);
+            if (propertyInfo == null)
+            {
+                throw new ArgumentException($"Property '{propertyName}' not found on object of type '{obj.GetType().Name}'.");
+            }
+            return propertyInfo.GetValue(obj, null);
+        }
+        public void SetPropertyValue(object obj, string propertyName, object value)
+        {
+            propertyName = char.ToUpper(propertyName[0]) + propertyName.Substring(1);
+
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj), "Object instance is null.");
+            }
+
+            var property = obj.GetType().GetProperty(propertyName);
+            if (property == null)
+            {
+                throw new ArgumentException($"Property '{propertyName}' not found on object '{obj.GetType().Name}'.");
+            }
+
+            // Check if the property is writable
+            if (!property.CanWrite)
+            {
+                throw new ArgumentException($"Property '{propertyName}' on object '{obj.GetType().Name}' does not have a setter.");
+            }
+
+            // Set the property value
+            property.SetValue(obj, value);
+        }
+
+        public async Task<DocumentationList?> GetDocumentList(string studentID)
+        {
+            var res = await _context.DocumentationList.Find(el=>el.studentID == studentID).FirstOrDefaultAsync();
+            if (res == null)
+            {
+                DocumentationList newDocumentation = new DocumentationList(studentID);
+                await _context.DocumentationList.InsertOneAsync(newDocumentation);
+                return newDocumentation;
+            }
+            return res;
         }
         public async Task<Document?> GetDocument(string StudentID, string documentName)
         {
-            DocumentationList documentationList = await _context.DocumentationList.Find(el => el.StudentID == StudentID).FirstOrDefaultAsync<DocumentationList>();
-            if (documentName == "Application Form")
-                return documentationList.ApplicationForm;
-            if (documentName == "Income Certificate")
-                return documentationList.IncomeCertificate;
-            if (documentName == "Unemployment Certificate")
-                return documentationList.UnemploymentCertificate;
-            if (documentName == "First Time Student Certificate")
-                return documentationList.FirstTimeStudentCertificate;
-            if (documentName == "High School First Grade Certificate")
-                return documentationList.HighSchoolFirstYearCertificate;
-            if (documentName == "High School Second Grade Certificate")
-                return documentationList.HighSchoolSecondYearCertificate;
-            if (documentName == "High School Third Grade Certificate")
-                return documentationList.HighSchoolThirdYearCertificate;
-            if (documentName == "High School Fourth Grade Certificate")
-                return documentationList.HighSchoolFourthYearCertificate;
-            if (documentName == "Faculty Data Form")
-                return documentationList.FacultyDataForm;
-            if (documentName == "Average Grade Certificate")
-                return documentationList.AvgGradeCertificate;
-            return null;
+            DocumentationList documentationList = await _context.DocumentationList.Find(el => el.studentID == StudentID).FirstOrDefaultAsync<DocumentationList>();
+
+            Document doc = (Document)GetPropertyValue(documentationList, documentName);
+            return doc;
         }
 
-        public async Task<bool> AddDocument(string StudentID, Document document)
+        public async Task<bool> AddDocument(string StudentID, Document document, string documentName)
         {
-            DocumentationList doc = await _context.DocumentationList.Find(el => el.StudentID == StudentID).FirstOrDefaultAsync<DocumentationList>();
-            if (document.Title == "Application Form") {
-                doc.ApplicationForm = document;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
+            DocumentationList documentationList = await _context.DocumentationList.Find(el => el.studentID == StudentID).FirstOrDefaultAsync<DocumentationList>();
+            Document doc = (Document)GetPropertyValue(documentationList, documentName);
+
+            try{
+                SetPropertyValue(documentationList, documentName, document);
+                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.studentID == StudentID, documentationList);
                 return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
             }
-            if (document.Title == "Income Certificate") {
-                doc.IncomeCertificate = document;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0; 
-            }
-            if (document.Title == "Unemployment Certificate")
+            catch(ArgumentException ex)
             {
-                doc.UnemploymentCertificate = document;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+                return false;
             }
-            if (document.Title == "First Time Student Certificate")
-            {
-                doc.FirstTimeStudentCertificate = document;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0; 
-            }
-            if (document.Title == "High School First Grade Certificate") {
-                doc.HighSchoolFirstYearCertificate = document;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0; 
-            }
-            if (document.Title == "High School Second Grade Certificate")
-            {
-                doc.HighSchoolSecondYearCertificate = document;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0; 
-            }
-            if (document.Title == "High School Third Grade Certificate")
-            {
-                doc.HighSchoolThirdYearCertificate = document;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
-            }
-            if (document.Title == "High School Fourth Grade Certificate")
-            {
-                doc.HighSchoolFourthYearCertificate = document;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
-            }
-            if (document.Title == "Faculty Data Form")
-            {
-                doc.FacultyDataForm = document;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
-            }
-            if (document.Title == "Average Grade Certificate")
-            {
-                doc.AvgGradeCertificate = document;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
-            }
-            return false;
+           
         }
 
         public async Task<bool> DeleteDocument(string StudentID, string documentName)
         {
-            var doc = await _context.DocumentationList.Find(el => el.StudentID == StudentID).FirstOrDefaultAsync<DocumentationList>();
-            if (documentName == "Application Form")
-            {
-                doc.ApplicationForm = null;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
-            }
-            if (documentName == "Income Certificate")
-            {
-                doc.IncomeCertificate = null;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
-            }
-            if (documentName == "Unemployment Certificate")
-            {
-                doc.UnemploymentCertificate = null;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+            DocumentationList documentationList = await _context.DocumentationList.Find(el => el.studentID == StudentID).FirstOrDefaultAsync<DocumentationList>();
+            Document doc = (Document)GetPropertyValue(documentationList, documentName);
 
-            }
-            if (documentName == "First Time Student Certificate")
+            try
             {
-                doc.FirstTimeStudentCertificate = null;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0; 
-            }
-            if (documentName == "High School First Grade Certificate")
-            {
-                doc.HighSchoolFirstYearCertificate = null;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
+                SetPropertyValue(documentationList, documentName, null);
+                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.studentID == StudentID, documentationList);
                 return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
             }
-            if (documentName == "High School Second Grade Certificate")
+            catch (ArgumentException ex)
             {
-                doc.HighSchoolSecondYearCertificate = null;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
+                return false;
             }
-            if (documentName == "High School Third Grade Certificate")
-            {
-                doc.HighSchoolThirdYearCertificate = null;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
-            }
-            if (documentName == "High School Fourth Grade Certificate")
-            {
-                doc.HighSchoolFourthYearCertificate = null;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
-            }
-            if (documentName == "Faculty Data Form")
-            {
-                doc.FacultyDataForm = null;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
-            }
-            if (documentName == "Average Grade Certificate")
-            {
-                doc.AvgGradeCertificate = null;
-                var updateResult = await _context.DocumentationList.ReplaceOneAsync(p => p.StudentID == StudentID, doc);
-                return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
-            }
-            return false;
+           
         }
     }
 }
