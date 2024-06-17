@@ -1,0 +1,37 @@
+@import "./../../design/colors.scss";
+.laundry-page {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    .panel {
+        width: 800px;
+        height: 100vh;
+        margin-top: 20px;
+    }
+
+    .left-panel {
+        border: 2px solid $secondary-seagreen;
+
+        h1 {
+            color: $powder-orange;
+            margin: 0;
+            padding: 10px;
+            border-bottom: 2px solid $secondary-seagreen;
+
+            background-color: $secondary-seagreen;
+        }
+
+        .reservation-form {
+            margin-top: 10px;
+
+            .selector {
+                display: flex;
+                flex-direction: row;
+                justify-content: end;
+            }
+        }
+    }
+
+}

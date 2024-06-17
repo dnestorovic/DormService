@@ -1,8 +1,11 @@
 // apps design
+@import "./../Apps/LaundryPage/laundry-page.scss";
 
 // app components design
 @import "./../Apps/LandingPage/design/banner.scss";
 @import "./../Apps/LandingPage/design/login.scss";
+
+@import "./../Apps/LaundryPage/components/DropdownMenu/dropdown-menu.scss";
 
 // global components design
 @import "./../components/PageLayout/page-layout.scss";
