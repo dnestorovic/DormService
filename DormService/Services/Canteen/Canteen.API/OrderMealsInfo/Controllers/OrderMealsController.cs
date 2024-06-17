@@ -5,9 +5,12 @@ using Canteen.API.UserMealsInfo.Entities;
 using Canteen.API.UserMealsInfo.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Canteen.API.OrderMealsInfo.Controllers
 {
+    [Authorize(Roles = "Student")]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class OrderMealsController : ControllerBase
@@ -29,6 +32,11 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         [ProducesResponseType(typeof(OrderMeals), StatusCodes.Status200OK)]
         public async Task<ActionResult<OrderMeals>> GetOrder(string username)
         {
+            if (User.FindFirst(ClaimTypes.Name).Value != username)
+            {
+                return Forbid();
+            }
+
             var order = await _repository.GetOrder(username);
             return Ok(order ?? new OrderMeals(username));
         }
@@ -37,6 +45,11 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         [ProducesResponseType(typeof(OrderMeals), StatusCodes.Status200OK)]
         public async Task<ActionResult<OrderMeals>> UpdateOrder([FromBody] OrderMeals order)
         {
+            if (User.FindFirst(ClaimTypes.Name).Value != order.Username)
+            {
+                return Forbid();
+            }
+
             return Ok(await _repository.UpdateOrder(order));
         }
 
@@ -44,6 +57,11 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<ActionResult> DeleteOrder(string username)
         {
+            if (User.FindFirst(ClaimTypes.Name).Value != username)
+            {
+                return Forbid();
+            }
+
             await _repository.DeleteOrder(username);
             return Ok();
 
@@ -56,6 +74,11 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserMeals>> Checkout(string username)
         {
+            if (User.FindFirst(ClaimTypes.Name).Value != username)
+            {
+                return Forbid();
+            }
+
             var order = await _repository.GetOrder(username);
             if (order == null)
             {
