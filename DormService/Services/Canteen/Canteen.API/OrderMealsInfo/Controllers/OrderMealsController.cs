@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Canteen.API.OrderMealsInfo.Controllers
 {
-    [Authorize(Roles = "Student")]
+    //[Authorize(Roles = "Student")]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class OrderMealsController : ControllerBase
@@ -32,10 +32,10 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         [ProducesResponseType(typeof(OrderMeals), StatusCodes.Status200OK)]
         public async Task<ActionResult<OrderMeals>> GetOrder(string username)
         {
-            if (User.FindFirst(ClaimTypes.Name).Value != username)
-            {
-                return Forbid();
-            }
+            //if (User.FindFirst(ClaimTypes.Name).Value != username)
+            //{
+            //   return Forbid();
+            //}
 
             var order = await _repository.GetOrder(username);
             return Ok(order ?? new OrderMeals(username));
@@ -43,24 +43,36 @@ namespace Canteen.API.OrderMealsInfo.Controllers
 
         [HttpPut]
         [ProducesResponseType(typeof(OrderMeals), StatusCodes.Status200OK)]
-        public async Task<ActionResult<OrderMeals>> UpdateOrder([FromBody] OrderMeals order)
+        public async Task<ActionResult<OrderMeals>> UpdateOrder([FromBody] NewOrderItem order)
         {
-            if (User.FindFirst(ClaimTypes.Name).Value != order.Username)
-            {
-                return Forbid();
-            }
+            //if (User.FindFirst(ClaimTypes.Name).Value != order.Username)
+            //{
+            //    return Forbid();
+            //}
+            var oldOrder = await _repository.GetOrder(order.Username) ?? new OrderMeals(order.Username);
 
-            return Ok(await _repository.UpdateOrder(order));
+            var exists = oldOrder.Items.Find(p => p.MealType == order.MealType);
+            if (exists != null)
+            {
+                exists.NumberOfMeals += order.NumberOfMeals;
+            }
+            else
+            {
+                var orderItem = new OrderMealsItem(numberOfMeals: order.NumberOfMeals, mealType: order.MealType);
+                oldOrder.Items.Add(orderItem);
+            }        
+            
+            return Ok(await _repository.UpdateOrder(oldOrder));
         }
 
         [HttpDelete("{username}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<ActionResult> DeleteOrder(string username)
         {
-            if (User.FindFirst(ClaimTypes.Name).Value != username)
-            {
-                return Forbid();
-            }
+            //if (User.FindFirst(ClaimTypes.Name).Value != username)
+            //{
+            //    return Forbid();
+            //}
 
             await _repository.DeleteOrder(username);
             return Ok();
@@ -74,14 +86,15 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserMeals>> Checkout(string username)
         {
-            if (User.FindFirst(ClaimTypes.Name).Value != username)
-            {
-                return Forbid();
-            }
+            //if (User.FindFirst(ClaimTypes.Name).Value != username)
+            //{
+            //    return Forbid();
+            //}
 
             var order = await _repository.GetOrder(username);
             if (order == null)
             {
+                _logger.LogInformation("No order----------------------------------");
                 return BadRequest();
             }
 
@@ -122,14 +135,16 @@ namespace Canteen.API.OrderMealsInfo.Controllers
                 if (response.SuccessfulTransaction)
                 {
                     await _userMealsRepository.UpdateUserMeals(mealsToAdd);
-
+                    await DeleteOrder(username);
                     return Accepted();
                 }
             }
             catch (RpcException e)
             {
                 _logger.LogInformation("Error while calling Payment service: {message}",  e.Message);
-            }           
+            }
+
+            _logger.LogInformation("End----------------------------------");
 
             return BadRequest();
 
