@@ -33,6 +33,10 @@ public class WashingMachineRepository: IWashingMachineRepository
         return machines;
     }
 
+    public async Task<IEnumerable<WashingMachine>> GetWashingMachinesByStudentId(string studentId)
+    {
+        return await _context.WashingMachines.Find(wm => wm.StudentId == studentId).ToListAsync();
+    }
 
     public async Task<bool> ReserveWashingMachine(WashingMachineReservationDTO dto) {
         WashingMachine machine = await GetWashingMachine(dto.Id);
@@ -43,6 +47,7 @@ public class WashingMachineRepository: IWashingMachineRepository
         machine.Reserved = true;
         machine.SpinRate = dto.SpinRate;
         machine.WashingTemperature = dto.WashingTemperature;
+        machine.StudentId = dto.StudentId;
         var updateResult = await _context.WashingMachines.ReplaceOneAsync(wm => wm._id == dto.Id, machine);
 
         return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;

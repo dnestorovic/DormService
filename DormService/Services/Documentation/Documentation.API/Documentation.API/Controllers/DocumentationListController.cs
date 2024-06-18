@@ -3,6 +3,7 @@ using Documentation.API.Repositories.Interfaces;
 using Mailing;
 using Mailing.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace Documentation.API.Controllers
 {
@@ -39,7 +40,7 @@ namespace Documentation.API.Controllers
             var doc = await _repository.GetDocument(studentId, documentName);
             if (doc is null)
             {
-                return NotFound();
+                return Ok(null);
             }
             byte[] pdfBytes = doc.Content;
 
@@ -56,22 +57,37 @@ namespace Documentation.API.Controllers
             }
         }
 
-        [HttpPut("add/{studentId}")]
-        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        public async Task<ActionResult> AddDocument(string studentId, Document document)
-        {
-            var res = await _repository.AddDocument(studentId, document);
-            if (!res)
-            {
-                return NotFound();
-            }
-            Email email = new Mailing.Data.Email("tekisooj@gmail.com", "You have successfully submitted " + document.Title, "Documentation submission for student dorm");
 
-            var emailSent = await _emailService.SendEmail(email);
-            if (!emailSent) {
-                await _emailService.SendEmail(email);
+        [HttpPost("upload/{studentId}/{documentName}")]
+        public async Task<IActionResult> UploadDocument(string studentId, string documentName, IFormFile file, [FromForm] string title)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("File is empty or missing");
             }
-            return Ok();
+
+            using (var memoryStream = new System.IO.MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                byte[] fileBytes = memoryStream.ToArray();
+                
+                var document = new Document
+                {
+                    Title = title,
+                    Content = fileBytes
+                };
+
+                var res =  await _repository.AddDocument(studentId, document, documentName);
+
+                Email email = new("tekisooj@gmail.com", "You have successfully submitted " + document.Title, "Documentation submission for student dorm");
+
+                var emailSent = await _emailService.SendEmail(email);
+                if (!emailSent)
+                {
+                    await _emailService.SendEmail(email);
+                }
+                return Ok("Document uploaded successfully");
+            }
         }
 
         [HttpDelete("delete/{studentId}/{documentName}")]
@@ -87,43 +103,47 @@ namespace Documentation.API.Controllers
         }
 
 
-        [HttpGet("get-missiong/{studentId}/{grade}")]
+        [HttpGet("get-missing/{studentId}")]
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<string>>> GetMissingDocumentsForStudent(string studentId, int grade)
+        public async Task<ActionResult<List<string>>> GetMissingDocumentsForStudent(string studentId)
         {
  
             var documents =  await _repository.GetDocumentList(studentId);
-            var missingDocuments = new List<string>();
-
-            if (documents.ApplicationForm is null)
-                missingDocuments.Add("Application Form");
-            if (documents.IncomeCertificate is null)
-                missingDocuments.Add("Income Certificate");
-            if (documents.UnemploymentCertificate is null)
-                missingDocuments.Add("Unemployment Certificate");
-            if (grade == 1)
-            {
-                if (documents.FirstTimeStudentCertificate is null)
-                    missingDocuments.Add("First Time Student Certificate");
-                if (documents.HighSchoolFirstYearCertificate is null)
-                    missingDocuments.Add("High School First Grade Certificate");
-                if (documents.HighSchoolSecondYearCertificate is null)
-                    missingDocuments.Add("High School Second Grade Certificate");
-                if (documents.HighSchoolThirdYearCertificate is null)
-                    missingDocuments.Add("High School Third Grade Certificate");
-                if (documents.HighSchoolFourthYearCertificate is null)
-                    missingDocuments.Add("High School Fourth Grade Certificate");
-            }
-            else
-            {
-                if (documents.FacultyDataForm is null)
-                    missingDocuments.Add("Faculty Data Form");
-                if (documents.AvgGradeCertificate is null)
-                    missingDocuments.Add("Average Grade Certificate");
-            }
+            var missingDocuments = GetNullFieldNames(documents);
 
             return Ok(missingDocuments);
 
+           
+        }
+
+        public static List<string> GetNullFieldNames(object obj)
+        {
+            if (obj == null)
+                throw new ArgumentNullException(nameof(obj));
+
+            var nullFields = new List<string>();
+
+            // Get all properties of the object
+            var properties = obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var property in properties)
+            {
+                if (property.GetValue(obj) == null)
+                {
+                    nullFields.Add(property.Name);
+                }
+            }
+
+            // Get all fields of the object
+            var fields = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var field in fields)
+            {
+                if (field.GetValue(obj) == null)
+                {
+                    nullFields.Add(field.Name);
+                }
+            }
+
+            return nullFields;
         }
 
     }
