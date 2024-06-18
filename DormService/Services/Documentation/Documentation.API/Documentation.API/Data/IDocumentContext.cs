@@ -5,8 +5,6 @@ namespace Documentation.API.Data
 {
     public interface IDocumentContext
     {
-        public IMongoCollection<Document> Documents { get; }
-
         public IMongoCollection<DocumentationList> DocumentationList { get; }
 
     }

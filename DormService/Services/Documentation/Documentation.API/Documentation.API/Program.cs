@@ -1,7 +1,13 @@
+using Documentation.API.Data;
+using Documentation.API.Repositories.Interfaces;
+using Mailing;
+
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
+builder.Services.AddEmailService(builder.Configuration);
 
+builder.Services.AddScoped<IDocumentContext, DocumentContext>();
+builder.Services.AddScoped<IDocumentationListRepository, DocumentationListRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

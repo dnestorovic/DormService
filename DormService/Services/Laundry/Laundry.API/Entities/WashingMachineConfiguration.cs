@@ -5,8 +5,6 @@ public class WashingMachineConfiguration
 {
 
     public string _id { get; set; }
-    public int PositionX { get; set; }
-    public int PositionY { get; set; }
     public string Manufacturer { get; set; }
     public string StartDate { get; set; }
     public string ExpirationDate { get; set; }
@@ -16,8 +14,6 @@ public class WashingMachineConfiguration
     public WashingMachineConfiguration(WashingMachineConfigurationDTO dto) 
     {
         _id = ObjectId.GenerateNewId().ToString();
-        PositionX = dto.PositionX;
-        PositionY = dto.PositionY;
         Manufacturer = dto.Manufacturer;
         StartDate = dto.StartDate;
         ExpirationDate = dto.ExpirationDate;
