@@ -1,9 +1,13 @@
 import BaseService from "../../../services/BaseService";
-import { NewUserMeals, UserMeals } from "../models/UserMealsModel";
+import { OrderMeals } from "../models/OrderMealsModel";
+import { NewOrderItem, UserMeals } from "../models/UserMealsModel";
 
 interface ICanteenService {
     getUserMealsByUsername : (username : string) => Promise<UserMeals>; 
-    addNewItemToOrder: (newMealItem: NewUserMeals) => Promise<boolean>;
+    addNewItemToOrder: (newMealItem: NewOrderItem) => Promise<OrderMeals>;
+    getOrderMealsByUsername : (username : string) => Promise<OrderMeals>;
+    checkoutOrder : (userame : string) => Promise<boolean>;
+    deleteOrder : (userame : string) => Promise<boolean>;
 }
 
 const CanteenService: () => ICanteenService = () => {
@@ -13,11 +17,21 @@ const CanteenService: () => ICanteenService = () => {
         return BaseService.get(`http://localhost:8002/api/v1/UserMeals/${username}`);
     };
 
-    const addNewItemToOrder = (newMealItem : NewUserMeals) => {
+    const addNewItemToOrder = (newMealItem : NewOrderItem) => {
         return BaseService.put(`http://localhost:8002/api/v1/OrderMeals`, newMealItem);
     }
 
-    return {getUserMealsByUsername, addNewItemToOrder};
+    const getOrderMealsByUsername = (username : string) => {
+        return BaseService.get(`http://localhost:8002/api/v1/OrderMeals/${username}`)
+    }
+    const checkoutOrder = (username : string) => {
+        return BaseService.head(`http://localhost:8002/api/v1/Checkout?${username}`)
+    }
+    const deleteOrder = (username : string) => {
+        return BaseService.get(`http://localhost:8002/api/v1/OrderMeals/${username}`)
+    }
+
+    return {getUserMealsByUsername, addNewItemToOrder, getOrderMealsByUsername, checkoutOrder, deleteOrder};
 }
 
 export default CanteenService();

@@ -1,31 +1,46 @@
 import React, { useState } from 'react'
 import { useMount } from 'react-use'
-import { UserMeals, NewUserMeals, Item } from "./models/UserMealsModel";
+import { UserMeals, NewUserMeals, Item, NewOrderItem } from "./models/UserMealsModel";
 import CanteenService from './services/CanteenService';
+import { OrderMeals, OrderMealsItem } from './models/OrderMealsModel';
 
 export default function CanteenPage() {
   const [userMealsData, setUserMealsData] = useState<UserMeals>();
   const [selectedMealType, setSelectedMealType] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
+  const [orderMeals, setOrderMeals] = useState<OrderMeals>();
 
   useMount(() => {
     CanteenService.getUserMealsByUsername("Natalija")
     .then(setUserMealsData);
+
+    CanteenService.getOrderMealsByUsername("Natalija")
+    .then(setOrderMeals);
   });
 
   const handleAddClick = () => {
-    const newItem : Item = {
+
+    const newOrderItem : NewOrderItem = {
+      username : "Natalija",
       mealType: selectedMealType,
       numberOfMeals: amount
     }
 
-    const newMealsItem : NewUserMeals = {
-      username : "Natalija",
-      items: newItem
-    }
-
-    var successfullTransaction = CanteenService.addNewItemToOrder(newMealsItem);
+    var successfullTransaction = CanteenService.addNewItemToOrder(newOrderItem);
+    
     console.log(successfullTransaction);
+    console.log(newOrderItem)
+
+  }
+  const handleBuyClick = () => {
+
+    
+
+  }
+  const handleDeleteClick = () => {
+
+ 
+
   }
 
   console.log(userMealsData);
@@ -33,6 +48,7 @@ export default function CanteenPage() {
   return (
     <div className='canteen-page'>
       <div className='left-pannel'>
+
         <div className='title'>Buy New Meals</div>
         <div className="pattern">
           <div className='new-item'>
@@ -64,6 +80,38 @@ export default function CanteenPage() {
               </div>
             </div>
             <button className="add-button" onClick={handleAddClick}>Add to cart!</button>
+          </div>
+        </div>
+
+        <div className="title">Order</div>
+        <div className="basket">
+          {orderMeals && (
+            <div>
+              <div>
+                {orderMeals?.items.map((item: OrderMealsItem, index: number) => (
+                  <div key={index} className="item">
+                    <div className="item-attribute">
+                      <label>Meal Type:</label>
+                      <span>{item.mealType}</span>
+                    </div>
+                    <div className="item-attribute">
+                      <label>Number of Meals:</label>
+                      <span>{item.numberOfMeals}</span>
+                    </div>
+                    <div className="item-attribute">
+                      <label>Meal Price:</label>
+                      <span>{item.mealPrice.toFixed(2)} rsd</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <label>Total Price:</label>
+              <span>{orderMeals?.totalPrice} rsd</span>
+            </div>
+          )}
+          <div className="buttons">
+            <button className="delete-button" onClick={handleBuyClick}>Delete Order</button>
+            <button className="buy-button" onClick={handleDeleteClick}>Buy Meals!</button>
           </div>
         </div>   
       </div>
