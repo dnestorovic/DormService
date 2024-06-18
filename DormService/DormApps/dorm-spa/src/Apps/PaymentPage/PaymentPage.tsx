@@ -2,21 +2,29 @@ import React, { useState } from 'react'
 import { useMount } from 'react-use'
 import { StudentDebts } from './models/DebtsModel';
 import PaymentService from './services/PaymentService';
-import { log } from 'console';
   
 export default function PaymentPage() {
   const [debtData, setDebtData] = useState<StudentDebts>();
   const [firstName, setFirstName] = useState<string>('Momcilo');
   const [lastName, setLastName] = useState<string>('Knezevic');
+  const [username, setUsername] = useState<string>();
+  const [usernameToDelete, setUsernameToDelete] = useState<string>('');
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
   const [bankAccount1, setBankAccount1] = useState<string>('');
   const [bankAccount2, setBankAccount2] = useState<string>('');
   const [bankAccount3, setBankAccount3] = useState<string>('');
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   useMount(() => {
-    PaymentService.getDebtsByStudentID("Momcilo")
-    .then(setDebtData);
+    const userIsAdmin = checkIfUserIsAdmin(); 
+    setIsAdmin(userIsAdmin);
+
+    if(!userIsAdmin)
+    {
+      PaymentService.getDebtsByUsername("Momcilo")
+        .then(setDebtData);
+    }
   });
 
   const handlePayClick = () => {
@@ -26,8 +34,8 @@ export default function PaymentPage() {
     };
 
     const debtUpdate : StudentDebts = {
-      _id : '666b40c1a63c24b76b6b93f0', // TODO
-      studentID : "Momcilo",            // username from token
+      _id : '',                         // _id is not necessary, username is key
+      studentID : "Momcilo",            // TODO : username from token
       credit: (requestBody.purposeOfPayment === "Credit") ? amount : 0,
       rent: (requestBody.purposeOfPayment === "Rent") ? amount : 0,
       internet: (requestBody.purposeOfPayment === "Internet") ? amount : 0,
@@ -40,9 +48,19 @@ export default function PaymentPage() {
 
     var successfulTransaction = PaymentService.updateStudentDebts(debtUpdate);
     console.log(successfulTransaction);
-    //TODO pop up notification
+    //TODO pop up notification for success and failure
 
   };
+
+  const handleDeleteClick = () => {
+    const requestBody = {
+      username : usernameToDelete
+    };
+
+    var successfulDeletion = PaymentService.deleteStudentByUsername(requestBody.username);
+    console.log(successfulDeletion);
+    //TODO pop up notification for success and failure
+  }
 
   console.log(debtData);
 
@@ -51,6 +69,7 @@ export default function PaymentPage() {
       <div className='left-pannel'>
         <div className='title'>Payment slip</div>
         <div className='payment-slip'>
+          {!isAdmin &&
           <div className="field" title='Enter your first name!'>
             <label htmlFor="firstName">First Name:</label>
             <input
@@ -60,6 +79,8 @@ export default function PaymentPage() {
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
+          }
+          {!isAdmin &&
           <div className="field" title='Enter your last name!'>
             <label htmlFor="lastName">Last Name:</label>
             <input
@@ -69,6 +90,19 @@ export default function PaymentPage() {
               onChange={(e) => setLastName(e.target.value)}
             />
           </div>
+          }
+          {isAdmin && 
+          <div className="field" title='Enter students username!'>
+            <label htmlFor="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          }
+          {!isAdmin &&
           <div className="field" title='Enter your bank account!'>
             <label htmlFor="bankAccount">Bank account:</label>
             <input
@@ -106,6 +140,7 @@ export default function PaymentPage() {
               maxLength={2}
             />
           </div>
+          }
           <div className="field" title='Choose the purpose of your payment!'>
             <label htmlFor="paymentPurpose">Purpose of payment:</label>
             <select
@@ -132,13 +167,14 @@ export default function PaymentPage() {
             />
             <span>rsd</span>
           </div>
-          <button className='pay-button' title='
-Click here to make a transaction!' onClick={handlePayClick}>Pay</button>
+          <button className='pay-button' title='Click here to make a transaction!' onClick={handlePayClick}>Pay</button>
         </div>
       </div>
 
 
       <div className='right-pannel'>
+        
+        {!isAdmin &&
         <div className='block-shadow'>
           <div className='title'>Debts</div>
           <div className='debts-report'>
@@ -168,8 +204,29 @@ Click here to make a transaction!' onClick={handlePayClick}>Pay</button>
             </div>
           </div>
         </div>
+        }
+        
+        {isAdmin &&
+        <div className='admin-view'>
+          <div className="field" title='Enter the username of the student you want to delete!'>
+              <label htmlFor="username">Username:</label>
+              <input
+                type="text"
+                id="usernameToDelete"
+                value={usernameToDelete}
+                onChange={(e) => setUsernameToDelete(e.target.value)}
+              />
+          </div>
+          <button className='delete-button' title='Click here to delete student!' onClick={handleDeleteClick}>Delete</button>
+        </div>
+        }
       </div>
 
     </div>
   )
 }
+
+const checkIfUserIsAdmin = (): boolean => {
+  // TODO with token
+  return true; 
+};
