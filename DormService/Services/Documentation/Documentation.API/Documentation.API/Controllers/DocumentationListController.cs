@@ -1,5 +1,7 @@
 ﻿using Documentation.API.Entities;
 using Documentation.API.Repositories.Interfaces;
+using Mailing;
+using Mailing.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Documentation.API.Controllers
@@ -9,10 +11,12 @@ namespace Documentation.API.Controllers
     public class DocumentationListController : ControllerBase
     {
         IDocumentationListRepository _repository;
+        IEmailService _emailService;
 
-        public DocumentationListController(IDocumentationListRepository repository)
+        public DocumentationListController(IDocumentationListRepository repository, IEmailService emailService)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         }
 
         [HttpGet("{studentId}")]
@@ -60,6 +64,12 @@ namespace Documentation.API.Controllers
             if (!res)
             {
                 return NotFound();
+            }
+            Email email = new Mailing.Data.Email("tekisooj@gmail.com", "You have successfully submitted " + document.Title, "Documentation submission for student dorm");
+
+            var emailSent = await _emailService.SendEmail(email);
+            if (!emailSent) {
+                await _emailService.SendEmail(email);
             }
             return Ok();
         }
