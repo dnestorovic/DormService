@@ -47,8 +47,16 @@ namespace Payment.API.Controllers
             {
                 return Forbid();
             }
-
-            return Ok(await _repository.UpdateStudentDebt(studentDebts));
+  
+            var successfulUpdate = await _repository.UpdateStudentDebt(studentDebts);
+            if (successfulUpdate)
+            {
+                return Ok(successfulUpdate);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
 
@@ -77,8 +85,15 @@ namespace Payment.API.Controllers
             {
                 return Forbid();
             }
-
-            return Ok(await _repository.DeleteStudent(studentID));
+            
+            var successfulDeletion = await _repository.DeleteStudent(studentID);
+            if (successfulDeletion) {
+                return Ok(successfulDeletion);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }

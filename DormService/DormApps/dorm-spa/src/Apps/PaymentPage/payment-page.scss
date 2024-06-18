@@ -1,0 +1,187 @@
+@import "./../../design/colors.scss";
+.payment-page {
+    display: flex;
+    flex-direction: row;
+    gap: 110px;
+    
+    .left-pannel {
+        border: 2px solid $primary-seagreen;
+        width: 55%;
+        height: 90;
+        padding: 10px;
+        
+
+        margin-top: 30px;
+        margin-left: 40px;
+
+        border-radius: 12px;
+
+        .title {
+            padding: 0;
+            margin: 0;
+            margin-left: auto;
+            margin-right: auto;
+
+            font-size: 32px;
+
+            color: $secondary-seagreen;
+
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid $powder-orange;
+            
+        }
+
+        .payment-slip {
+            display: flex;
+            flex-direction: column;
+
+            margin-left: 50px;
+            margin-right: 50px;
+            margin-top: 30px;
+            gap: 30px;
+
+            .field {
+                display: flex;
+                flex-direction: row;
+                gap:  10px;    
+            
+                font-size: 20px;
+
+                label {
+                    color: $powder-orange;
+                }  
+            }
+
+            .pay-button {
+                height: 55px;
+                width: 140px;
+                
+                margin-left: 75%;
+                border-radius: 12px;
+
+                font-size: 20px;
+
+                color: $powder-orange;
+                background-color: rgba($color: $secondary-seagreen, $alpha: .92);
+            }
+        }
+    }
+
+    .right-pannel {
+        width: 430px;
+        height: 600px;
+
+        background-image: url("./../../../public/assets/white-triangle-pattern.jpg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    
+        margin-top: 30px;
+
+        border-radius: 12px;
+
+        .block-shadow {    
+            display: flex;
+            flex-direction: column;   
+            
+            background-color: rgba($color: $secondary-seagreen, $alpha: .92);
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+
+            border-radius: 12px;
+        }
+
+        .title {
+            padding: 0;
+            margin: 0;
+            margin-left: auto;
+            margin-right: auto;
+
+            color: white;
+
+            font-size: 32px;
+
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid $powder-orange;
+            
+        }
+
+        .debts-report {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-left: 50px;
+            margin-right: 130px;
+            margin-top: 30px;
+            
+            .debt {
+                display: flex;
+                flex-direction: row;
+                gap:  15px;    
+                justify-content: space-between;
+            
+                font-size: 22px;
+
+                span {
+                    color: white;
+                }
+
+                label {
+                    color: $powder-orange;
+                }
+            }
+        }
+
+        .admin-view {
+            display: flex;
+            flex-direction: column;   
+            gap: 50px;
+            border-radius: 12px;
+
+            width: 100%;
+            height: 100%;
+
+            background-color: rgba($color: $secondary-seagreen, $alpha: .92);
+
+            .field {    
+                display: flex;
+                justify-content: center;
+                gap:  10px;
+
+                margin-top: 50px;
+
+                font-size: 20px;
+
+                span {
+                color: white;
+                }
+
+                label {
+                color: $powder-orange;
+                }
+            }
+
+            .delete-button {
+                display: flex;
+                justify-content: center; 
+                align-items: center; 
+                border-radius: 12px;
+
+                margin-left: 35%;
+
+                height: 55px;
+                width: 140px;
+
+                font-size: 20px;
+                text-align: center; 
+
+                color: $powder-orange;
+                background-color: rgba($color: $secondary-seagreen, $alpha: .92);
+            }
+            }
+    }
+}
