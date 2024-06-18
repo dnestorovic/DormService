@@ -6,7 +6,7 @@ namespace Documentation.API.Repositories.Interfaces
     {
         Task<DocumentationList?> GetDocumentList(string studentId);
         Task<Document?> GetDocument(string studentId, string documentName);
-        Task<bool> AddDocument(string studentId, Document document);
+        Task<bool> AddDocument(string studentId, Document document, string documentName);
         Task<bool> DeleteDocument(string studentId, string documentName);
 
 
