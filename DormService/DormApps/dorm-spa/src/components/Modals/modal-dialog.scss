@@ -43,7 +43,7 @@
       min-height: 150px;
       max-height: 800px;
   
-      background: rgba($color: $primary-seagreen, $alpha: 0.9);
+      background: rgba($color: $secondary-seagreen, $alpha: 0.9);
       color: white;
       font-weight: 600;
   
@@ -78,6 +78,8 @@
           font-size: 14px;
           font-weight: 600;
           color: white;
+
+          cursor: pointer;
         }
   
         > button:hover {
