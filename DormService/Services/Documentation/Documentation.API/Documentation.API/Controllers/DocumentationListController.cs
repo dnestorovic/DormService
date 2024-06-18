@@ -1,5 +1,7 @@
 ﻿using Documentation.API.Entities;
 using Documentation.API.Repositories.Interfaces;
+using Mailing;
+using Mailing.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
@@ -10,10 +12,12 @@ namespace Documentation.API.Controllers
     public class DocumentationListController : ControllerBase
     {
         IDocumentationListRepository _repository;
+        IEmailService _emailService;
 
-        public DocumentationListController(IDocumentationListRepository repository)
+        public DocumentationListController(IDocumentationListRepository repository, IEmailService emailService)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         }
 
         [HttpGet("{studentId}")]
@@ -73,8 +77,15 @@ namespace Documentation.API.Controllers
                     Content = fileBytes
                 };
 
-               var res =  await _repository.AddDocument(studentId, document, documentName);
+                var res =  await _repository.AddDocument(studentId, document, documentName);
 
+                Email email = new("tekisooj@gmail.com", "You have successfully submitted " + document.Title, "Documentation submission for student dorm");
+
+                var emailSent = await _emailService.SendEmail(email);
+                if (!emailSent)
+                {
+                    await _emailService.SendEmail(email);
+                }
                 return Ok("Document uploaded successfully");
             }
         }
