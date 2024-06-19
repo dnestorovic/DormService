@@ -5,8 +5,7 @@ namespace Payment.Common.Entities
 {
     public class StudentDebts
     {
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string _id { get; set; }
+        [BsonId]
         public string studentID { get; set; }
 
         // All debt types
@@ -19,7 +18,6 @@ namespace Payment.Common.Entities
 
         public StudentDebts(string studentID, decimal credit, decimal rent, decimal internet, decimal airConditioning, decimal phone, decimal cleaning)
         {
-            _id = ObjectId.GenerateNewId().ToString();
             this.studentID = studentID ?? throw new ArgumentNullException(nameof(studentID));
             this.credit = credit;
             this.rent = rent;
@@ -31,7 +29,6 @@ namespace Payment.Common.Entities
 
         public StudentDebts(string studentID)
         {
-            _id = ObjectId.GenerateNewId().ToString();
             this.studentID = studentID ?? throw new ArgumentNullException(nameof(studentID));
             this.credit = 0;
             this.rent = 0;
