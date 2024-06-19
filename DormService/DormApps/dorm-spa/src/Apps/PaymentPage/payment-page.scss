@@ -165,7 +165,7 @@
                 }
             }
 
-            .delete-button {
+            .admin-button {
                 display: flex;
                 justify-content: center; 
                 align-items: center; 
@@ -182,6 +182,6 @@
                 color: $powder-orange;
                 background-color: rgba($color: $secondary-seagreen, $alpha: .92);
             }
-            }
+        }
     }
 }
