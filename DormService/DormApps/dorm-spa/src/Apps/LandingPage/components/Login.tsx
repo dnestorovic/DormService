@@ -1,16 +1,35 @@
 import { useState } from "react";
-
-type CredentialsType = { username?: string; password?: string };
+import IdentityService from "../../../services/IdentityService";
+import { Credentials } from "../../../models/User";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-    const [credentials, setCredentials] = useState<CredentialsType>({});
+    const [credentials, setCredentials] = useState<Credentials>({});
 
-    const handleInput = (value: string, prop: keyof CredentialsType) => {
+    const navigate = useNavigate();
+
+    const handleInput = (value: string, prop: keyof Credentials) => {
         setCredentials((prev) => ({ ...prev, [prop]: value }));
     };
 
     const handleLogin = () => {
-        alert("API CALL TO LOGIN USER: " + credentials.username)
+        console.log(credentials);
+        if (credentials.password === undefined || credentials.userName === undefined) {
+            alert("All fields must be populated");
+            return;
+        }
+
+        IdentityService.login(credentials)
+            .then((tokens) => {
+                localStorage.clear();
+                localStorage.setItem("access-token", tokens.AccessToken);
+                localStorage.setItem("refresh-token", tokens.RefreshToken);
+                localStorage.setItem("username", tokens.UserName);
+                localStorage.setItem("email", tokens.UserEmail);
+
+                navigate("/payments");
+            })
+            .catch(() => alert("Cannot find user with this credentials."));
     };
 
     return (
@@ -20,8 +39,8 @@ export default function Login() {
                     <div className="form-field">
                         <label>Username:</label>
                         <input
-                            value={credentials.username}
-                            onChange={(event) => handleInput(event.currentTarget.value, 'username')}
+                            value={credentials.userName}
+                            onChange={(event) => handleInput(event.currentTarget.value, 'userName')}
                         />
                     </div>
                     <div className="form-field">

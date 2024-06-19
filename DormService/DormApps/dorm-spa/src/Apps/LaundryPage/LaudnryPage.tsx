@@ -20,13 +20,10 @@ export default function LaudnryPage() {
   const [allDates, setAllDates] = useState<string[]>([]);
 
   const [availabelMachines, setAvailabelMachines] = useState<WashingMachine[]>([]);
-  const [alreadyReservedMachines, setAlreadyReservedMachines] = useState<WashingMachine[]>([]);  
-
-  const getWashingMachines = (date: string) => {
-    console.log("Called");
-    UserReservationsService.getWashingMachinesByDate(date.replaceAll("/", "."))
-      .then(machines => setAvailabelMachines([...machines]))
-      .catch(() => setShowNotification({type: NotificationType.Error, message: "Machines for the given date not availabel"}))
+  const [alreadyReservedMachines, setAlreadyReservedMachines] = useState<WashingMachine[]>([]); 
+  
+  const getStudentId = () => {
+    return localStorage.getItem("username") || "";
   }
 
   const selectDate = (date: string) => {
@@ -38,14 +35,24 @@ export default function LaudnryPage() {
       setSelectedTime(prev => time);
   }
 
+  const getWashingMachines = (date: string) => {
+    UserReservationsService.getWashingMachinesByDate(date.replaceAll("/", "."))
+      .then(machines => setAvailabelMachines([...machines]))
+      .catch(() => setShowNotification({type: NotificationType.Error, message: "Machines for the given date not availabel"}))
+  }
+
+  const getReservedMachinesForStudent = () => {
+    UserReservationsService.getWashingMachinesByStudentId(getStudentId())
+      .then((machines) => setAlreadyReservedMachines(machines));
+  }
+
   const reserveMachine = (machine: WashingMachine) => {
       setReservedMachine(prev => machine);
   }
 
   const handleReservation = (reservation: WashingMachine) => {
       setReservedMachine(undefined);
-      // TODO remove hardcoded student id
-      UserReservationsService.reserveWashingMachine(reservation, "Momcilo")
+      UserReservationsService.reserveWashingMachine(reservation, getStudentId())
         .then(() => {
           setShowNotification({type: NotificationType.Success, message: "Washing machine successfully reserved"})
           selectedDate && getWashingMachines(selectedDate);
@@ -71,12 +78,6 @@ export default function LaudnryPage() {
 
       setSelectedDate(undefined);
       setSelectedTime(undefined);
-  }
-
-  const getReservedMachinesForStudent = () => {
-      // TODO remvoe hardcoded id
-      UserReservationsService.getWashingMachinesByStudentId("Momcilo")
-        .then((machines) => setAlreadyReservedMachines(machines));
   }
 
   useEffect(() => {
