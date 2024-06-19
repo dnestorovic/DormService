@@ -5,6 +5,7 @@ interface IPaymentService {
     getDebtsByUsername : (username : string) => Promise<StudentDebts>;
     updateStudentDebts : (debtUpdate : StudentDebts) => Promise<boolean>;
     deleteStudentByUsername : (username : string) => Promise<StudentDebts>; 
+    createDefaultStudent : (studentDebts : StudentDebts) => Promise<StudentDebts>; 
 }
 
 const PaymentService: () => IPaymentService = () => {
@@ -23,7 +24,6 @@ const PaymentService: () => IPaymentService = () => {
         return BaseService.delete(`http://localhost:8001/api/v1/Debts/${username}`);
     };
 
-    return {getDebtsByUsername, updateStudentDebts, deleteStudentByUsername};
 }
 
 export default PaymentService();

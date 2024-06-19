@@ -9,6 +9,8 @@ export default function PaymentPage() {
   const [lastName, setLastName] = useState<string>('Knezevic');
   const [username, setUsername] = useState<string>();
   const [usernameToDelete, setUsernameToDelete] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
+  const [usernameToModify, setUsernameToModify] = useState<string>('');
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
   const [bankAccount1, setBankAccount1] = useState<string>('');
@@ -53,12 +55,37 @@ export default function PaymentPage() {
 
   const handleDeleteClick = () => {
     const requestBody = {
-      username : usernameToDelete
+      usernameToDelete : usernameToModify
     };
 
-    var successfulDeletion = PaymentService.deleteStudentByUsername(requestBody.username);
+    var successfulDeletion = PaymentService.deleteStudentByUsername(requestBody.usernameToDelete)
+                            .then(() => setShowNotification({type: NotificationType.Success, message: "Student successfully deleted!"}))  // 200 OK
+                            .catch(() => setShowNotification({type: NotificationType.Error, message: "The specified username does not exist!"})); // 404 Not Found
+
     console.log(successfulDeletion);
-    //TODO pop up notification for success and failure
+  }
+
+  const handleCreateClick = () => {
+    const requestBody = {
+      usernameToCreate : usernameToModify
+    };
+
+    // Student with default debts
+    const studentDebts : StudentDebts = {
+      studentID : requestBody.usernameToCreate,
+      credit: 0,
+      rent: 0,
+      internet: 0,
+      airConditioning: 0,
+      phone: 0,
+      cleaning: 0,
+    }
+
+    var successfulCreation = PaymentService.createDefaultStudent(studentDebts)
+                            .then(() => setShowNotification({type: NotificationType.Success, message: "Student successfully created!"}))  // 201 Created
+                            .catch(() => setShowNotification({type: NotificationType.Error, message: "The specified username already exists!"})); // 500 Username exists
+
+    console.log(successfulCreation);
   }
 
   console.log(debtData);
@@ -214,13 +241,14 @@ export default function PaymentPage() {
                 id="usernameToDelete"
                 value={usernameToDelete}
                 onChange={(e) => setUsernameToDelete(e.target.value)}
+                value={usernameToModify}
               />
           </div>
           <button className='delete-button' title='Click here to delete student!' onClick={handleDeleteClick}>Delete</button>
+          <button className='admin-button' title='Click here to create student!' onClick={handleCreateClick}>Create</button>
         </div>
         }
       </div>
-
     </div>
   )
 }
