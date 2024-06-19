@@ -34,7 +34,6 @@ export default function PaymentPage() {
     };
 
     const debtUpdate : StudentDebts = {
-      _id : '',                         // _id is not necessary, username is key
       studentID : "Momcilo",            // TODO : username from token
       credit: (requestBody.purposeOfPayment === "Credit") ? amount : 0,
       rent: (requestBody.purposeOfPayment === "Rent") ? amount : 0,
