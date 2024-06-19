@@ -24,6 +24,11 @@ const PaymentService: () => IPaymentService = () => {
         return BaseService.delete(`http://localhost:8001/api/v1/Debts/${username}`);
     };
 
+    const createDefaultStudent = (studentDebts : StudentDebts) => {
+        return BaseService.post(`http://localhost:8001/api/v1/Debts/`, studentDebts);
+    }
+
+    return {getDebtsByUsername, updateStudentDebts, deleteStudentByUsername, createDefaultStudent};
 }
 
 export default PaymentService();
