@@ -30,10 +30,6 @@ namespace Payment.API.Controllers
             }*/
 
             var studentDebts = await _repository.GetStudentDebts(studentID);
-            if (studentDebts == null)
-            {
-                return NotFound();
-            }
             return Ok(studentDebts);
         }
 
