@@ -115,7 +115,7 @@
                 flex-direction: row; 
                 width: 100%;
                 gap: 50%;
-                margin: 0;
+                margin-bottom: 15px;
 
                 .buy-button {
                     float: inline-end;
@@ -146,6 +146,10 @@
                 padding: 10px;
                 color: black;
                 font-size: 18px;
+            }
+
+            span {
+                color: $secondary-seagreen;
             }
         }
     }

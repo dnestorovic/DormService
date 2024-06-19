@@ -25,10 +25,10 @@ const CanteenService: () => ICanteenService = () => {
         return BaseService.get(`http://localhost:8002/api/v1/OrderMeals/${username}`)
     }
     const checkoutOrder = (username : string) => {
-        return BaseService.head(`http://localhost:8002/api/v1/Checkout?${username}`)
+        return BaseService.head(`http://localhost:8002/api/v1/OrderMeals/Checkout?username=${username}`)
     }
     const deleteOrder = (username : string) => {
-        return BaseService.get(`http://localhost:8002/api/v1/OrderMeals/${username}`)
+        return BaseService.delete(`http://localhost:8002/api/v1/OrderMeals/${username}`)
     }
 
     return {getUserMealsByUsername, addNewItemToOrder, getOrderMealsByUsername, checkoutOrder, deleteOrder};

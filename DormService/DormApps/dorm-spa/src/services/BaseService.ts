@@ -43,6 +43,7 @@ const BaseService = (): IBaseService => {
     const head = (url: string) => {
         return fetch(url, {
             method: 'HEAD',
+            mode: 'cors',
             headers: {
                 'Content-Type': 'application/json'
             },

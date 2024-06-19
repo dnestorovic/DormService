@@ -1,14 +1,19 @@
 import React, { useState } from 'react'
 import { useMount } from 'react-use'
-import { UserMeals, NewUserMeals, Item, NewOrderItem } from "./models/UserMealsModel";
+import { UserMeals, NewOrderItem } from "./models/UserMealsModel";
 import CanteenService from './services/CanteenService';
 import { OrderMeals, OrderMealsItem } from './models/OrderMealsModel';
+import { NotificationType, Notification } from '../../components/Notifications/Notification';
 
 export default function CanteenPage() {
   const [userMealsData, setUserMealsData] = useState<UserMeals>();
   const [selectedMealType, setSelectedMealType] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
   const [orderMeals, setOrderMeals] = useState<OrderMeals>();
+
+  const [showBasket, setShowBasket] = useState<boolean>(false);
+  const [showNotification, setShowNotification] = useState<{type: NotificationType, message: string}>();
+
 
   useMount(() => {
     CanteenService.getUserMealsByUsername("Natalija")
@@ -18,6 +23,20 @@ export default function CanteenPage() {
     .then(setOrderMeals);
   });
 
+  const updateBasket = (show: boolean) => {
+    CanteenService.getOrderMealsByUsername("Natalija")
+    .then(setOrderMeals)
+    .then(() => setShowBasket(show));
+  }
+
+  const chechoutOrder = () => {
+    updateBasket(false);
+    CanteenService.getUserMealsByUsername("Natalija")
+    .then(setUserMealsData)
+    .then(() => setShowNotification({type: NotificationType.Success, message: "Transaction completed successfully!"}))  // 200 OK
+    .catch(() => setShowNotification({type: NotificationType.Error, message: "Something went wrong, check you credit status!"})); // 404 Not Found
+  } 
+
   const handleAddClick = () => {
 
     const newOrderItem : NewOrderItem = {
@@ -26,21 +45,26 @@ export default function CanteenPage() {
       numberOfMeals: amount
     }
 
-    var successfullTransaction = CanteenService.addNewItemToOrder(newOrderItem);
+    var successfullTransaction = CanteenService.addNewItemToOrder(newOrderItem)
+                                  .then(() => updateBasket(true));
     
     console.log(successfullTransaction);
-    console.log(newOrderItem)
+    console.log(newOrderItem);
 
   }
   const handleBuyClick = () => {
 
-    
+    var checkout = CanteenService.checkoutOrder("Natalija")
+                  .then(() => chechoutOrder());
+    console.log(checkout);
 
   }
+
   const handleDeleteClick = () => {
 
- 
-
+    var deleteItems = CanteenService.deleteOrder("Natalija")
+                      .then(() => updateBasket(false));
+    console.log(deleteItems);
   }
 
   console.log(userMealsData);
@@ -83,37 +107,42 @@ export default function CanteenPage() {
           </div>
         </div>
 
-        <div className="title">Order</div>
-        <div className="basket">
-          {orderMeals && (
-            <div>
+        { showBasket &&
+        <div>
+          <div className="title">Order</div>
+          <div className="basket">
+            {orderMeals && (
               <div>
-                {orderMeals?.items.map((item: OrderMealsItem, index: number) => (
-                  <div key={index} className="item">
-                    <div className="item-attribute">
-                      <label>Meal Type:</label>
-                      <span>{item.mealType}</span>
+                <div>
+                  {orderMeals?.items.map((item: OrderMealsItem, index: number) => (
+                    <div key={index} className="item">
+                      <div className="item-attribute">
+                        <label>Meal Type:</label>
+                        <span>{item.mealType}</span>
+                      </div>
+                      <div className="item-attribute">
+                        <label>Number of Meals:</label>
+                        <span>{item.numberOfMeals}</span>
+                      </div>
+                      <div className="item-attribute">
+                        <label>Meal Price:</label>
+                        <span>{item.mealPrice.toFixed(2)} rsd</span>
+                      </div>
                     </div>
-                    <div className="item-attribute">
-                      <label>Number of Meals:</label>
-                      <span>{item.numberOfMeals}</span>
-                    </div>
-                    <div className="item-attribute">
-                      <label>Meal Price:</label>
-                      <span>{item.mealPrice.toFixed(2)} rsd</span>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <label>Total Price:</label>
+                <span>{orderMeals?.totalPrice} rsd</span>
               </div>
-              <label>Total Price:</label>
-              <span>{orderMeals?.totalPrice} rsd</span>
+            )}
+            <div className="buttons">
+              <button className="delete-button" onClick={handleDeleteClick}>Delete Order</button>
+              <button className="buy-button" onClick={handleBuyClick}>Buy Meals</button>
             </div>
-          )}
-          <div className="buttons">
-            <button className="delete-button" onClick={handleBuyClick}>Delete Order</button>
-            <button className="buy-button" onClick={handleDeleteClick}>Buy Meals!</button>
-          </div>
-        </div>   
+          </div>   
+        </div>
+        }
+        
       </div>
       <div className='right-pannel'>
         <div className='block-shadow'>
@@ -133,6 +162,7 @@ export default function CanteenPage() {
             </div>
           </div>
         </div>
+        {!showNotification ? null : <Notification type={showNotification.type} text={showNotification.message || ''} onRemove={() => setShowNotification(undefined)} />}
       </div>
 
     </div>
