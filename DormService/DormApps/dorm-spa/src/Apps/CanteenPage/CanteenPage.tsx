@@ -9,7 +9,7 @@ import { ModalDialog } from '../../components/Modals/ModalDialog';
 export default function CanteenPage() {
   const [userMealsData, setUserMealsData] = useState<UserMeals>();
   const [selectedMealType, setSelectedMealType] = useState<string>('');
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number>(1);
   const [orderMeals, setOrderMeals] = useState<OrderMeals>();
 
   const [showBasket, setShowBasket] = useState<boolean>(false);
@@ -111,6 +111,7 @@ export default function CanteenPage() {
                 <input className="inputAmount"
                   type="number"
                   id="amount"
+                  min="1"
                   value={amount}
                   onChange={(e) => setAmount(parseFloat(e.target.value))}
                 />
