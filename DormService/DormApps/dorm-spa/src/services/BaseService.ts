@@ -3,8 +3,6 @@ interface IBaseService {
     post: <T>(url: string, data: T) => Promise<any>;
     put: <T>(url: string, data: T) => Promise<any>;
     delete: (url: string) => Promise<any>;
-    uploadFile: (url: string, file: File, fieldName: string) => Promise<any>;
-    downloadFile: (url: string) => Promise<Blob>;
 }
 
 const BaseService = (): IBaseService => {
@@ -51,26 +49,7 @@ const BaseService = (): IBaseService => {
         });
     }
 
-    const uploadFile = (url: string, file: File, fieldName: string) => {
-        const formData = new FormData();
-        formData.append(fieldName, file);
-
-        return fetch(url, {
-            method: 'POST',
-            body: formData
-        }).then(data => data.json());
-    }
-
-    const downloadFile = (url: string) => {
-        return fetch(url, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(response => response.blob());
-    }
-
-    return { get, post, put, delete: deleteItem, uploadFile, downloadFile }
+    return { get, post, put, delete: deleteItem }
 }
 
 export default BaseService();

@@ -1,4 +1,4 @@
-import { Document } from "./DocumentModel";
+import { Document } from "./DocumentModel"
 
 export type DocumentationList =
 {

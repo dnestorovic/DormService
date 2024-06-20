@@ -2,13 +2,17 @@
 using Documentation.API.Repositories.Interfaces;
 using Mailing;
 using Mailing.Data;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
 namespace Documentation.API.Controllers
 {
+    
+
     [ApiController]
     [Route("api/v1/[controller]")]
+    [EnableCors("AllowSpecificOrigin")] // Apply CORS policy to this controller
     public class DocumentationListController : ControllerBase
     {
         IDocumentationListRepository _repository;
