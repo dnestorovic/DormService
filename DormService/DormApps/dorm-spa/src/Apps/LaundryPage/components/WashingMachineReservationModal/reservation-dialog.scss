@@ -1,0 +1,29 @@
+@import "./../../../../design/colors.scss";
+.reservation-dialog {
+
+    .main {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 500px;
+
+        .parameters {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+        .dropdown-menu {
+            .dropdown { 
+                .dropdown-button { 
+                    background-color: white;
+                    color: $primary-seagreen;
+                }
+
+                .dropdown-list {
+                    background-color: white;
+                    color: $primary-seagreen;
+                }
+            }
+        }
+    }
+}

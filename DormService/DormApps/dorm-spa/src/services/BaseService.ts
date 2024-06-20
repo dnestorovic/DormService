@@ -11,11 +11,19 @@ const BaseService = (): IBaseService => {
     const get = (url: string) => {
         return fetch(url, {
             method: 'GET',
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json'
+            mode: 'cors'
+        }).then((data) => {
+            if (data.status > 400) {
+                throw new Error('Bad request - invalid data');
             }
-        }).then(data => data.json());
+
+            const contentType = data.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                return data.json();
+            } else {
+                return data.text();
+            }
+        })
     }
 
 
@@ -26,6 +34,12 @@ const BaseService = (): IBaseService => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
+        }).then((res) => {
+            if (res.status > 400) {
+                throw new Error('Bad request - invalid data');
+            }
+
+            return res;
         });
     }
 
@@ -37,7 +51,13 @@ const BaseService = (): IBaseService => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        });
+        }).then((res) => {
+            if (res.status > 400) {
+                throw new Error('Bad request - invalid data');
+            }
+
+            return res;
+        });;
     }
 
     const head = (url: string) => {
@@ -57,7 +77,13 @@ const BaseService = (): IBaseService => {
             headers: {
                 'Content-Type': 'application/json'
             }
-        });
+        }).then((res) => {
+            if (res.status > 400) {
+                throw new Error('Bad request - invalid data');
+            }
+
+            return res;
+        });;
     }
 
     return { get, post, put, head, delete: deleteItem }

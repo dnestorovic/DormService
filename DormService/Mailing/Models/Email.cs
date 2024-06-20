@@ -8,9 +8,16 @@ namespace Mailing.Data
 {
     public class Email
     {
-        public string To { get; internal set; }
+        public Email(string to, string body, string subject)
+        {
+            To = to;
+            Body = body;
+            Subject = subject;
+        }
 
-        public string Body { get; internal set; }
-        public string Subject { get; internal set; }
+        public string To { get; set; }
+
+        public string Body { get; set; }
+        public string Subject { get; set; }
     }
 }

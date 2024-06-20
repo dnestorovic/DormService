@@ -39,7 +39,12 @@ namespace Payment.Common.Repository
         // NOTE: Student can overpay his debts
         public async Task<bool> UpdateStudentDebt(StudentDebts studentDebts)
         {
-            var newStudentDebts = await GetStudentDebts(studentDebts.studentID);
+            var newStudentDebts = await _context.allDebts.Find(s => s.studentID == studentDebts.studentID).FirstOrDefaultAsync();
+            if (newStudentDebts == null)
+            {
+                return false;
+            }
+
             newStudentDebts.credit += studentDebts.credit;
             newStudentDebts.rent -= studentDebts.rent;
             newStudentDebts.internet -= studentDebts.internet;
@@ -62,10 +67,16 @@ namespace Payment.Common.Repository
         // Creating a student with default debts
         public async Task<StudentDebts> CreateNewStudent(string studentID)
         {
-            var newStudent = new StudentDebts(studentID);
-            await _context.allDebts.InsertOneAsync(newStudent);
+            var studentDebts = await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
+            if (studentDebts == null)
+            {
+                studentDebts = new StudentDebts(studentID);
+                await _context.allDebts.InsertOneAsync(studentDebts);
 
-            return await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
+                return await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
+            }
+
+            return studentDebts;
         }
 
         // Deleting a student by his studentID
