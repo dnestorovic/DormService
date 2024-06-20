@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useMount } from 'react-use'
-import { StudentDebts } from './models/DebtsModel';
+import { DefaultStudentDebts, StudentDebts } from './models/DebtsModel';
 import PaymentService from './services/PaymentService';
 import { Notification, NotificationType } from '../../components/Notifications/Notification';
+import { ModalDialog } from '../../components/Modals/ModalDialog';
   
 export default function PaymentPage() {
   const [debtData, setDebtData] = useState<StudentDebts>();
@@ -16,8 +17,15 @@ export default function PaymentPage() {
   const [bankAccount2, setBankAccount2] = useState<string>('');
   const [bankAccount3, setBankAccount3] = useState<string>('');
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [debtUpdate, setDebtUpdate] = useState<StudentDebts>(DefaultStudentDebts);
 
   const [showNotification, setShowNotification] = useState<{type: NotificationType, message: string}>();
+  const [showConfiramtionDialog, setShowConfiramtionDialog] = useState<boolean>(false);
+
+  const fetchStudentDebts = () => {
+    PaymentService.getDebtsByUsername("Momcilo")
+      .then(setDebtData);
+  }
 
 
   useMount(() => {
@@ -26,18 +34,35 @@ export default function PaymentPage() {
 
     if(!userIsAdmin)
     {
-      PaymentService.getDebtsByUsername("Momcilo")
-        .then(setDebtData);
+      fetchStudentDebts();
     }
   });
 
+
+  const onPay = () => {
+    PaymentService.updateStudentDebts(debtUpdate)
+    .then(() => {
+      setShowNotification({type: NotificationType.Success, message: "Transaction completed successfully!"});
+      fetchStudentDebts();
+    })  // 200 OK
+    .catch(() => setShowNotification({type: NotificationType.Error, message: "Transaction failed!"})); // 404 Not Found
+  }
+
   const handlePayClick = () => {
+    if(selectedOption === '' || amount === 0 || 
+      (isAdmin && username === '') || 
+      (!isAdmin && (bankAccount1 === '' || bankAccount2 === '' || bankAccount3 === '' || firstName === '' || lastName === ''))
+    ){
+      alert("All fields must be filled!");
+      return;
+    }
+    
     const requestBody = {
       purposeOfPayment: selectedOption,
       amount: amount
     };
 
-    const debtUpdate : StudentDebts = {
+    const currentDebt : StudentDebts = {
       studentID : (isAdmin === true) ? username : "Momcilo",            // TODO :  username input(admin role) or username from token(student role)
       credit: (requestBody.purposeOfPayment === "Credit") ? amount : 0,
       rent: (requestBody.purposeOfPayment === "Rent") ? amount : 0,
@@ -47,28 +72,33 @@ export default function PaymentPage() {
       cleaning: (requestBody.purposeOfPayment === "Cleaning") ? amount : 0,
     }
     
-    console.log(debtUpdate);
-
-    var successfulTransaction = PaymentService.updateStudentDebts(debtUpdate)
-                                .then(() => setShowNotification({type: NotificationType.Success, message: "Transaction completed successfully!"}))  // 200 OK
-                                .catch(() => setShowNotification({type: NotificationType.Error, message: "Transaction failed!"})); // 404 Not Found
-    
-    console.log(successfulTransaction);
+    setDebtUpdate(currentDebt);
+    setShowConfiramtionDialog(true);
   };
 
+
   const handleDeleteClick = () => {
+    if(isAdmin && username === '')
+    {
+      alert("Username field must be filled!");
+      return;
+    }
     const requestBody = {
       usernameToDelete : usernameToModify
     };
 
-    var successfulDeletion = PaymentService.deleteStudentByUsername(requestBody.usernameToDelete)
+    PaymentService.deleteStudentByUsername(requestBody.usernameToDelete)
                             .then(() => setShowNotification({type: NotificationType.Success, message: "Student successfully deleted!"}))  // 200 OK
                             .catch(() => setShowNotification({type: NotificationType.Error, message: "The specified username does not exist!"})); // 404 Not Found
-
-    console.log(successfulDeletion);
   }
 
+
   const handleCreateClick = () => {
+    if(isAdmin && username === '')
+    {
+        alert("Username field must be filled!");
+        return;
+    }
     const requestBody = {
       usernameToCreate : usernameToModify
     };
@@ -84,14 +114,11 @@ export default function PaymentPage() {
       cleaning: 0,
     }
 
-    var successfulCreation = PaymentService.createDefaultStudent(studentDebts)
+    PaymentService.createDefaultStudent(studentDebts)
                             .then(() => setShowNotification({type: NotificationType.Success, message: "Student successfully created!"}))  // 201 Created
                             .catch(() => setShowNotification({type: NotificationType.Error, message: "The specified username already exists!"})); // 500 Username exists
-
-    console.log(successfulCreation);
   }
 
-  console.log(debtData);
 
   return (
     <div className='payment-page'>
@@ -199,12 +226,12 @@ export default function PaymentPage() {
           </div>
           <button className='pay-button' title='Click here to make a transaction!' onClick={handlePayClick}>Pay</button>
           {!showNotification ? null : <Notification type={showNotification.type} text={showNotification.message || ''} onRemove={() => setShowNotification(undefined)} />}
+          {!showConfiramtionDialog ? null : <ModalDialog header='Are you sure?' submitText='Yes' onSubmit={() => {onPay();  setShowConfiramtionDialog(false);}} onCancel={() => setShowConfiramtionDialog(false)}>Are you sure you want to continue with this payment?</ModalDialog> }
         </div>
       </div>
 
 
       <div className='right-pannel'>
-        
         {!isAdmin &&
         <div className='block-shadow'>
           <div className='title'>Debts</div>
@@ -259,5 +286,5 @@ export default function PaymentPage() {
 
 const checkIfUserIsAdmin = (): boolean => {
   // TODO with token
-  return true; 
+  return false; 
 };
