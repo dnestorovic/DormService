@@ -4,6 +4,7 @@ import { UserMeals, NewOrderItem } from "./models/UserMealsModel";
 import CanteenService from './services/CanteenService';
 import { OrderMeals, OrderMealsItem } from './models/OrderMealsModel';
 import { NotificationType, Notification } from '../../components/Notifications/Notification';
+import { ModalDialog } from '../../components/Modals/ModalDialog';
 
 export default function CanteenPage() {
   const [userMealsData, setUserMealsData] = useState<UserMeals>();
@@ -13,6 +14,7 @@ export default function CanteenPage() {
 
   const [showBasket, setShowBasket] = useState<boolean>(false);
   const [showNotification, setShowNotification] = useState<{type: NotificationType, message: string}>();
+  const [showConfiramtionDialog, setShowConfiramtionDialog] = useState<boolean>(false);
 
 
   useMount(() => {
@@ -25,17 +27,32 @@ export default function CanteenPage() {
 
   const updateBasket = (show: boolean) => {
     CanteenService.getOrderMealsByUsername("Natalija")
-    .then(setOrderMeals)
-    .then(() => setShowBasket(show));
+    .then(response => {
+      setOrderMeals(response);
+      setShowBasket(show);
+    });
+
+  }
+
+  const updateUserMealsData = (username: string) => {
+    CanteenService.getUserMealsByUsername(username)
+    .then(response => {
+      console.log(response);
+
+      setUserMealsData(response);
+      setShowNotification({type: NotificationType.Success, message: "Transaction completed successfully!"}); // OK
+    })
+    .catch(() => setShowNotification({type: NotificationType.Error, message: "Something went wrong, check you credit status!"})); // Something went wrong
+
   }
 
   const chechoutOrder = () => {
-    updateBasket(false);
-    CanteenService.getUserMealsByUsername("Natalija")
-    .then(setUserMealsData)
-    .then(() => setShowNotification({type: NotificationType.Success, message: "Transaction completed successfully!"}))  // 200 OK
-    .catch(() => setShowNotification({type: NotificationType.Error, message: "Something went wrong, check you credit status!"})); // 404 Not Found
-  } 
+    const username = "Natalija";
+    var checkout = CanteenService.checkoutOrder(username)
+                    .then(() => {setShowBasket(false); updateUserMealsData(username)})
+                    .catch(() => setShowNotification({type: NotificationType.Error, message: "Transaction failed!"})); // Something went wrong
+    console.log(checkout);
+   } 
 
   const handleAddClick = () => {
 
@@ -53,11 +70,7 @@ export default function CanteenPage() {
 
   }
   const handleBuyClick = () => {
-
-    var checkout = CanteenService.checkoutOrder("Natalija")
-                  .then(() => chechoutOrder());
-    console.log(checkout);
-
+    setShowConfiramtionDialog(true);
   }
 
   const handleDeleteClick = () => {
@@ -138,6 +151,7 @@ export default function CanteenPage() {
             <div className="buttons">
               <button className="delete-button" onClick={handleDeleteClick}>Delete Order</button>
               <button className="buy-button" onClick={handleBuyClick}>Buy Meals</button>
+              {!showConfiramtionDialog ? null : <ModalDialog header='Confirm order' submitText='Yes' onSubmit={() => {chechoutOrder(); setShowConfiramtionDialog(false);}} onCancel={() => setShowConfiramtionDialog(false)}>Are you sure you want to chechkout this order?</ModalDialog>}
             </div>
           </div>   
         </div>
