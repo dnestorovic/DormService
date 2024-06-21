@@ -1,6 +1,5 @@
 export type StudentDebts =
 {
-    _id?: string,
     studentID: string,
     credit: number,
     rent: number,
