@@ -2,6 +2,7 @@ interface IBaseService {
     get: (url: string) => Promise<any>;
     post: <T>(url: string, data: T) => Promise<any>;
     put: <T>(url: string, data: T) => Promise<any>;
+    head: (url: string) => Promise<any>;
     delete: (url: string) => Promise<any>;
 }
 
@@ -59,6 +60,16 @@ const BaseService = (): IBaseService => {
         });;
     }
 
+    const head = (url: string) => {
+        return fetch(url, {
+            method: 'HEAD',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+    }
+
 
     const deleteItem = (url: string) => {
         return fetch(url, {
@@ -75,7 +86,7 @@ const BaseService = (): IBaseService => {
         });;
     }
 
-    return { get, post, put, delete: deleteItem }
+    return { get, post, put, head, delete: deleteItem }
 }
 
 export default BaseService();

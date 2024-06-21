@@ -3,6 +3,7 @@ using Canteen.API.OrderMealsInfo.Repositories;
 using Canteen.API.UserMealsInfo.Data;
 using Canteen.API.UserMealsInfo.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Payment.GRPC.Protos;
 using System.Text;
@@ -28,6 +29,12 @@ builder.Services.AddScoped<IUserMealsContext, UserMealsContext>();
 builder.Services.AddScoped<IUserMealsRepository, UserMealsRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddCors(options =>
+    {
+       options.AddPolicy("CorsPolicy", builder =>
+       builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    });
 
 // JWT Security
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -60,6 +67,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();

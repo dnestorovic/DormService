@@ -1,4 +1,5 @@
-﻿namespace Canteen.API.OrderMealsInfo.Entities
+﻿
+namespace Canteen.API.OrderMealsInfo.Entities
 {
     public class OrderMealsItem
     {
@@ -14,5 +15,14 @@
             get { return MealTypeToPrice[MealType]; }
         }
 
+        public OrderMealsItem(int numberOfMeals, string mealType)
+        {
+            NumberOfMeals = numberOfMeals;
+            MealType = mealType ?? throw new ArgumentNullException(nameof(mealType));
+        }
+
+        public OrderMealsItem()
+        {
+        }
     }
 }

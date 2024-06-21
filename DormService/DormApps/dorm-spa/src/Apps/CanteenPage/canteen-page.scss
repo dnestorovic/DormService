@@ -1,0 +1,226 @@
+@import "./../../design/colors.scss";
+.canteen-page {
+    display: flex;
+    flex-direction: row;
+    gap: 150px;
+
+    .left-pannel {
+        width: 50%;
+        height: 100vh;
+        padding: 10px;
+        
+
+        .title {
+            padding: 10px;
+            margin: 0;
+            margin-left: auto;
+            margin-right: auto;
+
+            color: $secondary-seagreen;
+
+            font-size: 32px;
+
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid $powder-orange;
+
+        }
+        .pattern {
+            margin: 0;
+            padding: 0;
+            background-image: url("./../../../public/assets/white-triangle-pattern.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            width: 90%;
+            height: 20%;
+            border-top-right-radius: 15px;
+            border-radius: 12px;
+        }
+
+        .new-item {    
+            display: flex;
+            flex-direction: column;   
+            gap: 20px;
+
+            background-color: rgba($color: $secondary-seagreen, $alpha: .92);
+            width: 100%;
+            height: 100%;
+            padding: 0px;
+            margin: 0;
+
+            border-radius: 12px;
+
+
+
+            .field{
+                display: flex;
+                flex-direction: column;
+                padding-top: 10px;
+
+                .select-type {
+                    width: 50%;
+                    color: $secondary-seagreen;
+                }
+
+                .inputAmount{
+                    width: 10%;
+                    color: $secondary-seagreen;
+                }
+
+                label {
+                    padding: 10px;
+                    color: white;
+                    font-size: 22px;
+                }
+            }
+            .add-button {
+                float: right;
+                
+                width: 20%;
+                color: $secondary-seagreen;
+                border: none;
+                border-radius: 5px;
+                box-shadow: 0 5px $powder-orange;
+                padding: auto;
+                margin-left: 70%;
+            }
+        }
+        
+        .basket {
+            display: flex;
+            flex-direction: column;   
+            gap: 20px;
+
+            border: 2px solid $primary-seagreen;
+            width: 90%;
+            height: 50%;
+            padding: 0px;
+            margin: 0;
+
+            border-radius: 12px;
+
+            .item {
+                display: flex;
+                flex-direction: column;   
+                gap: 5px;
+
+                width: 90%;
+                border-bottom: 2px solid $powder-orange;
+                margin: 2%;
+            }
+
+            .buttons {
+                display: flex;
+                flex-direction: row; 
+                width: 100%;
+                gap: 50%;
+                margin-bottom: 15px;
+
+                .buy-button {
+                    float: inline-end;
+                    
+                    width: 20%;
+                    color: white;
+                    background-color: $secondary-seagreen;
+                    border: none;
+                    border-radius: 5px;
+                    box-shadow: 0 5px $powder-orange;
+                    padding: auto;
+                }
+    
+                .delete-button {
+                    float: inline-start;
+                    
+                    width: 20%;
+                    color: $secondary-seagreen;
+                    border: none;
+                    border-radius: 5px;
+                    box-shadow: 0 5px $powder-orange;
+                    padding: auto;
+                    margin-left: 5%;
+                }
+            }
+
+            label {
+                padding: 10px;
+                color: black;
+                font-size: 18px;
+            }
+
+            span {
+                color: $secondary-seagreen;
+            }
+        }
+    }
+
+    .right-pannel {
+        width: 400px;
+        height: 350px;
+
+
+        background-image: url("./../../../public/assets/white-triangle-pattern.jpg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+
+        margin-top: 80px;
+
+        border-radius: 12px;
+
+        .block-shadow {    
+            display: flex;
+            flex-direction: column;   
+
+            background-color: rgba($color: $secondary-seagreen, $alpha: .92);
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+
+            border-radius: 12px;
+        }
+
+        .title {
+            padding: 0;
+            margin: 0;
+            margin-left: auto;
+            margin-right: auto;
+
+            color: white;
+
+            font-size: 32px;
+
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid $powder-orange;
+
+        }
+
+        .user-meals-report {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-left: 50px;
+            margin-right: 130px;
+            margin-top: 30px;
+
+            .user-meal {
+                display: flex;
+                flex-direction: row;
+                gap:  15px;    
+                justify-content: space-between;
+
+                font-size: 22px;
+
+                span {
+                    color: white;
+                }
+
+                label {
+                    color: $powder-orange;
+                }
+            }
+        }
+    }
+}
