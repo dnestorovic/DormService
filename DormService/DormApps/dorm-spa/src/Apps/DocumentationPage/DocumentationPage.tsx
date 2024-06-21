@@ -168,7 +168,7 @@ export default function DocumentationPage() {
                     {grade === '1' && degree === 'I' && (
                         <div>
                             <div className="form-row">
-                                <label>PO:</label>
+                                <label>Average grade during studies:</label>
                                 <input type="text" value={PO} onChange={handlePOChange} />
                             </div>
                             <div className="form-row">
@@ -180,15 +180,15 @@ export default function DocumentationPage() {
                     {( (degree === "I" && (grade === "2" || grade === "3" || grade === "4")) || degree === "II" || degree === "III") && (
                         <div>
                             <div className="form-row">
-                                <label>PO:</label>
+                                <label>Average grade during studies:</label>
                                 <input type="text" value={PO} onChange={handlePOChange} />
                             </div>            
                             <div className="form-row">
-                                <label>ESPB:</label>
+                                <label>Number of earned ESPB points:</label>
                                 <input type="text" value={ESPB} onChange={handleESPBChange} />
                             </div>
                             <div className="form-row">
-                                <label>C:</label>
+                                <label>Number of years of studies:</label>
                                 <input type="text" value={C} onChange={handleCChange} />
                             </div>
                             <div className="form-row">
@@ -200,11 +200,11 @@ export default function DocumentationPage() {
                     {grade === '5+' && degree === 'I' && (
                         <div>
                             <div className="form-row">
-                                <label>PO:</label>
+                                <label>Average grade during studies:</label>
                                 <input type="text" value={PO} onChange={handlePOChange} />
                             </div>
                             <div className="form-row">
-                                <label>BZI:</label>
+                                <label>Number of leftover exams:</label>
                                 <input type="text" value={BZI} onChange={handleBZIChange} />
                             </div>
                             <div className="form-row">
