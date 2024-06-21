@@ -46,7 +46,7 @@ export default function CanteenPage() {
 
   }
 
-  const chechoutOrder = () => {
+  const checkoutOrder = () => {
     const username = "Natalija";
     var checkout = CanteenService.checkoutOrder(username)
                     .then(() => {setShowBasket(false); updateUserMealsData(username)})
@@ -152,7 +152,7 @@ export default function CanteenPage() {
             <div className="buttons">
               <button className="delete-button" onClick={handleDeleteClick}>Delete Order</button>
               <button className="buy-button" onClick={handleBuyClick}>Buy Meals</button>
-              {!showConfiramtionDialog ? null : <ModalDialog header='Confirm order' submitText='Yes' onSubmit={() => {chechoutOrder(); setShowConfiramtionDialog(false);}} onCancel={() => setShowConfiramtionDialog(false)}>Are you sure you want to chechkout this order?</ModalDialog>}
+              {!showConfiramtionDialog ? null : <ModalDialog header='Confirm order' submitText='Yes' onSubmit={() => {checkoutOrder(); setShowConfiramtionDialog(false);}} onCancel={() => setShowConfiramtionDialog(false)}>Are you sure you want to chechkout this order?</ModalDialog>}
             </div>
           </div>   
         </div>

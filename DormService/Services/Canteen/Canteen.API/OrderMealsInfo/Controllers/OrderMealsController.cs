@@ -94,7 +94,6 @@ namespace Canteen.API.OrderMealsInfo.Controllers
             var order = await _repository.GetOrder(username);
             if (order == null)
             {
-                _logger.LogInformation("No order----------------------------------");
                 return BadRequest();
             }
 
@@ -143,8 +142,6 @@ namespace Canteen.API.OrderMealsInfo.Controllers
             {
                 _logger.LogInformation("Error while calling Payment service: {message}",  e.Message);
             }
-
-            _logger.LogInformation("End----------------------------------");
 
             return BadRequest();
 
