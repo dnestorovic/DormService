@@ -36,61 +36,56 @@ namespace Documentation.API.Controllers
             return Ok(docList);
         }
 
-
         [HttpGet("get-document/{studentId}/{documentName}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetDocument(string studentId, string documentName)
+        public async Task<IActionResult> GetDocument(string studentId, string documentName)
         {
             var doc = await _repository.GetDocument(studentId, documentName);
-            if (doc is null)
+            if (doc == null || doc.Content == null || doc.Content.Length == 0)
             {
-                return Ok(null);
-            }
-            byte[] pdfBytes = doc.Content;
-
-            // Check if pdfBytes is not null and contains data
-            if (pdfBytes != null && pdfBytes.Length > 0)
-            {
-                // Return the PDF file as a FileStreamResult
-                return File(pdfBytes, "application/pdf", doc.Title);
-            }
-            else
-            {
-                // Handle case where pdfBytes is null or empty
                 return NotFound();
             }
+
+            return File(doc.Content, "application/pdf", doc.Title);
         }
 
-
-        [HttpPost("upload/{studentId}/{documentName}")]
-        public async Task<IActionResult> UploadDocument(string studentId, string documentName, IFormFile file, [FromForm] string title)
+        [HttpPost("upload/{studentId}/{emailAddress}")]
+        public async Task<IActionResult> UploadDocument(string studentId, string emailAddress, IFormFile file, [FromForm] string title)
         {
-            if (file == null || file.Length == 0)
+            try
             {
-                return BadRequest("File is empty or missing");
-            }
-
-            using (var memoryStream = new System.IO.MemoryStream())
-            {
-                await file.CopyToAsync(memoryStream);
-                byte[] fileBytes = memoryStream.ToArray();
-                
-                var document = new Document
+                if (file == null || file.Length == 0)
                 {
-                    Title = title,
-                    Content = fileBytes
-                };
-
-                var res =  await _repository.AddDocument(studentId, document, documentName);
-
-                Email email = new("tekisooj@gmail.com", "You have successfully submitted " + document.Title, "Documentation submission for student dorm");
-
-                var emailSent = await _emailService.SendEmail(email);
-                if (!emailSent)
-                {
-                    await _emailService.SendEmail(email);
+                    return BadRequest("File is empty or missing");
                 }
-                return Ok("Document uploaded successfully");
+
+                using (var memoryStream = new System.IO.MemoryStream())
+                {
+                    await file.CopyToAsync(memoryStream);
+                    byte[] fileBytes = memoryStream.ToArray();
+
+                    var document = new Document
+                    {
+                        Title = file.FileName,
+                        Content = fileBytes
+                    };
+
+                    var res = await _repository.AddDocument(studentId, document, title);
+
+                    Email email = new(emailAddress, "You have successfully submitted " + document.Title, "Documentation submission for student dorm");
+
+                    var emailSent = await _emailService.SendEmail(email);
+                    if (!emailSent)
+                    {
+                        await _emailService.SendEmail(email);
+                    }
+                    return Ok("Document uploaded successfully");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return StatusCode(500, "Internal server error");
             }
         }
 
