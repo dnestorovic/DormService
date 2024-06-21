@@ -35,7 +35,7 @@ const BaseService = (): IBaseService => {
             },
             body: JSON.stringify(data)
         }).then((res) => {
-            if (res.status > 400) {
+            if (res.status >= 400) {
                 throw new Error('Bad request - invalid data');
             }
 
@@ -57,7 +57,7 @@ const BaseService = (): IBaseService => {
             }
 
             return res;
-        });;
+        });
     }
 
     const head = (url: string) => {
@@ -67,6 +67,12 @@ const BaseService = (): IBaseService => {
             headers: {
                 'Content-Type': 'application/json'
             },
+        }).then((res) => {
+            if (res.status >= 400) {
+                throw new Error('Bad request - invalid data');
+            }
+
+            return res;
         });
     }
 
@@ -83,7 +89,7 @@ const BaseService = (): IBaseService => {
             }
 
             return res;
-        });;
+        });
     }
 
     return { get, post, put, head, delete: deleteItem }
