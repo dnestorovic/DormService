@@ -1,16 +1,21 @@
 interface IBaseService {
     get: (url: string) => Promise<any>;
     post: <T>(url: string, data: T) => Promise<any>;
+    postNoData: <T>(url: string, data: T) => Promise<any>;
     put: <T>(url: string, data: T) => Promise<any>;
     head: (url: string) => Promise<any>;
     delete: (url: string) => Promise<any>;
 }
 
 const BaseService = (): IBaseService => {
+    const token = localStorage.getItem('access-token');
 
     const get = (url: string) => {
         return fetch(url, {
             method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
             mode: 'cors'
         }).then((data) => {
             if (data.status > 400) {
@@ -31,14 +36,30 @@ const BaseService = (): IBaseService => {
         return fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }).then((res) => {
             if (res.status >= 400) {
                 throw new Error('Bad request - invalid data');
             }
+            return res.json();
+        });
+    }
 
+    const postNoData = <T>(url: string, data: T) => {
+        return fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(data)
+        }).then((res) => {
+            if (res.status >= 400) {
+                throw new Error('Bad request - invalid data');
+            }
             return res;
         });
     }
@@ -48,7 +69,8 @@ const BaseService = (): IBaseService => {
         return fetch(url, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }).then((res) => {
@@ -65,7 +87,8 @@ const BaseService = (): IBaseService => {
             method: 'HEAD',
             mode: 'cors',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
         }).then((res) => {
             if (res.status >= 400) {
@@ -81,7 +104,8 @@ const BaseService = (): IBaseService => {
         return fetch(url, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         }).then((res) => {
             if (res.status > 400) {
@@ -92,7 +116,7 @@ const BaseService = (): IBaseService => {
         });
     }
 
-    return { get, post, put, head, delete: deleteItem }
+    return { get, post, postNoData, put, head, delete: deleteItem }
 }
 
 export default BaseService();
