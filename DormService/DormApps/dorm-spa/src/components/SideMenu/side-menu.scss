@@ -111,6 +111,10 @@
         .navigation-documentation .icon {
             background-image: url("../../../public/assets/documentation-icon.png");
         }
+
+        .navigation-logout .icon {            
+            background-image: url("../../../public/assets/logout-icon.png");
+        }
     }
 
     &:hover {

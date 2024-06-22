@@ -1,8 +1,32 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { LogOutUser } from '../../models/User';
+import IdentityService from '../../services/IdentityService';
 
 const SideMenu = () => {
     const [showMenu, setShowMenu] = useState<boolean>(false);
+
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        const username = localStorage.getItem("username");
+        const refreshToken = localStorage.getItem("refresh-token");
+
+        const userState: LogOutUser = {
+            userName: username ? username : undefined,
+            refreshToken: refreshToken ? refreshToken : undefined
+        }
+        console.log(userState);
+
+        IdentityService.logout(userState)
+        .then(() => {
+            localStorage.clear();
+            console.log(localStorage);
+            navigate('/login');
+        })
+        .catch(() => alert("Something went wrong!"));
+
+    }
 
     return (
         <div className="actions-menu" onMouseEnter={() => setShowMenu(true)} onMouseLeave={() => setShowMenu(false)}>
@@ -39,6 +63,10 @@ const SideMenu = () => {
                             <div className={['label', showMenu ? "show-label" : "hide-label"].join(' ')}>Documentation</div>
                         </li>
                     </Link>
+                    <li className='navigation-item navigation-logout' onClick={handleLogout}>
+                        <div className='icon' />
+                        <div className={['label', showMenu ? "show-label" : "hide-label"].join(' ')}>Logout</div>
+                    </li>
                 </ul>
             </div>
         </div>
