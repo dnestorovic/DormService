@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { PageLayout } from '../components/PageLayout/PageLayout';
 
 import LandingPage from './LandingPage/LandingPage';
@@ -21,6 +21,7 @@ function App() {
             <Route path="/payments" element={<PageLayout coverPhoto="payment"><PaymentPage /></PageLayout>} />
             <Route path="/laundry" element={<PageLayout coverPhoto="laundry"><LaudnryPage /></PageLayout>} />
             <Route path="/documentation" element={<PageLayout coverPhoto="documentation"><DocumentationPage /></PageLayout>} />
+            <Route path="*" element={<Navigate to="/login" replace={true} />} />
         </Routes>
     </BrowserRouter>
   );
