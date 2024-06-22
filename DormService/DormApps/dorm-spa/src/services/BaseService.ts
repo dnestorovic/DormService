@@ -7,13 +7,12 @@ interface IBaseService {
 }
 
 const BaseService = (): IBaseService => {
-    const token = localStorage.getItem('access-token');
 
     const get = (url: string) => {
         return fetch(url, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             },
             mode: 'cors'
         }).then((data) => {
@@ -36,7 +35,7 @@ const BaseService = (): IBaseService => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             },
             body: JSON.stringify(data)
         }).then((res) => {
@@ -57,7 +56,7 @@ const BaseService = (): IBaseService => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             },
             body: JSON.stringify(data)
         }).then((res) => {
@@ -75,7 +74,7 @@ const BaseService = (): IBaseService => {
             mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             },
         }).then((res) => {
             if (res.status >= 400) {
@@ -92,7 +91,7 @@ const BaseService = (): IBaseService => {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             }
         }).then((res) => {
             if (res.status > 400) {
