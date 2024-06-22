@@ -97,6 +97,13 @@ namespace Payment.Common.Repository
 
         public async Task<bool> ReduceCredit(string studentID, int amount)
         {
+            // Checking if there is student with the passed studentID
+            var studentDebtsExists = await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
+            if (studentDebtsExists == null)
+            {
+                return false;
+            }
+
             // Checking if there is enough credit
             var studentDebts = await GetStudentDebts(studentID);
             if (amount < 0 || amount > studentDebts.credit)
