@@ -5,6 +5,7 @@ import PaymentService from './services/PaymentService';
 import { Notification, NotificationType } from '../../components/Notifications/Notification';
 import { ModalDialog } from '../../components/Modals/ModalDialog';
 import { getRole } from '../../Utils/TokenUtil';
+import { useNavigate } from 'react-router-dom';
   
 export default function PaymentPage() {
   const [debtData, setDebtData] = useState<StudentDebts>();
@@ -25,8 +26,13 @@ export default function PaymentPage() {
   const lastName = localStorage.getItem("last-name") ?? "";
   const username = localStorage.getItem("username") ?? "";
 
+  const navigate = useNavigate();
 
   useMount(() => {
+    if (localStorage.getItem("username") === null) {
+      navigate('/login');
+    }
+
     const userIsAdmin = checkIfUserIsAdmin(); 
     setIsAdmin(userIsAdmin);
 
