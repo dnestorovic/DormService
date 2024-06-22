@@ -21,8 +21,6 @@ export default function Login() {
     };
 
     const handleLogin = () => {
-        console.log(credentials);
-        console.log(registerUser);
         if (credentials.password === undefined || credentials.userName === undefined) {
             alert("All fields must be populated");
             return;
@@ -37,7 +35,6 @@ export default function Login() {
                 localStorage.setItem("email", tokens.email);
                 localStorage.setItem("first-name", tokens.firstName);
                 localStorage.setItem("last-name", tokens.lastName);
-                console.log(localStorage);
 
                 navigate("/payments");
             })

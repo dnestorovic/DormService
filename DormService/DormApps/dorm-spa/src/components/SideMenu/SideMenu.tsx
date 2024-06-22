@@ -13,15 +13,13 @@ const SideMenu = () => {
         const refreshToken = localStorage.getItem("refresh-token");
 
         const userState: LogOutUser = {
-            userName: username ? username : undefined,
-            refreshToken: refreshToken ? refreshToken : undefined
+            userName: username || undefined,
+            refreshToken: refreshToken || undefined
         }
-        console.log(userState);
 
         IdentityService.logout(userState)
         .then(() => {
             localStorage.clear();
-            console.log(localStorage);
             navigate('/login');
         })
         .catch(() => alert("Something went wrong!"));

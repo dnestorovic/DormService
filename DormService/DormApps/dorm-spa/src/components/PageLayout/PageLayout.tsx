@@ -1,6 +1,7 @@
 import React, {ReactNode, useEffect, useState} from 'react'
 import SideMenu from '../SideMenu/SideMenu'
 import { useMount } from 'react-use'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
     coverPhoto: string,
@@ -11,16 +12,17 @@ type Props = {
 export const PageLayout = (props: Props) => {
   const [showIntro, setShowIntro] = useState<boolean>(false);
 
-    useEffect(() => {
-        setShowIntro(true);
-        setTimeout(() => {
-            setShowIntro(false);
-        }, 5600);
-    }, [props.coverPhoto]);
+  useEffect(() => {
+      setShowIntro(true);
+      setTimeout(() => {
+          setShowIntro(false);
+      }, 5600);
+  }, [props.coverPhoto]);
 
-    function Capitalize(word : string){
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    }
+  function Capitalize(word : string){
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
 
   return (
     <div className='page-layout'>

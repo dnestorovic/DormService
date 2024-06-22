@@ -1,7 +1,6 @@
 interface IBaseService {
     get: (url: string) => Promise<any>;
     post: <T>(url: string, data: T) => Promise<any>;
-    postNoData: <T>(url: string, data: T) => Promise<any>;
     put: <T>(url: string, data: T) => Promise<any>;
     head: (url: string) => Promise<any>;
     delete: (url: string) => Promise<any>;
@@ -44,26 +43,14 @@ const BaseService = (): IBaseService => {
             if (res.status >= 400) {
                 throw new Error('Bad request - invalid data');
             }
-            return res.json();
-        });
-    }
-
-    const postNoData = <T>(url: string, data: T) => {
-        return fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(data)
-        }).then((res) => {
-            if (res.status >= 400) {
-                throw new Error('Bad request - invalid data');
+            const contentType = res.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                return res.json();
+            } else {
+                return res;
             }
-            return res;
         });
     }
-
 
     const put = <T>(url: string, data: T) => {
         return fetch(url, {
@@ -116,7 +103,7 @@ const BaseService = (): IBaseService => {
         });
     }
 
-    return { get, post, postNoData, put, head, delete: deleteItem }
+    return { get, post, put, head, delete: deleteItem }
 }
 
 export default BaseService();

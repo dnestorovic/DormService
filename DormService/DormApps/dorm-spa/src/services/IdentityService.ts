@@ -9,20 +9,18 @@ interface IIdentityService {
 }
 
 const IdentityService: () => IIdentityService = () => {
-    const baseUrl = 'http://localhost:4000/api/v1/Authentication/Login';
-    const registerUrl = 'http://localhost:4000/api/v1/Authentication/RegisterStudent';
-    const logOutUrl = 'http://localhost:4000/api/v1/Authentication/Logout'
+    const baseUrl = 'http://localhost:4000/api/v1/Authentication/';
 
     const login = (cred: Credentials) => {
-        return BaseService.post<Credentials>(baseUrl, cred);
+        return BaseService.post<Credentials>(`${baseUrl}Login`, cred);
     }
 
     const register = (userInfo: User) => {
-        return BaseService.postNoData<User>(registerUrl, userInfo);
+        return BaseService.post<User>(`${baseUrl}RegisterStudent`, userInfo);
     }
 
     const logout = (logoutInfo: LogOutUser) => {
-        return BaseService.postNoData<LogOutUser>(logOutUrl, logoutInfo);
+        return BaseService.post<LogOutUser>(`${baseUrl}Logout`, logoutInfo);
     }
 
     return { login, register, logout };
