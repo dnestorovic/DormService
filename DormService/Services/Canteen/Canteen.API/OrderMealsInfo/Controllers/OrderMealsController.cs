@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Canteen.API.OrderMealsInfo.Controllers
 {
-    //[Authorize(Roles = "Student")]
+    [Authorize(Roles = "Student")]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class OrderMealsController : ControllerBase
@@ -32,10 +32,10 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         [ProducesResponseType(typeof(OrderMeals), StatusCodes.Status200OK)]
         public async Task<ActionResult<OrderMeals>> GetOrder(string username)
         {
-            //if (User.FindFirst(ClaimTypes.Name).Value != username)
-            //{
-            //   return Forbid();
-            //}
+            if (User.FindFirst(ClaimTypes.Name).Value != username)
+            {
+               return Forbid();
+            }
 
             var order = await _repository.GetOrder(username);
             return Ok(order ?? new OrderMeals(username));
@@ -45,10 +45,10 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         [ProducesResponseType(typeof(OrderMeals), StatusCodes.Status200OK)]
         public async Task<ActionResult<OrderMeals>> UpdateOrder([FromBody] NewOrderItem order)
         {
-            //if (User.FindFirst(ClaimTypes.Name).Value != order.Username)
-            //{
-            //    return Forbid();
-            //}
+            if (User.FindFirst(ClaimTypes.Name).Value != order.Username)
+            {
+                return Forbid();
+            }
             var oldOrder = await _repository.GetOrder(order.Username) ?? new OrderMeals(order.Username);
 
             var exists = oldOrder.Items.Find(p => p.MealType == order.MealType);
@@ -69,10 +69,10 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<ActionResult> DeleteOrder(string username)
         {
-            //if (User.FindFirst(ClaimTypes.Name).Value != username)
-            //{
-            //    return Forbid();
-            //}
+            if (User.FindFirst(ClaimTypes.Name).Value != username)
+            {
+                return Forbid();
+            }
 
             await _repository.DeleteOrder(username);
             return Ok();
@@ -86,10 +86,10 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserMeals>> Checkout(string username)
         {
-            //if (User.FindFirst(ClaimTypes.Name).Value != username)
-            //{
-            //    return Forbid();
-            //}
+            if (User.FindFirst(ClaimTypes.Name).Value != username)
+            {
+                return Forbid();
+            }
 
             var order = await _repository.GetOrder(username);
             if (order == null)
