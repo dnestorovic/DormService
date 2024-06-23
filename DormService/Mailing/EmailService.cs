@@ -27,8 +27,30 @@ namespace Mailing
             email.To.Add(MailboxAddress.Parse(emailRequest.To));
             email.Subject = emailRequest.Subject;
 
+            string htmlString = """
+            <html>
+            <head>
+                <title>Dorm Service</title>
+            </head>
+            <body>
+                <h1>Hello, 
+            """
+            + emailRequest.To.ToString()
+            + """
+                !</h1>
+                <p>
+            """
+            + emailRequest.Body.ToString()
+            + """
+                </p>
+                <p>Best Regards,<br />Your Dorm Service Team!</p>
+            </body>
+            </html>
+            """;
+
+
             var builder = new BodyBuilder();
-            builder.HtmlBody = emailRequest.Body;
+            builder.HtmlBody = htmlString;
             builder.TextBody = emailRequest.Body;
             email.Body = builder.ToMessageBody();
 
