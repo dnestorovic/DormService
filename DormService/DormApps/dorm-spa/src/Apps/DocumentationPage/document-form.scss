@@ -5,14 +5,17 @@
 
     .document-button {
         margin-right: auto;
-        margin-left: 10px;
+
+
+        
+                    
+        width: 20%;
+        color: $secondary-seagreen;
         border: none;
-        border-radius: 4px;
-
-        width: 180px;
-
-        background-color: $powder-orange;
-        color: white;
+        border-radius: 5px;
+        box-shadow: 0 5px $powder-orange;
+        padding: auto;
+        margin-left: 5%;
         
         span {
             font-size: 16px;

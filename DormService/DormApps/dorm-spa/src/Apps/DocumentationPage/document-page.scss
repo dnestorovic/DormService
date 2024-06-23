@@ -5,17 +5,17 @@
     height: 100vh;
 
     display: flex;
-    flex-direction: column; /* Stack panels vertically */
-    justify-content: flex-start; /* Align items at the top */
+    flex-direction: column; 
+    justify-content: flex-start; 
 
     .top-panel {
-        width: 90%; /* Take full width */
-        height: auto; /* Auto height */
-        margin-bottom: 20px; /* Space between top-panel and left-panel */
-        display: flex; /* Use flexbox for horizontal layout */
-        justify-content: space-between; /* Space between items */
-        align-items: center; /* Center items vertically */
-        padding: 0 20px; /* Add padding for spacing */
+        width: 90%; 
+        height: auto; 
+        margin-bottom: 20px;
+        display: flex; 
+        justify-content: space-between;
+        align-items: center; 
+        padding: 0 20px;
         .input-field{
             background-color: $powder-orange;
         }
@@ -31,9 +31,9 @@
     }
 
     .parentDiv {
-        display: flex; /* Use flexbox for horizontal layout */
-        justify-content: space-between; /* Space between left-panel and right-panel */
-        width: 100%; /* Take full width of the container */
+        display: flex; 
+        justify-content: space-between; 
+        width: 100%; 
     }
 
 
@@ -44,19 +44,25 @@
     }
 
     h1 {
-        color: $powder-orange;
-        margin: 0;
+
         padding: 10px;
-        border-bottom: 2px solid $secondary-seagreen;
-        border-radius: 3%;
-        background-color: $secondary-seagreen;
+        margin: 0;
+        margin-left: auto;
+        margin-right: auto;
+
+        color: $secondary-seagreen;
+
+        font-size: 32px;
+
+        margin-top: 15px;
+        border-bottom: 2px solid $powder-orange;
     }
 
     .left-panel {
         border: 2px solid $secondary-seagreen;
         border-radius: 3%;
-        padding: 20px; /* Add padding for better spacing */
-        width: 43%; /* Adjust width based on desired layout */
+        padding: 20px;
+        width: 43%;
         height: 60vh;
         margin-top: 20px;
         margin-left: 2%;
@@ -70,19 +76,19 @@
 
 
         .input-field {
-            background-color: $powder-orange; /* Orange background color for the input field */
-            border: none; /* Remove border for the input field */
-            padding: 8px; /* Add padding for better appearance */
-            margin-left: 10px; /* Adjust margin for spacing */
-            width: 100%; /* Take full width */
+            background-color: $powder-orange;
+            border: none; 
+            padding: 8px;
+            margin-left: 10px; 
+            width: 100%; 
         }
     }
 
     .right-panel {
         border: 2px solid $secondary-seagreen;
         border-radius: 3%;
-        padding: 20px; /* Add padding for better spacing */
-        width: 43%; /* Adjust width based on desired layout */
+        padding: 20px;
+        width: 43%; 
         height: 60vh;
         margin-top: 20px;
         margin-right: 2%;
@@ -102,27 +108,24 @@
         }
         
         .submit-button {
+            
             height: 30%;
-            margin-right: auto;
-            margin-left: 10px;
             border: none;
-            border-radius: 3%;
-    
             width: 180px;
     
-            background-color: $powder-orange;
-            color: white;
+            float: inline-start;
             
-            span {
-                font-size: 16px;
-                color: white;
-                display: block;
-                margin-top: -4px;
-                padding: 0;    
-            }
+            width: 20%;
+            color: white;
+            background-color: $secondary-seagreen;
+            border-radius: 5px;
+            box-shadow: 0 5px $powder-orange;
+            padding: auto;
+
         }
 
         .form-row {
+            margin-top: 5px;
             margin-right: auto;
             margin-left: 10px;
             border: none;

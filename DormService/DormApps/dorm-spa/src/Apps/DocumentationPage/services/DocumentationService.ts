@@ -21,7 +21,7 @@ const DocumentationService: () => IDocumentationService = () => {
 
     const fetchDocumentationList = async (username: string): Promise<DocumentationList> => {
         try {
-            const response = await fetch(`http://localhost:8005/api/v1/DocumentationList/${username}`);
+            const response = await fetch(`http://localhost:8005/DocumentationList/${username}`);
             
             if (!response.ok) {
                 throw new Error(`Failed to fetch documentation list for ${username}`);
@@ -50,7 +50,7 @@ const DocumentationService: () => IDocumentationService = () => {
     }
 } catch (error) {
     console.error('Error fetching documentation list:', error);
-    throw error; // Propagate the error or handle it appropriately
+    throw error;
 }
 };
 
@@ -59,7 +59,7 @@ const DocumentationService: () => IDocumentationService = () => {
         formData.append("file", file);
         formData.append("title", title);
     
-        const url = `http://localhost:8005/api/v1/DocumentationList/upload/${username}/${email}}`;
+        const url = `http://localhost:8005/DocumentationList/upload/${username}?emailAddress=${email}}`;
         
         return await fetch(url, {
             method: 'POST',
@@ -73,7 +73,7 @@ const DocumentationService: () => IDocumentationService = () => {
     };
 
     const downloadFile = async (username: string, fileName: string) => {
-        const url = `http://localhost:8005/api/v1/DocumentationList/get-document/${username}/${fileName}`;
+        const url = `http://localhost:8005/DocumentationList/get-document/${username}/${fileName}`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -97,7 +97,7 @@ const DocumentationService: () => IDocumentationService = () => {
     };
 
     const deleteFile = async(username: string, fileName: string) => {
-        const url = `http://localhost:8005/api/v1/DocumentationList/delete/${username}/${fileName}`
+        const url = `http://localhost:8005/DocumentationList/delete/${username}/${fileName}`
         return await fetch(url, {
             method: 'DELETE',
             headers: {
@@ -107,7 +107,7 @@ const DocumentationService: () => IDocumentationService = () => {
     }
 
     const getMissingDocumentationList = async (username: string): Promise<any> => {
-        const url = `http://localhost:8005/api/v1/DocumentationList/get-missing/${username}`;
+        const url = `http://localhost:8005/DocumentationList/get-missing/${username}`;
         return await fetch(url, {
             method: 'GET',
             headers: {

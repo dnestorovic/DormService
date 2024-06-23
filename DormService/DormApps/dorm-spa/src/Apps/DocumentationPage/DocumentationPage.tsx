@@ -6,6 +6,7 @@ import GradeDegreeSelection from './GradeDegreeSelection';
 import { useMount } from 'react-use';
 import { useNavigate } from 'react-router-dom';
 import { getRole } from '../../Utils/TokenUtil';
+import { NotificationType, Notification } from '../../components/Notifications/Notification';
 
 export default function DocumentationPage() {
     const [username, setUsername] = useState<string>('teodoravasic');
@@ -19,16 +20,20 @@ export default function DocumentationPage() {
     const [BZI, setBZI] = useState<string>(''); // State for BZI input value
     const [BB, setBB] = useState<string>('___');
     const [keysToShowDocumentList, setKeysToShow] = useState<Array<keyof DocumentationList>>([]);
+    const [showNotification, setShowNotification] = useState<{type: NotificationType, message: string}>();
+
     const documentationService = DocumentationService;
 
     const navigate = useNavigate();
     useMount(() => {
+        //Admin user should not be able to see this pae so it should be redirected to login page
         if (localStorage.getItem("username") === null || getRole() === "Administrator") {
             navigate('/login');
             return ;
         }
     });
     useEffect(() => {
+        //On any change regarding the uploaded/deleted filea we should update the display
         const fetchData = async () => {
             try {
                 const data = await documentationService.fetchDocumentationList(username);
@@ -41,23 +46,37 @@ export default function DocumentationPage() {
         fetchData();
     }, [documentationService, username]);
 
+
+    //Send upload gile request to backend and show notification with response
     const handleUpload = async (key: keyof DocumentationList, file: File) => {
         console.log(`Uploading ${key}`, file);
 
         const response = await documentationService.uploadFile(username, email, file, key);
 
-        const data = await documentationService.fetchDocumentationList(username);
-        setDocuments(data);
+        await documentationService.fetchDocumentationList(username).then(response=>{
+            
+            setDocuments(response);
+            setShowNotification({type: NotificationType.Success, message: "Document uploaded successfully!"}); // OK
+        }
+
+        ).catch(() => setShowNotification({type: NotificationType.Error, message: "Something went wrong!"})); // Something went wrong
+
     };
 
+    //Send request to download file to backend
     const handleDownload = async (key: keyof DocumentationList) => {
         console.log(`Downloading ${key}`);
         await documentationService.downloadFile(username, key);
     };
 
+    //Send delete request to backend and show notification with response
     const handleDelete = async (key: keyof DocumentationList) => {
         console.log(`Deleting ${key}`);
-        await documentationService.deleteFile(username, key);
+        await documentationService.deleteFile(username, key).then(()=>{
+            setShowNotification({type: NotificationType.Success, message: "Document deleted successfully!"})
+        }).catch(()=> {
+            setShowNotification({type: NotificationType.Error, message: "Something went wrong!"})
+        })
     };
 
     // Function to handle grade change
@@ -109,8 +128,8 @@ export default function DocumentationPage() {
         }
     };
 
-    // Function to update keys to show based on grade and degree
     const updateKeysToShow = (selectedGrade: string, selectedDegree: string) => {
+        // Function to update form keys to show based on grade and degree
         const newKeysToShow: Array<keyof DocumentationList> = [];
         if(selectedGrade == "" || selectedDegree ==""){
             setKeysToShow(newKeysToShow);
@@ -165,10 +184,13 @@ export default function DocumentationPage() {
                                     return null;
                                 }
                             })}
+                            {!showNotification ? null : <Notification type={showNotification.type} text={showNotification.message || ''} onRemove={() => setShowNotification(undefined)} />}
+
                         </div>
                     ) : (
                         <p>Loading...</p>
                     )}
+                
                 </div>
                 <div className="right-panel panel">
                     <h1>
@@ -183,6 +205,7 @@ export default function DocumentationPage() {
                             </div>
                             <div className="form-row">
                                 <button className="submit-button" onClick={handleSubmit}>Submit</button>
+                                <br></br>
                                 <h3>You have {BB} points</h3>
                             </div>
                         </div>
@@ -203,6 +226,7 @@ export default function DocumentationPage() {
                             </div>
                             <div className="form-row">
                                 <button className="submit-button" onClick={handleSubmit}>Submit</button>
+                                <br></br>
                                 <h3>You have {BB} points</h3>
                             </div>
                         </div>
@@ -219,6 +243,7 @@ export default function DocumentationPage() {
                             </div>
                             <div className="form-row">
                                 <button className="submit-button" onClick={handleSubmit}>Submit</button>
+                                <br></br>
                                 <h3>You have {BB} points</h3>
                             </div>
                         </div>
