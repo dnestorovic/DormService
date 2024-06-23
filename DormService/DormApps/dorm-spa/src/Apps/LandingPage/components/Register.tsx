@@ -28,6 +28,11 @@ export default function Register() {
             return;
         }
 
+        if (registerUser.password.length < 8) {
+            alert("Password must have at least 8 characters.");
+            return;
+        }
+
         IdentityService.register(registerUser)
             .then(() => {
                 // After being successfully registered, user can log in

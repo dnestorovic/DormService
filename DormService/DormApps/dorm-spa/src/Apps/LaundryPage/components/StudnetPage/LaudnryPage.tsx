@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import DropdownMenu from './components/DropdownMenu/DropdownMenu';
+import DropdownMenu from '../DropdownMenu/DropdownMenu';
 import { useMount } from 'react-use';
-import { Timeframes, WashingMachine } from './models/WashingMachine';
-import UserReservationsService from './services/UserReservationsService';
-import WashingMachinesTabel from './components/WashingMachinesTable/WashingMachinesTable';
-import WashingMachineReservationModal from './components/WashingMachineReservationModal/WashingMachineReservationModal';
-import { Notification, NotificationType } from '../../components/Notifications/Notification';
-import DiscountWashingMachinesTabel from './components/DiscountWashingMachinesTable/DiscountWashingMachinesTable';
-import AlreadyReservedMachinesCard from './components/AlreadyReservedMachinesCard/AlreadyReservedMachinesCard';
+import { Timeframes, WashingMachine } from '../../models/WashingMachine';
+import UserReservationsService from '../../services/UserReservationsService';
+import WashingMachinesTabel from '../WashingMachinesTable/WashingMachinesTable';
+import WashingMachineReservationModal from '../WashingMachineReservationModal/WashingMachineReservationModal';
+import { Notification, NotificationType } from '../../../../components/Notifications/Notification';
+import DiscountWashingMachinesTabel from '../DiscountWashingMachinesTable/DiscountWashingMachinesTable';
+import AlreadyReservedMachinesCard from '../AlreadyReservedMachinesCard/AlreadyReservedMachinesCard';
 
 export default function LaudnryPage() {
 
@@ -38,7 +38,7 @@ export default function LaudnryPage() {
   const getWashingMachines = (date: string) => {
     UserReservationsService.getWashingMachinesByDate(date.replaceAll("/", "."))
       .then(machines => setAvailabelMachines([...machines]))
-      .catch(() => setShowNotification({type: NotificationType.Error, message: "Machines for the given date not availabel"}))
+      .catch(() => setShowNotification({type: NotificationType.Error, message: "Machines for the given date not available"}))
   }
 
   const getReservedMachinesForStudent = () => {

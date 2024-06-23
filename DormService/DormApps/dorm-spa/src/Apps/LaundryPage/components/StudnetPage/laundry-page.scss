@@ -1,4 +1,4 @@
-@import "./../../design/colors.scss";
+@import "./../../../../design/colors.scss";
 .laundry-page {
 
     display: flex;
@@ -13,6 +13,7 @@
 
     .left-panel {
         border: 2px solid $secondary-seagreen;
+        border-radius: 4px;
 
         h1 {
             color: $powder-orange;
@@ -55,7 +56,7 @@
         }
 
         .discount-button::before {
-            content: url("./../../../public/assets/promo.gif");
+            content: url("./../../../../../public/assets/promo.gif");
             width: 5px;
             height: 5px;
             z-index: 1;
