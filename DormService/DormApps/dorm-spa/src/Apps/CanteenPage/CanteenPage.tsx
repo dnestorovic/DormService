@@ -50,7 +50,7 @@ export default function CanteenPage() {
       console.log(response);
 
       setUserMealsData(response);
-      setShowNotification({type: NotificationType.Success, message: "Transaction completed successfully!"}); // OK
+      setShowNotification({type: NotificationType.Success, message: "Successfully bought new meals!"}); // OK
     })
     .catch(() => setShowNotification({type: NotificationType.Error, message: "Something went wrong, check you credit status!"})); // Something went wrong
 
@@ -59,7 +59,7 @@ export default function CanteenPage() {
   const checkoutOrder = () => {
     var checkout = CanteenService.checkoutOrder(username, email)
                     .then(() => {setShowBasket(false); updateUserMealsData()})
-                    .catch(() => setShowNotification({type: NotificationType.Error, message: "Transaction failed!"})); // Something went wrong
+                    .catch(() => setShowNotification({type: NotificationType.Error, message: "Something went wrong, check you credit status!"})); // Something went wrong
     console.log(checkout);
    } 
 
