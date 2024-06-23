@@ -4,11 +4,14 @@ using Canteen.API.UserMealsInfo.Data;
 using Canteen.API.UserMealsInfo.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Mailing;
 using Microsoft.IdentityModel.Tokens;
 using Payment.GRPC.Protos;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEmailService(builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddStackExchangeRedisCache(options =>

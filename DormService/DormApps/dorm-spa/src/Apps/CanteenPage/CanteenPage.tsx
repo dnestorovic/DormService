@@ -19,6 +19,7 @@ export default function CanteenPage() {
   const [showConfiramtionDialog, setShowConfiramtionDialog] = useState<boolean>(false);
 
   const username: string = localStorage.getItem("username") ?? "";
+  const email: string = localStorage.getItem("email") ?? "";
 
   const navigate = useNavigate();
   useMount(() => {
@@ -56,7 +57,7 @@ export default function CanteenPage() {
   }
 
   const checkoutOrder = () => {
-    var checkout = CanteenService.checkoutOrder(username)
+    var checkout = CanteenService.checkoutOrder(username, email)
                     .then(() => {setShowBasket(false); updateUserMealsData()})
                     .catch(() => setShowNotification({type: NotificationType.Error, message: "Transaction failed!"})); // Something went wrong
     console.log(checkout);
