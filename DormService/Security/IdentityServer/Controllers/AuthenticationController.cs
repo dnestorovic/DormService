@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServer.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AuthenticationController : RegistrationControllerBase
     {

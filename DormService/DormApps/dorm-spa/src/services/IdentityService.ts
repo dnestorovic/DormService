@@ -9,7 +9,7 @@ interface IIdentityService {
 }
 
 const IdentityService: () => IIdentityService = () => {
-    const baseUrl = 'http://localhost:4000/api/v1/Authentication/';
+    const baseUrl = 'http://localhost:4000/api/Authentication/';
 
     const login = (cred: Credentials) => {
         return BaseService.post<Credentials>(`${baseUrl}Login`, cred);

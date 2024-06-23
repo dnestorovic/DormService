@@ -10,22 +10,20 @@ interface IPaymentService {
 
 const PaymentService: () => IPaymentService = () => {
     
-
     const getDebtsByUsername = (username : string) => {
-        return BaseService.get(`http://localhost:8001/api/v1/Debts/${username}`);
+        return BaseService.get(`http://localhost:8001/api/Debts/${username}`);
     };
 
     const updateStudentDebts = (debtUpdate : StudentDebts, emailAddress : string) => {
-        return BaseService.put(`http://localhost:8001/api/v1/Debts?emailAddress=${emailAddress}`, debtUpdate);
+        return BaseService.put(`http://localhost:8001/api/Debts?emailAddress=${emailAddress}`, debtUpdate);
     };
 
-    
     const deleteStudentByUsername = (username : string) => {
-        return BaseService.delete(`http://localhost:8001/api/v1/Debts/${username}`);
+        return BaseService.delete(`http://localhost:8001/api/Debts/${username}`);
     };
 
     const createDefaultStudent = (studentDebts : StudentDebts) => {
-        return BaseService.post(`http://localhost:8001/api/v1/Debts/`, studentDebts);
+        return BaseService.post(`http://localhost:8001/api/Debts/`, studentDebts);
     }
 
     return {getDebtsByUsername, updateStudentDebts, deleteStudentByUsername, createDefaultStudent};
