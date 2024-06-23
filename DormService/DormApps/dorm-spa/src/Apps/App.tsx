@@ -9,6 +9,7 @@ import LaudnryPage from './LaundryPage/LaudnryPage';
 import DocumentationPage from './DocumentationPage/DocumentationPage';
 
 import "./../design/design-ui.scss"
+import Register from './LandingPage/components/Register';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path="/payments" element={<PageLayout coverPhoto="payment"><PaymentPage /></PageLayout>} />
             <Route path="/laundry" element={<PageLayout coverPhoto="laundry"><LaudnryPage /></PageLayout>} />
             <Route path="/documentation" element={<PageLayout coverPhoto="documentation"><DocumentationPage /></PageLayout>} />
+            <Route path="/register" element={<Register />} />
             <Route path="*" element={<Navigate to="/login" replace={true} />} />
         </Routes>
     </BrowserRouter>
