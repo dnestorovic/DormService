@@ -1,6 +1,6 @@
 import { useState } from "react";
 import IdentityService from "../../../services/IdentityService";
-import { Credentials, User } from "../../../models/User";
+import { Credentials } from "../../../models/User";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
