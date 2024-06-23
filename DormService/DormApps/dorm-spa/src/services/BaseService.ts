@@ -92,7 +92,8 @@ const BaseService = (): IBaseService => {
                 'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             }
         }).then((res) => {
-            if (res.status > 400) {
+            console.log(res.status);
+            if (res.status >= 400) {
                 throw new Error('Bad request - invalid data');
             }
 

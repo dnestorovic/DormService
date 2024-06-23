@@ -17,12 +17,17 @@ public class WashingMachineRepository: IWashingMachineRepository
 
     public async Task<bool> DeleteMachines(string id)
     {
-        WashingMachine alreadyReserved = await _context.WashingMachines.Find(wm => (wm._id == id) && wm.Reserved).FirstAsync();
-        if (alreadyReserved != null) {
-            return false;
+        IEnumerable<WashingMachine> allMachines = await _context.WashingMachines.Find(wm => wm.ConfigurationId == id).ToListAsync();
+        if (allMachines == null || !allMachines.Any()) {
+            return true; // machine is not currently in use. Can be deleted
         }
 
-        var result = await _context.WashingMachines.DeleteManyAsync(wm => wm._id == id);
+        WashingMachine alreadyReserved = await _context.WashingMachines.Find(wm => (wm.ConfigurationId == id) && wm.Reserved == true).FirstOrDefaultAsync();
+        if (alreadyReserved != null) {
+            return false; // somebody reserved this machine at some point
+        }
+
+        var result = await _context.WashingMachines.DeleteManyAsync(wm => wm.ConfigurationId == id);
         return result.IsAcknowledged && result.DeletedCount > 0;
     }
 

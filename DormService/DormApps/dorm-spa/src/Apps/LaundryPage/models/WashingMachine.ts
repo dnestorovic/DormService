@@ -3,11 +3,13 @@ export type WashingMachine = {
     id?: string;
     configurationId: string;
     studentId: string;
+    emailAddress: string;
     time: string;
     date: string;
     reserved: boolean;
     spinRate?: number;
     washingTemperature?: number;
+    price?: number;
 };
 
 export type WashingMachineConfigurations = {

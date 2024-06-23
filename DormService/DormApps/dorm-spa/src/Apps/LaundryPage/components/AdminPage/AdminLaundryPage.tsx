@@ -25,13 +25,13 @@ export default function AdminLaundryPage() {
   }
 
   const handleDeleteConfig = () => {
+    setShowDeleteDialog("");
     MachineManagementService.deleteWashingMachineConfiguration(showDeleteDialog)
     .then(() => {
       setShowNotification({type: NotificationType.Success, message: "Configuration deleted successfully"});
       fetchConfigurations();
-      setShowDeleteDialog("");
     })
-    .catch(() => setShowNotification({type: NotificationType.Error, message: "Cannot add new configuration"}));
+    .catch(() => setShowNotification({type: NotificationType.Error, message: "Cannot delete configuration. Machine is already reserved"}));
   }
 
   const handleAddNewConfig = (request: WashingMachineConfigurationRequest) => {

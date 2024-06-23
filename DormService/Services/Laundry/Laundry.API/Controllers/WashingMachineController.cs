@@ -78,7 +78,7 @@ public class WashingMachineController: ControllerBase
     public async Task<ActionResult<bool>> ReserveWashingMachine([FromBody] WashingMachineReservationDTO dto)
     {   
         try {
-            await _grpcService.ReduceCredit(dto.StudentId, 200);
+            await _grpcService.ReduceCredit(dto.StudentId, dto.Price);
         } catch (RpcException e) {
             return BadRequest(e.Message);
         }

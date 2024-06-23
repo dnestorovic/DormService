@@ -95,3 +95,15 @@
         }
     }
 }
+
+.add-configuration-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .form-field {
+        display: flex;
+        justify-content: space-between;
+        width: 450px;
+    }
+}

@@ -8,6 +8,8 @@ import WashingMachineReservationModal from '../WashingMachineReservationModal/Wa
 import { Notification, NotificationType } from '../../../../components/Notifications/Notification';
 import DiscountWashingMachinesTabel from '../DiscountWashingMachinesTable/DiscountWashingMachinesTable';
 import AlreadyReservedMachinesCard from '../AlreadyReservedMachinesCard/AlreadyReservedMachinesCard';
+import { useNavigate } from 'react-router-dom';
+import { getRole } from '../../../../Utils/TokenUtil';
 
 export default function LaudnryPage() {
 
@@ -24,6 +26,10 @@ export default function LaudnryPage() {
   
   const getStudentId = () => {
     return localStorage.getItem("username") || "";
+  }
+
+  const getStudentEmail = () => {
+    return localStorage.getItem("email") || "";
   }
 
   const selectDate = (date: string) => {
@@ -47,12 +53,16 @@ export default function LaudnryPage() {
   }
 
   const reserveMachine = (machine: WashingMachine) => {
-      setReservedMachine(prev => machine);
+      setReservedMachine({...machine, price: 300});
   }
+
+  const reserveDiscountedMachine = (machine: WashingMachine) => {
+    setReservedMachine({...machine, price: 200});
+}
 
   const handleReservation = (reservation: WashingMachine) => {
       setReservedMachine(undefined);
-      UserReservationsService.reserveWashingMachine(reservation, getStudentId())
+      UserReservationsService.reserveWashingMachine(reservation, getStudentId(), getStudentEmail())
         .then(() => {
           setShowNotification({type: NotificationType.Success, message: "Washing machine successfully reserved"})
           selectedDate && getWashingMachines(selectedDate);
@@ -80,6 +90,9 @@ export default function LaudnryPage() {
       setSelectedTime(undefined);
   }
 
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (selectedDate && selectedTime) {
       setGetDiscountMachines([]);
@@ -87,6 +100,15 @@ export default function LaudnryPage() {
   }, [selectedDate, selectedTime]);
 
   useMount(() => {
+    if (localStorage.getItem('username') === undefined) {
+      navigate("/login");
+      return;
+    }
+
+    if (getRole() !== 'Student') {
+      return;
+    }
+
     var availableDates: string[] = [];
     for (let index = 0; index < 7; index++) {
       var nextDay = new Date(Date.now() + index * 24 * 60 * 60 * 1000);
@@ -111,7 +133,7 @@ export default function LaudnryPage() {
                 {selectedDate && selectedTime ? <WashingMachinesTabel machines={availabelMachines.filter(m => m.time === selectedTime)} onReservation={reserveMachine} /> : null}
             </div>
             <div>
-                {getDiscountMachines ? <DiscountWashingMachinesTabel machines={getDiscountMachines} onReservation={reserveMachine}/> : null}
+                {getDiscountMachines ? <DiscountWashingMachinesTabel machines={getDiscountMachines} onReservation={reserveDiscountedMachine}/> : null}
             </div>
         </div>
       </div>
