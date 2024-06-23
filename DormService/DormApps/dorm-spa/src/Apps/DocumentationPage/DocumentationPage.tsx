@@ -3,6 +3,9 @@ import { DocumentationList } from './models/DocumentationListModel';
 import DocumentationService from './services/DocumentationService';
 import DocumentForm from './DocumentForm';
 import GradeDegreeSelection from './GradeDegreeSelection';
+import { useMount } from 'react-use';
+import { useNavigate } from 'react-router-dom';
+import { getRole } from '../../Utils/TokenUtil';
 
 export default function DocumentationPage() {
     const [username, setUsername] = useState<string>('teodoravasic');
@@ -18,6 +21,13 @@ export default function DocumentationPage() {
     const [keysToShowDocumentList, setKeysToShow] = useState<Array<keyof DocumentationList>>([]);
     const documentationService = DocumentationService;
 
+    const navigate = useNavigate();
+    useMount(() => {
+        if (localStorage.getItem("username") === null || getRole() === "Administrator") {
+            navigate('/login');
+            return ;
+        }
+    });
     useEffect(() => {
         const fetchData = async () => {
             try {

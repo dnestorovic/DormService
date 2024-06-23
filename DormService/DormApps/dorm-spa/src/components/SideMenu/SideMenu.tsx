@@ -57,12 +57,13 @@ const SideMenu = () => {
                             <div className={['label', showMenu ? "show-label" : "hide-label"].join(' ')}>Laundry</div>
                         </li>
                     </Link>
-                    <Link to="/documentation">
+                    { getRole() === "Student" && <Link to="/documentation">
                         <li className='navigation-item navigation-documentation'>
                             <div className='icon' />
                             <div className={['label', showMenu ? "show-label" : "hide-label"].join(' ')}>Documentation</div>
                         </li>
                     </Link>
+                    }
                     <li className='navigation-item navigation-logout' onClick={handleLogout}>
                         <div className='icon' />
                         <div className={['label', showMenu ? "show-label" : "hide-label"].join(' ')}>Logout</div>
