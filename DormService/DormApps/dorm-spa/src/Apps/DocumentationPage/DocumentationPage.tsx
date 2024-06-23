@@ -9,8 +9,6 @@ import { getRole } from '../../Utils/TokenUtil';
 import { NotificationType, Notification } from '../../components/Notifications/Notification';
 
 export default function DocumentationPage() {
-    const [username, setUsername] = useState<string>('teodoravasic');
-    const [email, setEmail] = useState<string>('tekisooj@gmail.com');
     const [documents, setDocuments] = useState<DocumentationList | null>(null);
     const [grade, setGrade] = useState<string>(''); // State for grade
     const [degree, setDegree] = useState<string>(''); // State for degree
@@ -21,6 +19,10 @@ export default function DocumentationPage() {
     const [BB, setBB] = useState<string>('___');
     const [keysToShowDocumentList, setKeysToShow] = useState<Array<keyof DocumentationList>>([]);
     const [showNotification, setShowNotification] = useState<{type: NotificationType, message: string}>();
+
+
+    const username: string = localStorage.getItem("username") ?? "";
+    const email: string = localStorage.getItem("email") ?? "";
 
     const documentationService = DocumentationService;
 
@@ -51,15 +53,13 @@ export default function DocumentationPage() {
     const handleUpload = async (key: keyof DocumentationList, file: File) => {
         console.log(`Uploading ${key}`, file);
 
-        const response = await documentationService.uploadFile(username, email, file, key);
-
-        await documentationService.fetchDocumentationList(username).then(response=>{
+        await documentationService.uploadFile(username, email, file, key).then(async () => {
+            setShowNotification({type: NotificationType.Success, message: "Document uploaded successfully!"}) // OK
+            await documentationService.fetchDocumentationList(username).then(response=>{
             
-            setDocuments(response);
-            setShowNotification({type: NotificationType.Success, message: "Document uploaded successfully!"}); // OK
-        }
-
-        ).catch(() => setShowNotification({type: NotificationType.Error, message: "Something went wrong!"})); // Something went wrong
+                setDocuments(response);
+            })
+        }).catch(() => setShowNotification({type: NotificationType.Error, message: "Something went wrong!"})); // Something went wrong
 
     };
 
