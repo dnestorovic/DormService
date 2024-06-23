@@ -14,4 +14,3 @@ message ReduceCreditRequest{
 message ReduceCreditResponse{
 	bool successfulTransaction = 1;
 }
-

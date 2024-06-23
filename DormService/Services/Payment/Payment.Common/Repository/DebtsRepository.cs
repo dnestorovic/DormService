@@ -19,7 +19,6 @@ namespace Payment.Common.Repository
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-
         // Get debts for one student by his studentID
         public async Task<StudentDebts> GetStudentDebts(string studentID)
         {
@@ -87,13 +86,13 @@ namespace Payment.Common.Repository
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
         }
 
+        // Get only credit status by studentID
         public async Task<ReduceCreditDTO> GetStudentCredit(string studentID)
         {
             var studentDebts = await _context.allDebts.Find(s => s.studentID == studentID).FirstOrDefaultAsync();
 
             return  _mapper.Map<ReduceCreditDTO>(studentDebts);
         }
-
 
         public async Task<bool> ReduceCredit(string studentID, int amount)
         {

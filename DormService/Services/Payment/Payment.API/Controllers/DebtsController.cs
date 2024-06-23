@@ -36,7 +36,6 @@ namespace Payment.API.Controllers
         [ProducesResponseType(typeof(StudentDebts), StatusCodes.Status200OK)]
         public async Task<ActionResult> UpdateStudentDebt([FromBody] StudentDebts studentDebts, string emailAddress)
         {
-            
             var successfulUpdate = await _repository.UpdateStudentDebt(studentDebts);
             if (successfulUpdate)
             {
@@ -46,7 +45,6 @@ namespace Payment.API.Controllers
                 {
                     await _emailService.SendEmail(email);
                 }
-
                 return Ok(successfulUpdate);
             }
             else
@@ -61,7 +59,6 @@ namespace Payment.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<StudentDebts>), StatusCodes.Status201Created)]
         public async Task<ActionResult<StudentDebts>> CreateStudent([FromBody] StudentDebts studentDebts)
         {
-
             await _repository.CreateNewStudent(studentDebts);
             return CreatedAtRoute("GetStudentDebts", new { studentID = studentDebts.studentID }, studentDebts);
         }
@@ -71,8 +68,7 @@ namespace Payment.API.Controllers
         [HttpDelete("{studentID}")]
         [ProducesResponseType(typeof(StudentDebts), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteStudent(string studentID)
-        {
-            
+        {   
             var successfulDeletion = await _repository.DeleteStudent(studentID);
             if (successfulDeletion) {
                 return Ok(successfulDeletion);

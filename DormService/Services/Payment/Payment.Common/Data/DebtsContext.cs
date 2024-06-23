@@ -16,6 +16,5 @@ namespace Payment.Common.Data
             allDebts = database.GetCollection<StudentDebts>("Debts");
             StudentDebtsContextSeed.SeedData(allDebts);
         }
-
     }
 }

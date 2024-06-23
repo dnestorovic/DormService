@@ -8,8 +8,9 @@ namespace Payment.Common.Entities
         [BsonId]
         public string studentID { get; set; }
 
-        // All debt types
         public decimal credit {  get; set; }
+
+        // All debt types
         public decimal rent {  get; set; }
         public decimal internet {  get; set; }
         public decimal airConditioning {  get; set; }
@@ -44,8 +45,6 @@ namespace Payment.Common.Entities
             this.credit = credit;
         }
 
-
         public StudentDebts() { }
-
     }
 }
