@@ -140,13 +140,13 @@ namespace Canteen.API.OrderMealsInfo.Controllers
                     await _userMealsRepository.UpdateUserMeals(mealsToAdd);
                     await DeleteOrder(username);
 
-                    Email email = new(emailAddress, "Successfuly added new meals.", "Meals order confirmaion");
+                    Email email = new(emailAddress, "Hi " + username + ",\nYou successfuly bought new meals.\nRegards,\nDormService", "Order meals confirmation");
                     var emailSent = await _emailService.SendEmail(email);
                     if (!emailSent)
                     {
                         await _emailService.SendEmail(email);
                     }
-                    return Ok("Document uploaded successfully");
+                  
                     return Accepted();
                 }
             }
