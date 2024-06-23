@@ -94,10 +94,11 @@ export default function CanteenPage() {
   return (
     <div className='canteen-page'>
       <div className='left-pannel'>
-
-        <div className='title'>Buy New Meals</div>
+        
         <div className="pattern">
           <div className='new-item'>
+          <div className='title'>Buy New Meals</div>
+
             <div className='field' title='Select meal type'>
               <div>
                 <label htmlFor="mealType">Meal type:</label>
@@ -132,8 +133,8 @@ export default function CanteenPage() {
 
         { showBasket &&
         <div>
-          <div className="title">Order</div>
           <div className="basket">
+          <div className="title">Order</div>
             {orderMeals && (
               <div>
                 <div>

@@ -5,26 +5,15 @@
     gap: 150px;
 
     .left-pannel {
+        display: flex;
+        flex-direction: column;
+
         width: 50%;
         height: 100vh;
         padding: 10px;
-        
+        margin-top: 30px;
+        gap: 30px;
 
-        .title {
-            padding: 10px;
-            margin: 0;
-            margin-left: auto;
-            margin-right: auto;
-
-            color: $secondary-seagreen;
-
-            font-size: 32px;
-
-            margin-top: 15px;
-            margin-bottom: 15px;
-            border-bottom: 2px solid $powder-orange;
-
-        }
         .pattern {
             margin: 0;
             padding: 0;
@@ -33,7 +22,7 @@
             background-position: center;
             background-size: cover;
             width: 90%;
-            height: 20%;
+            height: 32%;
             border-top-right-radius: 15px;
             border-radius: 12px;
         }
@@ -51,7 +40,15 @@
 
             border-radius: 12px;
 
-
+            .title {
+                padding: 10px;
+                margin: 0;
+               
+                color: white;
+                font-size: 28px;
+                border-bottom: 2px solid $powder-orange;
+    
+            }
 
             .field{
                 display: flex;
@@ -90,11 +87,10 @@
         .basket {
             display: flex;
             flex-direction: column;   
-            gap: 20px;
 
             border: 2px solid $primary-seagreen;
             width: 90%;
-            height: 50%;
+            height: 100%;
             padding: 0px;
             margin: 0;
 
@@ -109,6 +105,15 @@
                 border-bottom: 2px solid $powder-orange;
                 margin: 2%;
             }
+            .title {
+                padding: 10px;
+                margin: 0;
+               
+                color: $primary-seagreen;
+                font-size: 28px;
+                border-bottom: 2px solid $powder-orange;
+    
+            }
 
             .buttons {
                 display: flex;
@@ -116,6 +121,7 @@
                 width: 100%;
                 gap: 50%;
                 margin-bottom: 15px;
+                margin-top: 15px;
 
                 .buy-button {
                     float: inline-end;
