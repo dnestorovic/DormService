@@ -175,15 +175,15 @@ export default function CanteenPage() {
           <div className='user-meals-report'>
             <div className='user-meal'>
               <label>Breakfast:</label> 
-              <span>{userMealsData?.breakfast || "No Data Found"}</span>
+              <span>{userMealsData?.breakfast || "0"}</span>
             </div>
             <div className='user-meal'>
               <label>Lunch:</label> 
-              <span>{userMealsData?.lunch || "No Data Found"}</span>
+              <span>{userMealsData?.lunch || "0"}</span>
             </div>
             <div className='user-meal'>
               <label>Dinner:</label> 
-              <span>{userMealsData?.dinner || "No Data Found"}</span>
+              <span>{userMealsData?.dinner || "0"}</span>
             </div>
           </div>
         </div>
