@@ -4,6 +4,7 @@ type JwtPayload = {
     [key: string]: string; 
 };
 
+// Extract user role from access token
 export const getRole = () => {
 
     const token = localStorage.getItem("access-token");
@@ -21,5 +22,5 @@ export const getRole = () => {
         return role;
     }
     return '';
-    
+
 }

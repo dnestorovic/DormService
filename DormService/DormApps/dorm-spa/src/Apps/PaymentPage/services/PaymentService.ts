@@ -10,7 +10,6 @@ interface IPaymentService {
 
 const PaymentService: () => IPaymentService = () => {
     
-
     const getDebtsByUsername = (username : string) => {
         return BaseService.get(`http://localhost:8001/api/Debts/${username}`);
     };
@@ -19,7 +18,6 @@ const PaymentService: () => IPaymentService = () => {
         return BaseService.put(`http://localhost:8001/api/Debts?emailAddress=${emailAddress}`, debtUpdate);
     };
 
-    
     const deleteStudentByUsername = (username : string) => {
         return BaseService.delete(`http://localhost:8001/api/Debts/${username}`);
     };

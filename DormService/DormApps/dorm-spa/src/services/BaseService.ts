@@ -29,7 +29,6 @@ const BaseService = (): IBaseService => {
         })
     }
 
-
     const post = <T>(url: string, data: T) => {
         return fetch(url, {
             method: 'POST',
@@ -84,7 +83,6 @@ const BaseService = (): IBaseService => {
             return res;
         });
     }
-
 
     const deleteItem = (url: string) => {
         return fetch(url, {
