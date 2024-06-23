@@ -11,7 +11,7 @@ namespace Documentation.API.Controllers
     
 
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("[controller]")]
     [EnableCors("AllowSpecificOrigin")] // Apply CORS policy to this controller
     public class DocumentationListController : ControllerBase
     {
@@ -49,7 +49,7 @@ namespace Documentation.API.Controllers
             return File(doc.Content, "application/pdf", doc.Title);
         }
 
-        [HttpPost("upload/{studentId}/{emailAddress}")]
+        [HttpPost("upload/{studentId}")]
         public async Task<IActionResult> UploadDocument(string studentId, string emailAddress, IFormFile file, [FromForm] string title)
         {
             try

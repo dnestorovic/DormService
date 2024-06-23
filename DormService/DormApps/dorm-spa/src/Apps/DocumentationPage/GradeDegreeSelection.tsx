@@ -9,6 +9,7 @@ interface GradeDegreeSelectionProps {
     onDegreeChange: (degree: string) => void;
 }
 
+//Custom component that handles selection of grade/degree
 const GradeDegreeSelection: React.FC<GradeDegreeSelectionProps> = ({ grade, onGradeChange, degree, onDegreeChange }) => {
     const gradeOptions = ["1", "2", "3", "4", "5+"];
     const degreeOptions = ["I", "II", "III"];

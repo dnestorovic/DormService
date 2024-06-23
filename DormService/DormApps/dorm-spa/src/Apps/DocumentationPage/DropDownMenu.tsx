@@ -3,10 +3,11 @@ import React from 'react';
 type DropdownMenuProps = {
   options: string[];
   title?: string;
-  selectedValue?: string; // New prop to pass selected value
+  selectedValue?: string;
   onSelect: (option: string) => void; 
 }
 
+//Custom dropdown menu
 const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, options, selectedValue, onSelect }) => {
   return (
     <div className='dropdown-menu'>

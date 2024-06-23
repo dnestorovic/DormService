@@ -12,7 +12,7 @@ type DocumentFormProps = {
 const DocumentForm: React.FC<DocumentFormProps> = ({ id, document, onUpload, onDownload, onDelete }) => {
     const [file, setFile] = useState<File | null>(null);
     const [isDocumentAvailable, setIsDocumentAvailable] = useState<boolean>(!!document);
-    const [fileName, setFileName] = useState<string>(''); // State to hold the selected file name
+    const [fileName, setFileName] = useState<string>('');
     
     const wordsArray = id.split(/(?=[A-Z])/).map(s => s.toUpperCase()).join(" ").replace("AVG", "AVERAGE");
 
