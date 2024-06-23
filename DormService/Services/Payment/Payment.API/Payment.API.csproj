@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Mailing\Mailing.csproj" />
     <ProjectReference Include="..\Payment.Common\Payment.Common.csproj" />
   </ItemGroup>
 
