@@ -131,7 +131,7 @@ export default function DocumentationPage() {
     const updateKeysToShow = (selectedGrade: string, selectedDegree: string) => {
         // Function to update form keys to show based on grade and degree
         const newKeysToShow: Array<keyof DocumentationList> = [];
-        if(selectedGrade == "" || selectedDegree ==""){
+        if(selectedGrade === "" || selectedDegree ===""){
             setKeysToShow(newKeysToShow);
             return;
         }
