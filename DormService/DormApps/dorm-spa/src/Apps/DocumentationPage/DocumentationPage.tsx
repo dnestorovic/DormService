@@ -114,16 +114,43 @@ export default function DocumentationPage() {
     const handleSubmit = () => {
         // Perform calculations or submit the form based on the input values
         if (grade === '1' && degree === 'I') {
-            if(PO === "")
+            if(PO === ""){
                 return;
+            }
+            if(parseFloat(PO)<6 || parseFloat(PO)>10){
+                alert("Average grade must be between 6.0 and 10.0");
+                return;
+            }
             setBB((parseFloat(PO) * 8).toString());
         } else if ((degree === "I" && (grade === "2" || grade === "3" || grade === "4")) || degree === "II" || degree === "III") {
-            if(PO==="" || ESPB==="" || C==="")
+            if(PO==="" || ESPB==="" || C===""){
                 return;
+            }           
+            if(parseFloat(PO)<6 || parseFloat(PO)>10){
+                alert("Average grade must be between 6.0 and 10.0");
+                return;
+            }
+            if(parseFloat(ESPB)<0){
+                alert("Number of earned ESPB points must be >= 0");
+                return;
+            }
+            if(parseFloat(C)<=0){
+                alert("Number of years of studies must be greater than 0");
+                return;
+            }
             setBB((parseFloat(PO) * 5 + parseFloat(ESPB) / parseFloat(C) * 0.8).toString());
         } else if (grade === '5+' && degree === 'I') {
-            if(PO===""||BZI==="")
+            if(PO===""||BZI===""){
                 return;
+            }           
+            if(parseFloat(PO)<6 || parseFloat(PO)>10){
+                alert("Average grade must be between 6.0 and 10.0");
+                return;
+            }           
+            if(parseFloat(BZI)<=0){
+                alert("Number of leftover exams must be greater than 0");
+                return;
+            }
             setBB((parseFloat(PO) * 8 - parseFloat(BZI) * 2).toString());
         }
     };
