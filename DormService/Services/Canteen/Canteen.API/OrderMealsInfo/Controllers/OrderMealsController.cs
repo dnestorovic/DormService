@@ -14,7 +14,7 @@ namespace Canteen.API.OrderMealsInfo.Controllers
 {
     [Authorize(Roles = "Student")]
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     public class OrderMealsController : ControllerBase
     {
         private readonly IOrderMealsRepository _repository;

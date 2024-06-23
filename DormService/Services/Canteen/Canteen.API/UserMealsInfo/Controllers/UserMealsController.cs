@@ -8,7 +8,7 @@ namespace Canteen.API.UserMealsInfo.Contorllers
 {
     [Authorize(Roles = "Student")]
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     public class UserMealsController : ControllerBase
     {
         private readonly IUserMealsRepository _repository;
