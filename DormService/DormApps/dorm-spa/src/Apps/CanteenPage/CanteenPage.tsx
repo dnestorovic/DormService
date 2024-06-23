@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useMount } from 'react-use'
 import { UserMeals, NewOrderItem } from "./models/UserMealsModel";
 import CanteenService from './services/CanteenService';
@@ -37,9 +37,15 @@ export default function CanteenPage() {
 
     CanteenService.getOrderMealsByUsername(username)
       .then(setOrderMeals);
-
+      
   });
-
+  
+  useEffect(() => {
+    if (orderMeals && (orderMeals?.items.length > 0)){
+      setShowBasket(true);
+    }
+  }, [orderMeals]);
+  
   const updateBasket = (show: boolean) => {
 
     // Update basket content and show/hide basket
@@ -87,6 +93,11 @@ export default function CanteenPage() {
 
   const handleAddClick = () => {
 
+    if (!selectedMealType) {
+      alert("You must select meal type!");
+      return;
+    }
+
     const newOrderItem : NewOrderItem = {
       username : username,
       mealType: selectedMealType,
@@ -112,7 +123,6 @@ export default function CanteenPage() {
 
   }
 
-  
   return (
     <div className='canteen-page'>
 
