@@ -158,7 +158,7 @@ export default function PaymentPage() {
         <div className='title'>Payment slip</div>
         <div className='payment-slip'>
           {!isAdmin &&
-          <div className="field" title='Enter your first name!'>
+          <div className="field" title='Your first name'>
             <label htmlFor="firstName">First Name:</label>
             <input
               type="text"
@@ -169,7 +169,7 @@ export default function PaymentPage() {
           </div>
           }
           {!isAdmin &&
-          <div className="field" title='Enter your last name!'>
+          <div className="field" title='Your last name'>
             <label htmlFor="lastName">Last Name:</label>
             <input
               type="text"
@@ -180,7 +180,7 @@ export default function PaymentPage() {
           </div>
           }
           {isAdmin && 
-          <div className="field" title='Enter students username!'>
+          <div className="field" title='Enter student username!'>
             <label htmlFor="usernameToPay">Username:</label>
             <input
               type="text"
@@ -297,7 +297,7 @@ export default function PaymentPage() {
         
         {isAdmin &&
         <div className='admin-view'>
-          <div className="field" title='Enter the username of the student you want to delete!'>
+          <div className="field" title='Enter the username of the student you want to create or delete!'>
               <label htmlFor="username">Username:</label>
               <input
                 type="text"
