@@ -295,6 +295,5 @@ export default function PaymentPage() {
 
 const checkIfUserIsAdmin = (): boolean => {
   const role = getRole();
-  console.log(role);
   return role === "Administrator"; 
 };
