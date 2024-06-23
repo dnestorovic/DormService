@@ -28,6 +28,7 @@ namespace Canteen.API.OrderMealsInfo.Repositories
         {
             var orderString = JsonConvert.SerializeObject(order);
             await _cache.SetStringAsync(order.Username, orderString);
+
             return await GetOrder(order.Username);
         }
 

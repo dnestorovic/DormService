@@ -14,7 +14,7 @@ namespace Canteen.API.OrderMealsInfo.Controllers
 {
     [Authorize(Roles = "Student")]
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     public class OrderMealsController : ControllerBase
     {
         private readonly IOrderMealsRepository _repository;
@@ -106,6 +106,7 @@ namespace Canteen.API.OrderMealsInfo.Controllers
             var lunchNum = 0;
             var dinnerNum = 0;
 
+            // Check which meal type an how many meals are ordered
             foreach (var item in orderMealItems)
             {
                 if (item.MealType == "Breakfast")
@@ -135,18 +136,21 @@ namespace Canteen.API.OrderMealsInfo.Controllers
             try
             {
                 var response = await _paymentGrpcService.ReduceCredit(username, Decimal.ToInt32(order.TotalPrice));
+
                 if (response.SuccessfulTransaction)
                 {
+                    // If credit is successfully reduced, meals info should be updated, and order deleted
                     await _userMealsRepository.UpdateUserMeals(mealsToAdd);
                     await DeleteOrder(username);
 
-                    Email email = new(emailAddress, "Successfuly added new meals.", "Meals order confirmaion");
+                    // Send confirmation email
+                    Email email = new(emailAddress, "Hi " + username + ",\nYou successfuly bought new meals.\nRegards,\nDormService", "Order meals confirmation");
                     var emailSent = await _emailService.SendEmail(email);
                     if (!emailSent)
                     {
                         await _emailService.SendEmail(email);
                     }
-                    return Ok("Document uploaded successfully");
+                  
                     return Accepted();
                 }
             }
