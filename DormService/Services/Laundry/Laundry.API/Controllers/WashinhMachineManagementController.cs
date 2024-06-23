@@ -1,19 +1,25 @@
 using Laundry.API.Entities;
 using Laundry.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Laundry.API.Controllers;
 
+[Authorize(Roles = "Administrator")]
 [ApiController]
 [Route("api/[controller]")]
 public class WashingMachineManagementController: ControllerBase
 {
     private IWashingMachineManagementRepository _repository;
+    private IWashingMachineRepository _reservationRepository;
 
-    public WashingMachineManagementController(IWashingMachineManagementRepository repository)
+
+    public WashingMachineManagementController(IWashingMachineManagementRepository repository, IWashingMachineRepository reservationRepository)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        _reservationRepository = reservationRepository ?? throw new ArgumentNullException(nameof(reservationRepository));
     }
+
 
     [HttpPost("/room")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -36,6 +42,11 @@ public class WashingMachineManagementController: ControllerBase
     [ProducesResponseType(typeof(bool), StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<bool>> DeleteWashingMachineConfiguration(string id)
     {   
+        bool canDelete = await _reservationRepository.DeleteMachines(id);
+        if (!canDelete) {
+            return BadRequest(false);
+        }
+
         bool result = await _repository.DeleteWashingMachineConfiguration(id);
         return result ? Ok(true) : BadRequest(false);
     }

@@ -15,6 +15,17 @@ public class WashingMachineRepository: IWashingMachineRepository
         _managementContext = managementContext ?? throw new ArgumentNullException(nameof(managementContext));
     }
 
+    public async Task<bool> DeleteMachines(string id)
+    {
+        WashingMachine alreadyReserved = await _context.WashingMachines.Find(wm => (wm._id == id) && wm.Reserved).FirstAsync();
+        if (alreadyReserved != null) {
+            return false;
+        }
+
+        var result = await _context.WashingMachines.DeleteManyAsync(wm => wm._id == id);
+        return result.IsAcknowledged && result.DeletedCount > 0;
+    }
+
     public async Task<WashingMachine> GetWashingMachine(string id)
     {
         return await _context.WashingMachines.Find(wm => wm._id == id).FirstOrDefaultAsync();

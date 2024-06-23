@@ -12,6 +12,11 @@
     <PackageReference Include="Grpc.Core" Version="2.46.6" />
     <PackageReference Include="MongoDB.Driver" Version="2.25.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
+  </ItemGroup>
+
+   <ItemGroup>
+    <ProjectReference Include="..\..\..\Mailing\Mailing.csproj" />
   </ItemGroup>
 
   <ItemGroup>
