@@ -6,7 +6,7 @@ interface ICanteenService {
     getUserMealsByUsername : (username : string) => Promise<UserMeals>; 
     addNewItemToOrder: (newMealItem: NewOrderItem) => Promise<OrderMeals>;
     getOrderMealsByUsername : (username : string) => Promise<OrderMeals>;
-    checkoutOrder : (userame : string) => Promise<boolean>;
+    checkoutOrder : (userame : string, email: string) => Promise<boolean>;
     deleteOrder : (userame : string) => Promise<boolean>;
 }
 
@@ -24,8 +24,8 @@ const CanteenService: () => ICanteenService = () => {
     const getOrderMealsByUsername = (username : string) => {
         return BaseService.get(`http://localhost:8002/api/v1/OrderMeals/${username}`)
     }
-    const checkoutOrder = (username : string) => {
-        return BaseService.head(`http://localhost:8002/api/v1/OrderMeals/Checkout?username=${username}`)
+    const checkoutOrder = (username : string, email: string) => {
+        return BaseService.head(`http://localhost:8002/api/v1/OrderMeals/Checkout?username=${username}&emailAddress=${email}`)
     }
     const deleteOrder = (username : string) => {
         return BaseService.delete(`http://localhost:8002/api/v1/OrderMeals/${username}`)

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Mailing.Data;
+using Mailing;
 
 namespace Canteen.API.OrderMealsInfo.Controllers
 {
@@ -19,13 +21,15 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         private readonly IUserMealsRepository _userMealsRepository;
         private readonly ILogger<OrderMealsController> _logger;
         private readonly PaymentGrpcService _paymentGrpcService;
+        IEmailService _emailService;
 
-        public OrderMealsController(IOrderMealsRepository repository, IUserMealsRepository userMealsRepository, ILogger<OrderMealsController> logger, PaymentGrpcService paymentGrpcService)
+        public OrderMealsController(IOrderMealsRepository repository, IUserMealsRepository userMealsRepository, ILogger<OrderMealsController> logger, PaymentGrpcService paymentGrpcService, IEmailService emailService)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _userMealsRepository = userMealsRepository ?? throw new ArgumentNullException(nameof(userMealsRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _paymentGrpcService = paymentGrpcService ?? throw new ArgumentNullException(nameof(paymentGrpcService));
+            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         }
 
         [HttpGet("{username}")]
@@ -84,7 +88,7 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         [HttpHead]
         [ProducesResponseType(typeof(void), StatusCodes.Status202Accepted)]
         [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<UserMeals>> Checkout(string username)
+        public async Task<ActionResult<UserMeals>> Checkout(string username, string emailAddress)
         {
             if (User.FindFirst(ClaimTypes.Name).Value != username)
             {
@@ -135,6 +139,14 @@ namespace Canteen.API.OrderMealsInfo.Controllers
                 {
                     await _userMealsRepository.UpdateUserMeals(mealsToAdd);
                     await DeleteOrder(username);
+
+                    Email email = new(emailAddress, "Successfuly added new meals.", "Meals order confirmaion");
+                    var emailSent = await _emailService.SendEmail(email);
+                    if (!emailSent)
+                    {
+                        await _emailService.SendEmail(email);
+                    }
+                    return Ok("Document uploaded successfully");
                     return Accepted();
                 }
             }

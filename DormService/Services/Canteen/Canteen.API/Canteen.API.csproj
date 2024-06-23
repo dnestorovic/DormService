@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Mailing\Mailing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Protobuf Include="..\..\Payment\Payment.GRPC\Protos\payment.proto" GrpcServices="Client">
       <Link>Protos\payment.proto</Link>
     </Protobuf>
