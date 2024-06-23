@@ -4,18 +4,20 @@ import { User } from "../../../models/User";
 import { useNavigate } from "react-router-dom";
 
 export default function Register() {
-    const [registerUser, setRegisterUser] = useState<User>({});
 
-    const message = "Already registered? Log in ";
+    const [registerUser, setRegisterUser] = useState<User>({});
 
     const navigate = useNavigate();
 
     const handleRegisterInput = (value: string, prop: keyof User) => {
+
         setRegisterUser((prev) => ({ ...prev, [prop]: value }));
+
     };
 
     const handleRegister = () => {
-        console.log(registerUser);
+        
+        // All fields are necessary to register new student
         if (registerUser.password === undefined 
             || registerUser.userName === undefined
             || registerUser.firstName === undefined
@@ -28,10 +30,13 @@ export default function Register() {
 
         IdentityService.register(registerUser)
             .then(() => {
-                setRegisterUser({});
+                // After being successfully registered, user can log in
                 navigate("/login");
-            })
-            .catch(() => alert("Something went wrong!"));
+            }) // OK
+            .catch(() => 
+                alert("Something went wrong!")
+            ); // Something went wrong
+
     };
 
     return (
@@ -84,7 +89,7 @@ export default function Register() {
                         </button>
                     </footer>
                     <p>
-                        {message}
+                        {"Already registered? Log in "}
                         <span
                             onClick={() => {
                                 navigate("/login");
