@@ -25,6 +25,7 @@ export default function PaymentPage() {
   const firstName = localStorage.getItem("first-name") ?? "";
   const lastName = localStorage.getItem("last-name") ?? "";
   const username = localStorage.getItem("username") ?? "";
+  const email = localStorage.getItem("email") ?? "";
 
   const navigate = useNavigate();
 
@@ -49,7 +50,7 @@ export default function PaymentPage() {
 
 
   const onPay = () => {
-    PaymentService.updateStudentDebts(debtUpdate)
+    PaymentService.updateStudentDebts(debtUpdate, email)
     .then(() => {
       setShowNotification({type: NotificationType.Success, message: "Transaction completed successfully!"});
       fetchStudentDebts();

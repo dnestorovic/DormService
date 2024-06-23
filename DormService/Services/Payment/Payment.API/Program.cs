@@ -1,11 +1,12 @@
-
-
+using Mailing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Payment.Common.Extensions;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEmailService(builder.Configuration);
 
 // Add services to the container.
 
