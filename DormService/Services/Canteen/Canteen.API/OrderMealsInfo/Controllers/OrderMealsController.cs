@@ -21,7 +21,7 @@ namespace Canteen.API.OrderMealsInfo.Controllers
         private readonly IUserMealsRepository _userMealsRepository;
         private readonly ILogger<OrderMealsController> _logger;
         private readonly PaymentGrpcService _paymentGrpcService;
-        IEmailService _emailService;
+        private readonly IEmailService _emailService;
 
         public OrderMealsController(IOrderMealsRepository repository, IUserMealsRepository userMealsRepository, ILogger<OrderMealsController> logger, PaymentGrpcService paymentGrpcService, IEmailService emailService)
         {
