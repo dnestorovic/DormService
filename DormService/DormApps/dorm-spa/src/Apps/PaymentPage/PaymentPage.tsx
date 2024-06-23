@@ -4,13 +4,13 @@ import { DefaultStudentDebts, StudentDebts } from './models/DebtsModel';
 import PaymentService from './services/PaymentService';
 import { Notification, NotificationType } from '../../components/Notifications/Notification';
 import { ModalDialog } from '../../components/Modals/ModalDialog';
+import { getRole } from '../../Utils/TokenUtil';
+import { useNavigate } from 'react-router-dom';
   
 export default function PaymentPage() {
   const [debtData, setDebtData] = useState<StudentDebts>();
-  const [firstName, setFirstName] = useState<string>('Momcilo');
-  const [lastName, setLastName] = useState<string>('Knezevic');
-  const [username, setUsername] = useState<string>('');
   const [usernameToModify, setUsernameToModify] = useState<string>('');
+  const [usernameToPay, setUsernameToPay] = useState<string>('');
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
   const [bankAccount1, setBankAccount1] = useState<string>('');
@@ -22,13 +22,17 @@ export default function PaymentPage() {
   const [showNotification, setShowNotification] = useState<{type: NotificationType, message: string}>();
   const [showConfiramtionDialog, setShowConfiramtionDialog] = useState<boolean>(false);
 
-  const fetchStudentDebts = () => {
-    PaymentService.getDebtsByUsername("Momcilo")
-      .then(setDebtData);
-  }
+  const firstName = localStorage.getItem("first-name") ?? "";
+  const lastName = localStorage.getItem("last-name") ?? "";
+  const username = localStorage.getItem("username") ?? "";
 
+  const navigate = useNavigate();
 
   useMount(() => {
+    if (localStorage.getItem("username") === null) {
+      navigate('/login');
+    }
+
     const userIsAdmin = checkIfUserIsAdmin(); 
     setIsAdmin(userIsAdmin);
 
@@ -37,6 +41,11 @@ export default function PaymentPage() {
       fetchStudentDebts();
     }
   });
+
+  const fetchStudentDebts = () => {
+    PaymentService.getDebtsByUsername(username)
+      .then(setDebtData);
+  }
 
 
   const onPay = () => {
@@ -63,7 +72,7 @@ export default function PaymentPage() {
     };
 
     const currentDebt : StudentDebts = {
-      studentID : (isAdmin === true) ? username : "Momcilo",            // TODO :  username input(admin role) or username from token(student role)
+      studentID : (isAdmin === true) ? usernameToPay : username,            // TODO :  username input(admin role) or username from token(student role)
       credit: (requestBody.purposeOfPayment === "Credit") ? amount : 0,
       rent: (requestBody.purposeOfPayment === "Rent") ? amount : 0,
       internet: (requestBody.purposeOfPayment === "Internet") ? amount : 0,
@@ -132,7 +141,7 @@ export default function PaymentPage() {
               type="text"
               id="firstName"
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              readOnly
             />
           </div>
           }
@@ -143,18 +152,18 @@ export default function PaymentPage() {
               type="text"
               id="lastName"
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              readOnly
             />
           </div>
           }
           {isAdmin && 
           <div className="field" title='Enter students username!'>
-            <label htmlFor="username">Username:</label>
+            <label htmlFor="usernameToPay">Username:</label>
             <input
               type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              id="usernameToPay"
+              value={usernameToPay}
+              onChange={(e) => setUsernameToPay(e.target.value)}
             />
           </div>
           }
@@ -204,11 +213,11 @@ export default function PaymentPage() {
               value={selectedOption}
               onChange={(e) => setSelectedOption(e.target.value)}
             >
-              <option value="" disabled>Select debt type</option>
+              <option value="" disabled>Select payment purpose</option>
               <option value="Credit">Credit</option>
               <option value="Rent">Rent</option>
               <option value="Internet">Internet</option>
-              <option value="Air conditioning">Air conditioning</option>
+              <option value="Air Conditioning">Air conditioning</option>
               <option value="Phone">Phone</option>
               <option value="Cleaning">Cleaning</option>
             </select>
@@ -234,7 +243,7 @@ export default function PaymentPage() {
       <div className='right-pannel'>
         {!isAdmin &&
         <div className='block-shadow'>
-          <div className='title'>Debts</div>
+          <div className='title'>Credit and Debts</div>
           <div className='debts-report'>
             <div className='debt'>
               <label>Credit:</label> 
@@ -285,6 +294,6 @@ export default function PaymentPage() {
 }
 
 const checkIfUserIsAdmin = (): boolean => {
-  // TODO with token
-  return false; 
+  const role = getRole();
+  return role === "Administrator"; 
 };

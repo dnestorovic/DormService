@@ -6,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
     const [registered, setRegistered] = useState(false);
     const [credentials, setCredentials] = useState<Credentials>({userName:"", password:""});
-    const [message, setMessage] = useState("Already registered? Log in ");
     const [registerUser, setRegisterUser] = useState<User>({});
+
+    const message = "Already registered? Log in ";
 
     const navigate = useNavigate();
 
@@ -20,8 +21,6 @@ export default function Login() {
     };
 
     const handleLogin = () => {
-        console.log(credentials);
-        console.log(registerUser);
         if (credentials.password === undefined || credentials.userName === undefined) {
             alert("All fields must be populated");
             return;
@@ -30,10 +29,12 @@ export default function Login() {
         IdentityService.login(credentials)
             .then((tokens) => {
                 localStorage.clear();
-                localStorage.setItem("access-token", tokens.AccessToken);
-                localStorage.setItem("refresh-token", tokens.RefreshToken);
-                localStorage.setItem("username", tokens.UserName);
-                localStorage.setItem("email", tokens.UserEmail);
+                localStorage.setItem("access-token", tokens.accessToken);
+                localStorage.setItem("refresh-token", tokens.refreshToken);
+                localStorage.setItem("username", tokens.userName);
+                localStorage.setItem("email", tokens.email);
+                localStorage.setItem("first-name", tokens.firstName);
+                localStorage.setItem("last-name", tokens.lastName);
 
                 navigate("/payments");
             })

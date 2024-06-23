@@ -10,3 +10,8 @@ export type Credentials = {
     userName?: string;
     password?: string;
 }
+
+export type LogOutUser = {
+    userName?: string;
+    refreshToken?: string;
+}

@@ -1,6 +1,8 @@
 export type Tokens = {
-    AccessToken: string;
-    RefreshToken: string;
-    UserName: string;
-    UserEmail: string;
+    accessToken: string;
+    refreshToken: string;
+    userName: string;
+    email: string;
+    firstName: string;
+    lastName: string;
 }

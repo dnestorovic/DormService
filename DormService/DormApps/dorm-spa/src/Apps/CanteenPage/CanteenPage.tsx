@@ -5,6 +5,7 @@ import CanteenService from './services/CanteenService';
 import { OrderMeals, OrderMealsItem } from './models/OrderMealsModel';
 import { NotificationType, Notification } from '../../components/Notifications/Notification';
 import { ModalDialog } from '../../components/Modals/ModalDialog';
+import { useNavigate } from 'react-router-dom';
 
 export default function CanteenPage() {
   const [userMealsData, setUserMealsData] = useState<UserMeals>();
@@ -16,17 +17,24 @@ export default function CanteenPage() {
   const [showNotification, setShowNotification] = useState<{type: NotificationType, message: string}>();
   const [showConfiramtionDialog, setShowConfiramtionDialog] = useState<boolean>(false);
 
+  const username: string = localStorage.getItem("username") ?? "";
 
+  const navigate = useNavigate();
   useMount(() => {
-    CanteenService.getUserMealsByUsername("Natalija")
+    if (localStorage.getItem("username") === null) {
+      navigate('/login');
+      return ;
+    }
+
+    CanteenService.getUserMealsByUsername(username)
     .then(setUserMealsData);
 
-    CanteenService.getOrderMealsByUsername("Natalija")
+    CanteenService.getOrderMealsByUsername(username)
     .then(setOrderMeals);
   });
 
   const updateBasket = (show: boolean) => {
-    CanteenService.getOrderMealsByUsername("Natalija")
+    CanteenService.getOrderMealsByUsername(username)
     .then(response => {
       setOrderMeals(response);
       setShowBasket(show);
@@ -34,7 +42,7 @@ export default function CanteenPage() {
 
   }
 
-  const updateUserMealsData = (username: string) => {
+  const updateUserMealsData = () => {
     CanteenService.getUserMealsByUsername(username)
     .then(response => {
       console.log(response);
@@ -47,9 +55,8 @@ export default function CanteenPage() {
   }
 
   const checkoutOrder = () => {
-    const username = "Natalija";
     var checkout = CanteenService.checkoutOrder(username)
-                    .then(() => {setShowBasket(false); updateUserMealsData(username)})
+                    .then(() => {setShowBasket(false); updateUserMealsData()})
                     .catch(() => setShowNotification({type: NotificationType.Error, message: "Transaction failed!"})); // Something went wrong
     console.log(checkout);
    } 
@@ -57,7 +64,7 @@ export default function CanteenPage() {
   const handleAddClick = () => {
 
     const newOrderItem : NewOrderItem = {
-      username : "Natalija",
+      username : username,
       mealType: selectedMealType,
       numberOfMeals: amount
     }
@@ -75,7 +82,7 @@ export default function CanteenPage() {
 
   const handleDeleteClick = () => {
 
-    var deleteItems = CanteenService.deleteOrder("Natalija")
+    var deleteItems = CanteenService.deleteOrder(username)
                       .then(() => updateBasket(false));
     console.log(deleteItems);
   }
@@ -152,11 +159,12 @@ export default function CanteenPage() {
             <div className="buttons">
               <button className="delete-button" onClick={handleDeleteClick}>Delete Order</button>
               <button className="buy-button" onClick={handleBuyClick}>Buy Meals</button>
-              {!showConfiramtionDialog ? null : <ModalDialog header='Confirm order' submitText='Yes' onSubmit={() => {checkoutOrder(); setShowConfiramtionDialog(false);}} onCancel={() => setShowConfiramtionDialog(false)}>Are you sure you want to chechkout this order?</ModalDialog>}
             </div>
           </div>   
         </div>
         }
+        {!showConfiramtionDialog ? null : <ModalDialog header='Confirm order' submitText='Yes' onSubmit={() => {checkoutOrder(); setShowConfiramtionDialog(false);}} onCancel={() => setShowConfiramtionDialog(false)}>Are you sure you want to checkout this order?</ModalDialog>}
+
         
       </div>
       <div className='right-pannel'>

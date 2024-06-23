@@ -62,8 +62,12 @@
 
                 font-size: 20px;
 
-                color: $powder-orange;
-                background-color: rgba($color: $secondary-seagreen, $alpha: .92);
+                color: white;
+                background-color: $secondary-seagreen;
+                border: none;
+                border-radius: 5px;
+                box-shadow: 0 5px $powder-orange;
+                padding: auto;
             }
         }
     }
@@ -179,8 +183,11 @@
                 font-size: 20px;
                 text-align: center; 
 
-                color: white;
-                background-color: $powder-orange;
+                color: $secondary-seagreen;
+                border: none;
+                border-radius: 5px;
+                box-shadow: 0 5px $powder-orange;
+                padding: auto;
             }
         }
     }

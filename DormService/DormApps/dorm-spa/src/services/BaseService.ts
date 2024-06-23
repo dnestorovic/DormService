@@ -11,6 +11,9 @@ const BaseService = (): IBaseService => {
     const get = (url: string) => {
         return fetch(url, {
             method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access-token')}`
+            },
             mode: 'cors'
         }).then((data) => {
             if (data.status > 400) {
@@ -31,24 +34,29 @@ const BaseService = (): IBaseService => {
         return fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             },
             body: JSON.stringify(data)
         }).then((res) => {
             if (res.status >= 400) {
                 throw new Error('Bad request - invalid data');
             }
-
-            return res;
+            const contentType = res.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                return res.json();
+            } else {
+                return res;
+            }
         });
     }
-
 
     const put = <T>(url: string, data: T) => {
         return fetch(url, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             },
             body: JSON.stringify(data)
         }).then((res) => {
@@ -65,7 +73,8 @@ const BaseService = (): IBaseService => {
             method: 'HEAD',
             mode: 'cors',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             },
         }).then((res) => {
             if (res.status >= 400) {
@@ -81,7 +90,8 @@ const BaseService = (): IBaseService => {
         return fetch(url, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('access-token')}`
             }
         }).then((res) => {
             if (res.status > 400) {
