@@ -12,7 +12,6 @@ interface ICanteenService {
 
 const CanteenService: () => ICanteenService = () => {
 
-
     const getUserMealsByUsername = (username : string) => {
         return BaseService.get(`http://localhost:8002/api/UserMeals/${username}`);
     };
@@ -24,9 +23,11 @@ const CanteenService: () => ICanteenService = () => {
     const getOrderMealsByUsername = (username : string) => {
         return BaseService.get(`http://localhost:8002/api/OrderMeals/${username}`)
     }
+
     const checkoutOrder = (username : string, email: string) => {
         return BaseService.head(`http://localhost:8002/api/OrderMeals/Checkout?username=${username}&emailAddress=${email}`)
     }
+
     const deleteOrder = (username : string) => {
         return BaseService.delete(`http://localhost:8002/api/OrderMeals/${username}`)
     }

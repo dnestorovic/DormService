@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { getRole } from '../../Utils/TokenUtil';
 
 export default function CanteenPage() {
+  
   const [userMealsData, setUserMealsData] = useState<UserMeals>();
   const [selectedMealType, setSelectedMealType] = useState<string>('');
   const [amount, setAmount] = useState<number>(1);
@@ -22,45 +23,66 @@ export default function CanteenPage() {
   const email: string = localStorage.getItem("email") ?? "";
 
   const navigate = useNavigate();
+
   useMount(() => {
+
+    // Canteen page should be visible only for students that are alredy logged in
     if (localStorage.getItem("username") === null || getRole() === "Administrator") {
       navigate('/login');
       return ;
     }
 
     CanteenService.getUserMealsByUsername(username)
-    .then(setUserMealsData);
+      .then(setUserMealsData);
 
     CanteenService.getOrderMealsByUsername(username)
-    .then(setOrderMeals);
+      .then(setOrderMeals);
+
   });
 
   const updateBasket = (show: boolean) => {
+
+    // Update basket content and show/hide basket
     CanteenService.getOrderMealsByUsername(username)
-    .then(response => {
-      setOrderMeals(response);
-      setShowBasket(show);
-    });
+      .then(response => {
+        setOrderMeals(response);
+        setShowBasket(show);
+      });
 
   }
 
   const updateUserMealsData = () => {
-    CanteenService.getUserMealsByUsername(username)
-    .then(response => {
-      console.log(response);
 
-      setUserMealsData(response);
-      setShowNotification({type: NotificationType.Success, message: "Successfully bought new meals!"}); // OK
-    })
-    .catch(() => setShowNotification({type: NotificationType.Error, message: "Something went wrong, check you credit status!"})); // Something went wrong
+    CanteenService.getUserMealsByUsername(username)
+      .then(response => {
+        // After successful purchase of meals, update user meals info
+        setUserMealsData(response);
+        setShowNotification(
+          {type: NotificationType.Success, message: "Successfully purchased new meals!"}
+        ); // OK
+      })
+      .catch(() => 
+        setShowNotification(
+          {type: NotificationType.Error, message: "Something went wrong, check you credit status!"}
+        )
+      ); // Something went wrong
 
   }
 
   const checkoutOrder = () => {
-    var checkout = CanteenService.checkoutOrder(username, email)
-                    .then(() => {setShowBasket(false); updateUserMealsData()})
-                    .catch(() => setShowNotification({type: NotificationType.Error, message: "Something went wrong, check you credit status!"})); // Something went wrong
-    console.log(checkout);
+
+    CanteenService.checkoutOrder(username, email)
+      .then(() => {
+        // Basket is now empty
+        setShowBasket(false); 
+        updateUserMealsData();
+      }) // OK
+      .catch(() => 
+        setShowNotification(
+          {type: NotificationType.Error, message: "Something went wrong, check you credit status!"}
+        )
+      ); // Something went wrong
+
    } 
 
   const handleAddClick = () => {
@@ -71,28 +93,29 @@ export default function CanteenPage() {
       numberOfMeals: amount
     }
 
-    var successfullTransaction = CanteenService.addNewItemToOrder(newOrderItem)
-                                  .then(() => updateBasket(true));
-    
-    console.log(successfullTransaction);
-    console.log(newOrderItem);
+    // Add new item to order and show updated basket content
+    CanteenService.addNewItemToOrder(newOrderItem)
+      .then(() => updateBasket(true));
 
   }
+
   const handleBuyClick = () => {
+
     setShowConfiramtionDialog(true);
+
   }
 
   const handleDeleteClick = () => {
 
-    var deleteItems = CanteenService.deleteOrder(username)
-                      .then(() => updateBasket(false));
-    console.log(deleteItems);
+    CanteenService.deleteOrder(username)
+      .then(() => updateBasket(false));
+
   }
 
-  console.log(userMealsData);
   
   return (
     <div className='canteen-page'>
+
       <div className='left-pannel'>
         
         <div className="pattern">
@@ -116,6 +139,7 @@ export default function CanteenPage() {
             </div>
 
             <div className="field" title='Enter number of meals you want to buy'>
+
               <div>
                 <label htmlFor="amount">Number of meals:</label>
                 <input className="inputAmount"
@@ -126,7 +150,9 @@ export default function CanteenPage() {
                   onChange={(e) => setAmount(parseFloat(e.target.value))}
                 />
               </div>
+
             </div>
+
             <button className="add-button" onClick={handleAddClick}>Add to cart!</button>
           </div>
         </div>
@@ -134,9 +160,10 @@ export default function CanteenPage() {
         { showBasket &&
         <div>
           <div className="basket">
-          <div className="title">Order</div>
+            <div className="title">Order</div>
             {orderMeals && (
               <div>
+
                 <div>
                   {orderMeals?.items.map((item: OrderMealsItem, index: number) => (
                     <div key={index} className="item">
@@ -144,10 +171,12 @@ export default function CanteenPage() {
                         <label>Meal Type:</label>
                         <span>{item.mealType}</span>
                       </div>
+
                       <div className="item-attribute">
                         <label>Number of Meals:</label>
                         <span>{item.numberOfMeals}</span>
                       </div>
+
                       <div className="item-attribute">
                         <label>Meal Price:</label>
                         <span>{item.mealPrice.toFixed(2)} rsd</span>
@@ -155,40 +184,55 @@ export default function CanteenPage() {
                     </div>
                   ))}
                 </div>
+
                 <label>Total Price:</label>
+                
                 <span>{orderMeals?.totalPrice} rsd</span>
               </div>
             )}
+
             <div className="buttons">
+
               <button className="delete-button" onClick={handleDeleteClick}>Delete Order</button>
               <button className="buy-button" onClick={handleBuyClick}>Buy Meals</button>
+            
             </div>
+
           </div>   
         </div>
         }
         {!showConfiramtionDialog ? null : <ModalDialog header='Confirm order' submitText='Yes' onSubmit={() => {checkoutOrder(); setShowConfiramtionDialog(false);}} onCancel={() => setShowConfiramtionDialog(false)}>Are you sure you want to checkout this order?</ModalDialog>}
-
-        
+      
       </div>
+
       <div className='right-pannel'>
+
         <div className='block-shadow'>
+
           <div className='title'>User Meals</div>
           <div className='user-meals-report'>
+
             <div className='user-meal'>
               <label>Breakfast:</label> 
               <span>{userMealsData?.breakfast || "0"}</span>
             </div>
+
             <div className='user-meal'>
               <label>Lunch:</label> 
               <span>{userMealsData?.lunch || "0"}</span>
             </div>
+
             <div className='user-meal'>
               <label>Dinner:</label> 
               <span>{userMealsData?.dinner || "0"}</span>
             </div>
+
           </div>
+
         </div>
+
         {!showNotification ? null : <Notification type={showNotification.type} text={showNotification.message || ''} onRemove={() => setShowNotification(undefined)} />}
+      
       </div>
 
     </div>
