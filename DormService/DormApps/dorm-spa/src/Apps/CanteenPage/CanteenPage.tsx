@@ -6,6 +6,7 @@ import { OrderMeals, OrderMealsItem } from './models/OrderMealsModel';
 import { NotificationType, Notification } from '../../components/Notifications/Notification';
 import { ModalDialog } from '../../components/Modals/ModalDialog';
 import { useNavigate } from 'react-router-dom';
+import { getRole } from '../../Utils/TokenUtil';
 
 export default function CanteenPage() {
   const [userMealsData, setUserMealsData] = useState<UserMeals>();
@@ -21,7 +22,7 @@ export default function CanteenPage() {
 
   const navigate = useNavigate();
   useMount(() => {
-    if (localStorage.getItem("username") === null) {
+    if (localStorage.getItem("username") === null || getRole() === "Administrator") {
       navigate('/login');
       return ;
     }

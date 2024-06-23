@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { LogOutUser } from '../../models/User';
 import IdentityService from '../../services/IdentityService';
+import { getRole } from '../../Utils/TokenUtil';
 
 const SideMenu = () => {
     const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -37,18 +38,19 @@ const SideMenu = () => {
                             <div className={['label', showMenu ? "show-label" : "hide-label"].join(' ')}>Login</div>
                         </li>
                     </Link>
-                    <Link to="/canteen">
-                        <li className='navigation-item navigation-canteen'>
-                            <div className='icon' />
-                            <div className={['label', showMenu ? "show-label" : "hide-label"].join(' ')}>Canteen</div>
-                        </li>
-                    </Link>
                     <Link to="/payments">
                         <li className='navigation-item navigation-payments'>
                             <div className='icon' />
                             <div className={['label', showMenu ? "show-label" : "hide-label"].join(' ')}>Payments</div>
                         </li>
                     </Link>
+                    { getRole() === "Student" && <Link to="/canteen">
+                        <li className='navigation-item navigation-canteen'>
+                            <div className='icon' />
+                            <div className={['label', showMenu ? "show-label" : "hide-label"].join(' ')}>Canteen</div>
+                        </li>
+                    </Link>
+                    }
                     <Link to="/laundry">
                         <li className='navigation-item navigation-laundry'>
                             <div className='icon' />
