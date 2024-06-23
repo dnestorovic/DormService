@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Mailing;
+using Mailing.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Payment.Common.Entities;
 using Payment.Common.Repository;
-using System.Security.Claims;
 
 namespace Payment.API.Controllers
 {
@@ -12,23 +13,19 @@ namespace Payment.API.Controllers
     public class DebtsController : ControllerBase
     {
         private readonly IDebtsRepository _repository;
+        private readonly IEmailService _emailService;
 
-        public DebtsController(IDebtsRepository repository)
+        public DebtsController(IDebtsRepository repository, IEmailService emailService)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
         }
-
 
         [Authorize(Roles = "Student, Administrator")]
         [HttpGet("{studentID}", Name = "GetStudentDebts")]
         [ProducesResponseType(typeof(StudentDebts), StatusCodes.Status200OK)]
         public async Task<ActionResult<StudentDebts>> GetStudentDebts(string studentID)
         {
-            if (User.FindFirst(ClaimTypes.Name).Value != studentID)
-            {
-                return Forbid();
-            }
-
             var studentDebts = await _repository.GetStudentDebts(studentID);
             return Ok(studentDebts);
         }
@@ -37,12 +34,19 @@ namespace Payment.API.Controllers
         [Authorize(Roles = "Student,Administrator")]
         [HttpPut]
         [ProducesResponseType(typeof(StudentDebts), StatusCodes.Status200OK)]
-        public async Task<ActionResult> UpdateStudentDebt([FromBody] StudentDebts studentDebts)
+        public async Task<ActionResult> UpdateStudentDebt([FromBody] StudentDebts studentDebts, string emailAddress)
         {
             
             var successfulUpdate = await _repository.UpdateStudentDebt(studentDebts);
             if (successfulUpdate)
             {
+                Email email = new(emailAddress, "Hi " + studentDebts.studentID + ",\nYou have successfully completed the transaction! \nRegards,\nDormService", "Payment confirmation");
+                var emailSent = await _emailService.SendEmail(email);
+                if (!emailSent)
+                {
+                    await _emailService.SendEmail(email);
+                }
+
                 return Ok(successfulUpdate);
             }
             else
