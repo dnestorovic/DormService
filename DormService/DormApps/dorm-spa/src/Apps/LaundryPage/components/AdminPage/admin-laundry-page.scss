@@ -1,0 +1,109 @@
+@import "./../../../../design/colors.scss";
+.admin-laundry-page {
+    padding: 30px;
+    cursor: default;
+
+    button {
+        cursor: pointer;
+    }
+
+    .admin-laundry-content {
+        border: 2px solid $primary-seagreen;
+        border-radius: 8px;
+
+        h1 {
+            padding: 10px;
+            margin: 0;
+            margin-left: 20px;
+            color: $powder-orange;
+            width: fit-content;
+
+            border-bottom: 2px solid $primary-seagreen;
+        }
+
+        .management-machines {
+            margin: 20px;
+
+            .configurations {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px;
+
+                > button {
+                    color: $secondary-seagreen;
+                    border: none;
+                    border-radius: 5px;
+                    box-shadow: 0 5px $powder-orange;
+
+                    font-size: 18px;
+                    padding: 5px;
+                    padding-left: 8px;
+                    padding-right: 8px;
+                    height: fit-content;
+                    margin-top: auto;
+                    margin-bottom: 10px;
+                    margin-left: 10px;
+                    
+                }
+
+                .card {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    width: 300px;
+                    height: 350px;
+                    
+                    border: 2px solid $primary-seagreen;
+                    border-radius: 12px;
+
+                    .info {
+                        padding: 10px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 20px;
+                    }
+
+                    .actions {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+
+                        padding: 10px;
+
+                        span {
+                            border-radius: 30%;
+                            padding: 5px;
+
+                            color: white;
+                            background-color: $secondary-seagreen;
+                        }
+
+                        button {
+                            color: $secondary-seagreen;
+                            border: none;
+                            border-radius: 5px;
+                            box-shadow: 0 5px $powder-orange;
+
+                            color: white;
+                            background-color: $secondary-error-red;
+                            font-weight: 600;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.add-configuration-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .form-field {
+        display: flex;
+        justify-content: space-between;
+        width: 450px;
+    }
+}

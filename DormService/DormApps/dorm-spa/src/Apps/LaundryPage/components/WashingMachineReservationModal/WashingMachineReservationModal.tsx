@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { ModalDialog } from '../../../../components/Modals/ModalDialog'
 import DropdownMenu from '../DropdownMenu/DropdownMenu'
 import { WashingMachine } from '../../models/WashingMachine'
-import { useMount } from 'react-use'
 
 type Props = {
     machine: WashingMachine;

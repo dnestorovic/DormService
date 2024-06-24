@@ -1,7 +1,5 @@
 import React, {ReactNode, useEffect, useState} from 'react'
 import SideMenu from '../SideMenu/SideMenu'
-import { useMount } from 'react-use'
-import { useNavigate } from 'react-router-dom'
 
 type Props = {
     coverPhoto: string,

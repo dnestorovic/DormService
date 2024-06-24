@@ -3,9 +3,13 @@ using Laundry.API.Entities;
 using Laundry.API.GrpcServices;
 using Laundry.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Mailing.Data;
+using Mailing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Laundry.API.Controllers;
 
+[Authorize(Roles = "Student")]
 [ApiController]
 [Route("[controller]")]
 public class WashingMachineController: ControllerBase
@@ -13,13 +17,18 @@ public class WashingMachineController: ControllerBase
     private IWashingMachineRepository _reservationRepository;
     private IWashingMachineManagementRepository _managementRepository;
     private PaymentGrpcService _grpcService;
+    private readonly IEmailService _emailService;
 
 
-    public WashingMachineController(IWashingMachineRepository reservationRepository, IWashingMachineManagementRepository managementRepository, PaymentGrpcService grpcService)
+    public WashingMachineController(IWashingMachineRepository reservationRepository,
+        IWashingMachineManagementRepository managementRepository,
+        PaymentGrpcService grpcService,
+        IEmailService emailService)
     {
         _reservationRepository = reservationRepository ?? throw new ArgumentNullException(nameof(reservationRepository));
         _managementRepository = managementRepository ?? throw new ArgumentNullException(nameof(managementRepository)); 
         _grpcService = grpcService ?? throw new ArgumentNullException(nameof(grpcService));
+        _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
     } 
 
 
@@ -69,7 +78,7 @@ public class WashingMachineController: ControllerBase
     public async Task<ActionResult<bool>> ReserveWashingMachine([FromBody] WashingMachineReservationDTO dto)
     {   
         try {
-            await _grpcService.ReduceCredit(dto.StudentId, 200);
+            await _grpcService.ReduceCredit(dto.StudentId, dto.Price);
         } catch (RpcException e) {
             return BadRequest(e.Message);
         }
@@ -82,6 +91,18 @@ public class WashingMachineController: ControllerBase
         
         bool updated = await _managementRepository.UpdateMetrics(dto);
         bool updateMetricsSuccessful = await _managementRepository.UpdateMetrics(dto);
-        return updateMetricsSuccessful ? Ok(true) : BadRequest("Cannot update machine metrics.");
+        if (!updateMetricsSuccessful) {
+            BadRequest("Cannot update machine metrics.");
+        }
+
+        Email email = new(dto.EmailAddress, 
+                        "Hi " + dto.StudentId + "\n you have successfully reserved washing machine. \nRegards \nDormServcie", 
+                        "Washing machine reservation");
+        var emailSent = await _emailService.SendEmail(email);
+        if (!emailSent) {
+            await _emailService.SendEmail(email);
+        }
+
+        return Ok(true);
     }
 }

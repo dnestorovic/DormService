@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { WashingMachine } from '../../models/WashingMachine'
-import { useMount } from 'react-use';
 
 type TableProps = {
     machines: WashingMachine[];
@@ -8,17 +7,6 @@ type TableProps = {
 }
 
 const WashingMachinesTabel: React.FC<TableProps> = ({ machines, onReservation }) => {
-    const [showMachines, setShowMachines] = useState<boolean>(false);
-
-
-    useMount(() => {
-        machines.forEach(machine => {
-            if (!machine.reserved) {
-                setShowMachines(prev => true);
-            }
-        });
-    });
-
     return (
         <div className='washing-machines-table'>
         {machines.map(machine => 

@@ -12,4 +12,6 @@ public interface IWashingMachineRepository
     Task<IEnumerable<WashingMachine>> GetWashingMachinesByStudentId(string studentId);
 
     Task<bool> ReserveWashingMachine(WashingMachineReservationDTO dto);
+
+    Task<bool> DeleteMachines(string id);
 }

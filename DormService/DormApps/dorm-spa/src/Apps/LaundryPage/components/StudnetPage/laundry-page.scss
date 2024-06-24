@@ -1,4 +1,4 @@
-@import "./../../design/colors.scss";
+@import "./../../../../design/colors.scss";
 .laundry-page {
 
     display: flex;
@@ -13,14 +13,17 @@
 
     .left-panel {
         border: 2px solid $secondary-seagreen;
+        border-radius: 4px;
 
         h1 {
-            color: $powder-orange;
-            margin: 0;
-            padding: 10px;
-            border-bottom: 2px solid $secondary-seagreen;
+            padding: 0;
+            margin: 15px;
+            
+            font-size: 32px;
 
-            background-color: $secondary-seagreen;
+            color: $secondary-seagreen;
+
+            border-bottom: 2px solid $powder-orange;
         }
 
         .reservation-form {
@@ -30,6 +33,7 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: end;
+                margin-right: 15px;
             }
         }
 
@@ -55,7 +59,7 @@
         }
 
         .discount-button::before {
-            content: url("./../../../public/assets/promo.gif");
+            content: url("./../../../../../public/assets/promo.gif");
             width: 5px;
             height: 5px;
             z-index: 1;
