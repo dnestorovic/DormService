@@ -12,11 +12,13 @@
             flex-direction: row;
             justify-content: space-around;
         }
+       
         .dropdown-menu {
             .dropdown { 
                 .dropdown-button { 
                     background-color: white;
                     color: $primary-seagreen;
+                    width: 200px;
                 }
 
                 .dropdown-list {
