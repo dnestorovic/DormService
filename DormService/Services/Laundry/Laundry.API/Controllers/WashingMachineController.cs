@@ -78,7 +78,10 @@ public class WashingMachineController: ControllerBase
     public async Task<ActionResult<bool>> ReserveWashingMachine([FromBody] WashingMachineReservationDTO dto)
     {   
         try {
-            await _grpcService.ReduceCredit(dto.StudentId, dto.Price);
+            var response = await _grpcService.ReduceCredit(dto.StudentId, dto.Price);
+            if (!response.SuccessfulTransaction) {
+                return BadRequest("Check credit");
+            }
         } catch (RpcException e) {
             return BadRequest(e.Message);
         }

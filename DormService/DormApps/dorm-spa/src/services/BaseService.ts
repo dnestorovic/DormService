@@ -59,7 +59,7 @@ const BaseService = (): IBaseService => {
             },
             body: JSON.stringify(data)
         }).then((res) => {
-            if (res.status > 400) {
+            if (res.status >= 400) {
                 throw new Error('Bad request - invalid data');
             }
 
