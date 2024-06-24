@@ -16,12 +16,14 @@
         border-radius: 4px;
 
         h1 {
-            color: $powder-orange;
-            margin: 0;
-            padding: 10px;
-            border-bottom: 2px solid $secondary-seagreen;
+            padding: 0;
+            margin: 15px;
+            
+            font-size: 32px;
 
-            background-color: $secondary-seagreen;
+            color: $secondary-seagreen;
+
+            border-bottom: 2px solid $powder-orange;
         }
 
         .reservation-form {
@@ -31,6 +33,7 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: end;
+                margin-right: 15px;
             }
         }
 
